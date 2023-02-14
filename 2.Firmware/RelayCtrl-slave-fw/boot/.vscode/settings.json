@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.c": "c",
+        "gd32e23x_flash.h": "c",
+        "update.h": "c",
+        "ymodem_slave.h": "c",
+        "stdbool.h": "c",
+        "stdint.h": "c"
+    }
+}

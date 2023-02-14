@@ -1,0 +1,33 @@
+SET PATH=C:\Keil_v5\ARM\ARMCLANG\Bin;F:\vmware\bin\;D:\Espressif\ESP-IDF Tools\toolchain\bin;D:\Espressif\ESP-IDF Tools\mconf-idf;D:\Espressif\ESP-IDF Tools;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;H:\DATA\JUNTEK波形发生器资料\Runtime\IVI Foundation\VISA\WinNT\Bin\;C:\Pro;ram Files\IVI Foundation\VISA\Win64\Bin\;H:\DATA\JUNTEK波形发生器资料\Runtime\IVI Foundation\VISA\WinNT\Bin;D:\Software\Git\cmd;D:\MATLAB\R2021b\bin;D:\Software\Python\Python310\Scripts\;D:\Software\Python\Python310\;C:\Users\Admin\AppData\Local\Microsoft\WindowsApps;D:\Software\PADS\PADSVX2.7\PADSVX.2.7\SDD_HOME\CAMCAD;D:\Microsoft VS Code\bin;D:\ToolChain\OpenOCD\bin;D:\ToolChain\GUNArmEmbedded10.3\bin;D:\ToolChain\mingw32\bin;C:\Users\Admin\.platformio\penv\Scripts;;d:\JetBrains\CLion 2022.2.4\bin;
+SET CPU_TYPE=GD32E230C8
+SET CPU_VENDOR=GigaDevice
+SET UV2_TARGET=GD32E230C_START
+SET CPU_CLOCK=0x00F42400
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\usart.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\usart1.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_it.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\main.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\systick.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\my_flash.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\system_gd32e23x.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_adc.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_cmp.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_crc.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_dbg.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_dma.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_exti.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_fmc.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_fwdgt.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_gpio.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_i2c.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_misc.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_pmu.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_rcu.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_rtc.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_spi.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_syscfg.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_timer.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_usart.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmClang.exe" @".\output\gd32e23x_wwdgt.__i"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmAsm" --Via ".\output\startup_gd32e23x._ia"
+"C:\Keil_v5\ARM\ARMCLANG\Bin\ArmLink" --Via ".\output\Z003_Bootload.lnp"

@@ -1,0 +1,8 @@
+-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m23 -c
+-fno-rtti -funsigned-char -fshort-enums -fshort-wchar
+-D__MICROLIB -gdwarf-3 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ../../GD32E23x_Firmware_Library/CMSIS/GD/GD32E23x/Include -I ../../GD32E23x_Firmware_Library/CMSIS -I ../../GD32E23x_Firmware_Library/GD32E23x_standard_peripheral/Include -I ../ -I ../app -I ../drive -I ../src
+-I./RTE/_GD32E230C_START
+-IC:/Users/Admin/AppData/Local/Arm/Packs/ARM/CMSIS/5.7.0/CMSIS/Core/Include
+-IC:/Users/Admin/AppData/Local/Arm/Packs/GigaDevice/GD32E23x_DFP/1.0.0/Device/Include
+-D__UVISION_VERSION="533" -D_RTE_ -DGD32E23x -D_RTE_ -DGD32E230
+-o ./output/my_fifo.o -MD "../my_fifo.c"

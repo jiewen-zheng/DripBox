@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.c": "c",
+        "gd32e23x.h": "c",
+        "usart.h": "c"
+    }
+}
