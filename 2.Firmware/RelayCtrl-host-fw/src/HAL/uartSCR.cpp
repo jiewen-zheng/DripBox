@@ -105,7 +105,7 @@ bool UART_SCR::checkReceiveFrame(uint8_t *buf, uint16_t len)
     if (head != FRAME_HEAD)
     {
         Serial.println("[scr] frame head unequal to 0x5AA5");
-        return false;
+        return ;
     }
 
     /* 获取数据长度 */
@@ -336,6 +336,9 @@ void UART_SCR::button_handle(uint16_t addr, uint16_t val)
         this->upgrade();
         break;
 
+    case 0x0002:
+        Serial.println("TEST BUTTON");
+        break;
     default:
         Serial.println("[scr] not define button");
         break;
@@ -356,6 +359,13 @@ void UART_SCR::handle()
     {
         return;
     }
+
+    // Serial.printf("read data size=%d\r\n", rindex);
+    // for (uint16_t i = 0; i < rindex; i++)
+    // {
+    //     Serial.printf("%x ", rxbuff[i]);
+    // }
+    // Serial.println("");
 
     if (!checkReceiveFrame(rxbuff, rindex))
     {

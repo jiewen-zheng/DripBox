@@ -13,7 +13,6 @@ void app_init()
 
 void app_loop()
 {
-    
     scr.handle();
     board.handle();
 }
@@ -26,16 +25,38 @@ void serialEvent()
         uint16_t rd_len = Serial.read(debugBuff, sizeof(debugBuff)); // read data;
 
         // MB_SERIAL.write(debugBuff, rd_len);
-        if (memcmp(debugBuff, "list", 4) == 0)
+        if (memcmp(debugBuff, "help", 4) == 0)
+        {
+            Serial.println("available cmd:");
+            Serial.println("[list] [delete] [scrup] [mbup] [mbsend] [seturl]");
+        }
+        else if (memcmp(debugBuff, "list", 4) == 0)
         {
             ffat.listDir("/", 0);
         }
+        else if (memcmp(debugBuff, "seturl", 6) == 0)
+        {
+            String url = String(&debugBuff[7]);
+            Serial.print(url);
+            ftp.setUpdateURL(url);
+        }
         else if (memcmp(debugBuff, "delete", 6) == 0)
         {
-            String file = String(&debugBuff[7]);
+            String file = "";
+            if (debugBuff[7] != '/')
+            {
+                file += "/";
+            }
+
+            file += String(&debugBuff[7]);
             Serial.print("delete file name: ");
             Serial.println(file);
             ffat.deleteFile(file.c_str());
+        }
+        else if (memcmp(debugBuff, "scrup", 5) == 0)
+        {
+            update_checkFile();
+            scr.upgrade();
         }
         else if (memcmp(debugBuff, "mbup", 4) == 0)
         {
@@ -45,6 +66,11 @@ void serialEvent()
         else if (memcmp(debugBuff, "mbsend ", 7) == 0)
         {
             board.sendData((uint8_t *)(debugBuff + 7), rd_len - 7);
+        }
+        else
+        {
+            Serial.printf("unknown: \"%s\"", debugBuff);
+            Serial.println("usage: \"help\" view help.");
         }
     }
 }

@@ -12,6 +12,8 @@ private:
     // create buffer for read
     uint8_t buff[1024] = {0};
 
+    String updateURL = TEST_URL;
+
 public:
     void init();
 
@@ -19,7 +21,9 @@ public:
 
     bool isConnected();
 
-    bool getFileToFlash(String path, String fileName, String url = TEST_URL);
+    bool getFileToFlash(String path, String fileName);
+
+    void setUpdateURL(String url);
 };
 
 extern ftpClient ftp;

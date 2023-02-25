@@ -7,6 +7,7 @@ HAL::FlashFFAT ffat;
 void HAL::Init()
 {
     Serial.begin(115200);
+
     Serial.println("system init ...");
 
     ffat.init();

@@ -50,7 +50,12 @@ bool ftpClient::isConnected()
     return true;
 }
 
-bool ftpClient::getFileToFlash(String path, String fileName, String url)
+void ftpClient::setUpdateURL(String url)
+{
+    updateURL = url;
+}
+
+bool ftpClient::getFileToFlash(String path, String fileName)
 {
     HTTPClient http;
 
@@ -64,10 +69,10 @@ bool ftpClient::getFileToFlash(String path, String fileName, String url)
     {
         path += "/";
     }
-    String storage_path = path + fileName;
+     String storage_path = path + fileName;
 
     Serial.println("[HTTP] begin...");
-    http.begin(url + fileName);
+    http.begin(updateURL + fileName);
 
     Serial.println("[HTTP] GET...");
     int httpCode = http.GET();

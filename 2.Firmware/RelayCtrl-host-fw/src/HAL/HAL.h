@@ -10,7 +10,6 @@ namespace HAL
 {
     void Init();
     void Update();
-
 }
 extern HAL::UART_SCR scr;
 extern HAL::MainBoard board;
