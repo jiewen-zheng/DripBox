@@ -11,8 +11,8 @@ void HAL::Init()
     Serial.println("system init ...");
 
     ffat.init();
-    scr.init();
-    board.init();
+    // scr.init();
+    // board.init();
 
     // ffat.createDir("/dirrr");
     // ffat.listDir("/", 1);

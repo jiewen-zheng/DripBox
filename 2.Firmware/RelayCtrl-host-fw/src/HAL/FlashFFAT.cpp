@@ -1,5 +1,5 @@
 #include "FlashFFAT.h"
-#include "FFat.h"
+#include <FFat.h>
 
 using namespace HAL;
 
@@ -87,7 +87,7 @@ void FlashFFAT::removeDir(const char *path)
     }
 }
 
-bool FlashFFAT::isFile(const char *fileName)
+bool FlashFFAT::findFile(const char *fileName)
 {
     // if (std::find(list.begin(), list.end(), fileName) != list.end())
     // {
@@ -245,11 +245,11 @@ void FlashFFAT::deleteFile(const char *path)
 {
     if (fs->remove(path))
     {
-        Serial.println("- file deleted");
+        Serial.printf("- file \"%s\" is deleted successfully.\r\n", path);
     }
     else
     {
-        Serial.println("- delete failed");
+        Serial.printf("- file \"%s\" failed to be deleted.\r\n", path);
     }
 }
 

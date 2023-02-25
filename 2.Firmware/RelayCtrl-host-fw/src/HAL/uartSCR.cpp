@@ -105,7 +105,7 @@ bool UART_SCR::checkReceiveFrame(uint8_t *buf, uint16_t len)
     if (head != FRAME_HEAD)
     {
         Serial.println("[scr] frame head unequal to 0x5AA5");
-        return ;
+        return false;
     }
 
     /* 获取数据长度 */

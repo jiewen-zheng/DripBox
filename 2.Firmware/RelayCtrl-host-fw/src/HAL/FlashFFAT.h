@@ -20,7 +20,7 @@ namespace HAL
         void createDir(const char *path); // spiffs 不支持目录
         void removeDir(const char *path); // spiffs 不支持目录
 
-        bool isFile(const char *fileName);
+        bool findFile(const char *fileName);
 
         void readFile(const char *path);
         size_t readFile(const char *path, uint8_t *buf, size_t len);
@@ -32,6 +32,7 @@ namespace HAL
         void appendFile(const char *path, const uint8_t *buf, size_t size);
         void renameFile(const char *path1, const char *path2);
         void deleteFile(const char *path);
+        void deleteAllFile(const char *path);
 
         void testFileIO(const char *path);
 

@@ -1,20 +1,34 @@
 #include "app.h"
 
 #include "HAL/HAL.h"
+#include "HAL/uncompress.h"
 #include "update/update.h"
 #include "ftpClient/ftpClient.h"
+
+#include <FFat.h>
+
+Uncompress uncomp;
 
 static char debugBuff[128];
 
 void app_init()
 {
-    ftp.connectWiFi("RDYK", "Rotex2016");
+    ftp.connectWiFi("monster", "sunflower6697");
+
+    ffat.listDir("/", 0);
+    if (!ffat.findFile("hello.zip"))
+    {
+        ftp.getFileToFlash("/", "hello.zip");
+    }
+
+    ffat.readFile("/hello.txt");
 }
 
 void app_loop()
 {
-    scr.handle();
-    board.handle();
+    // ftp.getFileUrl();
+    //  scr.handle();
+    //  board.handle();
 }
 
 void serialEvent()
@@ -38,7 +52,7 @@ void serialEvent()
         {
             String url = String(&debugBuff[7]);
             Serial.print(url);
-            ftp.setUpdateURL(url);
+            ftp.setServerUrl(url);
         }
         else if (memcmp(debugBuff, "delete", 6) == 0)
         {
@@ -66,6 +80,29 @@ void serialEvent()
         else if (memcmp(debugBuff, "mbsend ", 7) == 0)
         {
             board.sendData((uint8_t *)(debugBuff + 7), rd_len - 7);
+        }
+        else if (memcmp(debugBuff, "unzip", 5) == 0)
+        {
+            String file = "";
+            if (debugBuff[6] != '/')
+            {
+                file += "/";
+            }
+
+            file += String(&debugBuff[6]);
+            uncomp.unzipFile(file.c_str(), "/");
+        }
+        else if (memcmp(debugBuff, "read", 4) == 0)
+        {
+            String file = "";
+            if (debugBuff[6] != '/')
+            {
+                file += "/";
+            }
+
+            file += String(&debugBuff[5]);
+
+            ffat.readFile(file.c_str());
         }
         else
         {

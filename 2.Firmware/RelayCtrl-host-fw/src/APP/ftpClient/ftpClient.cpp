@@ -1,8 +1,12 @@
+
+#include <ArduinoJson.h>
+#include <WiFi.h>
+#include <HTTPClient.h>
+
 #include "ftpClient.h"
 #include "HAL/HAL.h"
 
-#include <WiFi.h>
-#include <HTTPClient.h>
+DynamicJsonDocument doc(2048); // heap
 
 bool ftpClient::connectWiFi(String ssid, String pass)
 {
@@ -40,7 +44,7 @@ bool ftpClient::connectWiFi(String ssid, String pass)
     return true;
 }
 
-bool ftpClient::isConnected()
+bool ftpClient::checkConnect()
 {
     if (WiFi.status() != WL_CONNECTED)
     {
@@ -50,16 +54,75 @@ bool ftpClient::isConnected()
     return true;
 }
 
-void ftpClient::setUpdateURL(String url)
+void ftpClient::setServerUrl(String url)
 {
-    updateURL = url;
+    serverURL = url;
+}
+
+bool ftpClient::getFileUrl()
+{
+    // StaticJsonDocument<256> doc;
+
+    // JsonObject body = doc.createNestedObject("body");
+
+    // body["phoneModel"] = "ROTEX-Z003"; // 设备型号
+    // body["fileType"] = "0";            // 固件使用0，软件使用1
+
+    String str = "http://59.110.138.60:8008/fileInfo/selectOne?phoneModel=ROTEX-Z003&fileType=0";
+
+    reqServer(str, "");
+    return true;
+}
+
+bool ftpClient::reqServer(String url, String msg)
+{
+    if (!checkConnect())
+    {
+        return false;
+    }
+
+    HTTPClient http;
+    Serial.println("msg=");
+    Serial.println(msg);
+    http.begin(url);
+    http.addHeader("Content-Type", "application/json");
+
+    //    http.addHeader("Accept", "*/*");
+    // start connection and send HTTP header
+    Serial.println("[http] post...");
+    int code = http.POST("");
+
+    if (code <= 0)
+    {
+        Serial.printf("[http] post... failed, error: %s.\r\n", http.errorToString(code).c_str());
+        http.end();
+        return false;
+    }
+
+    if (code == HTTP_CODE_OK)
+    {
+        doc.clear();
+        // 反序列化Json
+        DeserializationError error = deserializeJson(doc, http.getString());
+        if (error)
+        {
+            Serial.printf("[error]: http json deserialize failed: %s.\r\n", error.c_str());
+            http.end();
+            return false;
+        }
+
+        serializeJsonPretty(doc, Serial); // debug
+    }
+
+    http.end();
+    return true;
 }
 
 bool ftpClient::getFileToFlash(String path, String fileName)
 {
     HTTPClient http;
 
-    if (!isConnected())
+    if (!checkConnect())
     {
         return false;
     }
@@ -69,76 +132,73 @@ bool ftpClient::getFileToFlash(String path, String fileName)
     {
         path += "/";
     }
-     String storage_path = path + fileName;
+    String storage_path = path + fileName;
 
-    Serial.println("[HTTP] begin...");
-    http.begin(updateURL + fileName);
+    String url = "http://59.110.138.60:8008/File/download?id=1677313300167";
+    http.begin(url);
 
-    Serial.println("[HTTP] GET...");
-    int httpCode = http.GET();
-    if (httpCode > 0)
+    Serial.println("[http] get...");
+    int code = http.GET();
+    Serial.printf("[http] get... code: %d\r\n", code);
+    if (code <= 0)
     {
-        Serial.printf("[HTTP] GET... code: %d\r\n", httpCode);
+        Serial.printf("[http] get... failed, error: %s\r\n", http.errorToString(code).c_str());
+        http.end();
+        return false;
+    }
 
-        if (httpCode == HTTP_CODE_OK)
+    if (code == HTTP_CODE_OK)
+    {
+        // get length of document (is -1 when Server sends no Content-Length header)
+        int len = http.getSize();
+        if (len == -1)
         {
-            // get length of document (is -1 when Server sends no Content-Length header)
-            int len = http.getSize();
-            if (len == -1)
+            http.end();
+            Serial.println("url no info");
+            return true;
+        }
+
+        uint32_t ptrlen = len;
+
+        // // create buffer for read
+        // uint8_t buff[1024] = {0};
+        Serial.printf("Start download file: \"%s\".\r\n", fileName.c_str());
+
+        // get tcp stream
+        WiFiClient *stream = http.getStreamPtr();
+
+        // read all data form server
+        while (http.connected() && (len > 0))
+        {
+            // get available data size
+            size_t size = stream->available();
+
+            double ptr = ((double)(ptrlen - len) / ptrlen);
+            Serial.printf("downloading... (%d %%)\r\n", (uint8_t)(ptr * 100));
+
+            if (size)
             {
-                Serial.println("url no info");
-                return true;
-            }
+                // read up to 512 byte
+                int c = stream->readBytes(buff, ((size > sizeof(buff)) ? sizeof(buff) : size));
 
-            uint32_t ptrlen = len;
+                // write it to flash
+                ffat.appendFile(storage_path.c_str(), buff, c);
 
-            // // create buffer for read
-            // uint8_t buff[1024] = {0};
-            Serial.print("Start download file: ");
-            Serial.print(fileName);
-            Serial.println("");
-
-            // get tcp stream
-            WiFiClient *stream = http.getStreamPtr();
-
-            // read all data form server
-            while (http.connected() && (len > 0))
-            {
-                // get available data size
-                size_t size = stream->available();
-
-                double ptr = ((double)(ptrlen - len) / ptrlen);
-                Serial.printf("downloading... (%d %%)\r\n", (uint8_t)(ptr * 100));
-
-                if (size)
+                if (len > 0)
                 {
-                    // read up to 512 byte
-                    int c = stream->readBytes(buff, ((size > sizeof(buff)) ? sizeof(buff) : size));
-
-                    // write it to flash
-                    ffat.appendFile(storage_path.c_str(), buff, c);
-
-                    if (len > 0)
-                    {
-                        len -= c;
-                    }
+                    len -= c;
                 }
             }
-
-            if (len > 0)
-            {
-                Serial.println("[HTTP] connection closed, file download failed.");
-            }
-            else
-            {
-                Serial.println("[HTTP] file download succeed.");
-            }
         }
-    }
-    else
-    {
-        Serial.printf("[HTTP] GET...failed, error: %s\r\n", http.errorToString(httpCode).c_str());
-        return false;
+
+        if (len > 0)
+        {
+            Serial.println("[HTTP] connection closed, file download failed.");
+        }
+        else
+        {
+            Serial.println("[HTTP] file download succeed.");
+        }
     }
 
     http.end();
