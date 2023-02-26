@@ -160,9 +160,7 @@ bool ftpClient::getFileToFlash(String path, String fileName)
 
         uint32_t ptrlen = len;
 
-        // // create buffer for read
-        // uint8_t buff[1024] = {0};
-        Serial.printf("Start download file: \"%s\".\r\n", fileName.c_str());
+        Serial.printf("[http] Start download file: \"%s\".\r\n", fileName.c_str());
 
         // get tcp stream
         WiFiClient *stream = http.getStreamPtr();

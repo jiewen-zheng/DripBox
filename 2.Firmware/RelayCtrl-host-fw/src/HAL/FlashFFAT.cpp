@@ -39,6 +39,12 @@ void FlashFFAT::listDir(const char *dirname, uint8_t levels)
         {
             Serial.print("  DIR: ");
             Serial.println(file.name());
+            DirInfo_t dirInfo = {
+                .path = file.path(),
+                .name = file.name(),
+            };
+            dirList.push_back(dirInfo);
+
             if (levels)
             {
                 listDir(file.path(), levels - 1);
@@ -49,13 +55,16 @@ void FlashFFAT::listDir(const char *dirname, uint8_t levels)
             Serial.print("  FILE: ");
             Serial.print(file.name());
             Serial.print("\tSIZE: ");
-            Serial.println(file.size());
+            Serial.print(file.size());
+            Serial.print("\tPATH: ");
+            Serial.println(file.path());
 
-            FileInfo_t info = {
+            FileInfo_t fileInfo = {
+                .path = file.path(),
                 .name = file.name(),
                 .size = file.size(),
             };
-            fileList.push_back(info);
+            fileList.push_back(fileInfo);
         }
 
         file = root.openNextFile();
@@ -85,6 +94,17 @@ void FlashFFAT::removeDir(const char *path)
     {
         Serial.printf("- rmdir failed: %s\n", path);
     }
+}
+
+bool HAL::FlashFFAT::findDir(const char *dirPath)
+{
+    for (auto iter : dirList)
+    {
+        if (strcmp(iter.path.c_str(), dirPath) == 0)
+            return true;
+    }
+
+    return false;
 }
 
 bool FlashFFAT::findFile(const char *fileName)
@@ -137,12 +157,8 @@ size_t FlashFFAT::readFile(const char *path, uint8_t *buf, size_t len)
         return 0;
     }
 
-    size_t read_len = 0;
+    size_t read_len = file.read(buf, file.available() > len ? len : file.available());
 
-    if (file.available())
-    {
-        read_len = file.read(buf, len);
-    }
     file.close();
 
     return read_len;

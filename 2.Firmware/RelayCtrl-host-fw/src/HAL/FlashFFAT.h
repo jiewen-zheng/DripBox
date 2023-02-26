@@ -20,6 +20,7 @@ namespace HAL
         void createDir(const char *path); // spiffs 不支持目录
         void removeDir(const char *path); // spiffs 不支持目录
 
+        bool findDir(const char *dirPath);
         bool findFile(const char *fileName);
 
         void readFile(const char *path);
@@ -39,11 +40,19 @@ namespace HAL
     private:
         typedef struct
         {
+            String path;
             String name;
             uint32_t size;
         } FileInfo_t;
 
+        typedef struct
+        {
+            String path;
+            String name;
+        } DirInfo_t;
+
         std::vector<FileInfo_t> fileList;
+        std::vector<DirInfo_t> dirList;
     };
 
 }

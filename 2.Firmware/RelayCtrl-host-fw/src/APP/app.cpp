@@ -6,6 +6,7 @@
 #include "ftpClient/ftpClient.h"
 
 #include <FFat.h>
+#include <ArduinoJson.h>
 
 Uncompress uncomp;
 
@@ -16,12 +17,17 @@ void app_init()
     ftp.connectWiFi("monster", "sunflower6697");
 
     ffat.listDir("/", 0);
-    if (!ffat.findFile("hello.zip"))
+
+    if (!ffat.findDir("/config"))
     {
-        ftp.getFileToFlash("/", "hello.zip");
+        Serial.println("creat config dir");
+        ffat.createDir("/config");
     }
 
-    ffat.readFile("/hello.txt");
+    // if (!ffat.findFile("config.json"))
+    // {
+    //     ftp.getFileToFlash("/", "config.json");
+    // }
 }
 
 void app_loop()
@@ -56,15 +62,8 @@ void serialEvent()
         }
         else if (memcmp(debugBuff, "delete", 6) == 0)
         {
-            String file = "";
-            if (debugBuff[7] != '/')
-            {
-                file += "/";
-            }
-
-            file += String(&debugBuff[7]);
-            Serial.print("delete file name: ");
-            Serial.println(file);
+            String file = String(&debugBuff[7]);
+            Serial.printf("delete file: %s \r\n", file.c_str());
             ffat.deleteFile(file.c_str());
         }
         else if (memcmp(debugBuff, "scrup", 5) == 0)
@@ -83,16 +82,28 @@ void serialEvent()
         }
         else if (memcmp(debugBuff, "unzip", 5) == 0)
         {
-            String file = "";
-            if (debugBuff[6] != '/')
-            {
-                file += "/";
-            }
 
-            file += String(&debugBuff[6]);
+            String file = String(&debugBuff[6]);
             uncomp.unzipFile(file.c_str(), "/");
         }
+        else if (memcmp(debugBuff, "write", 5) == 0)
+        {
+            char name[32];
+            char *data = strchr(&debugBuff[6], ' ');
+            data += 1;
+            int dataLen = strlen(data);
+            int nameLen = strlen(&debugBuff[6]) - dataLen - 1;
+            memcpy(name, &debugBuff[6], nameLen);
+
+            ffat.writeFile(name, data, dataLen);
+        }
         else if (memcmp(debugBuff, "read", 4) == 0)
+        {
+
+            String file = String(&debugBuff[5]);
+            ffat.readFile(file.c_str());
+        }
+        else if (memcmp(debugBuff, "json", 4) == 0)
         {
             String file = "";
             if (debugBuff[6] != '/')
@@ -102,7 +113,18 @@ void serialEvent()
 
             file += String(&debugBuff[5]);
 
-            ffat.readFile(file.c_str());
+            char *buff = (char *)malloc(1024);
+            if (!buff)
+            {
+                return;
+            }
+
+            ffat.readFile(file.c_str(), (uint8_t *)buff, 1024);
+
+            StaticJsonDocument<1024> doc;
+            deserializeJson(doc, buff);
+            free(buff);
+            serializeJson(doc, Serial);
         }
         else
         {
