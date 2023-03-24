@@ -1,72 +1,69 @@
 
 #include <Arduino.h>
 #include <ArduinoJson.h>
-#include <WiFi.h>
-#include <HTTPClient.h>
+
 #include "update.h"
 #include "HAL/HAL.h"
-#include "APP/ftpClient/ftpClient.h"
 
 /* 存储post数据包 */
+DynamicJsonDocument doc(4096); // heap
 
+// void update_checkFile()
+// {
+//     ffat.listDir("/", 0);
 
-void update_checkFile()
+//     if (!ffat.findFile("13TouchFile.bin"))
+//     {
+//         ftp.getFileToFlash("/", "13TouchFile.bin");
+//     }
+//     if (!ffat.findFile("14ShowFile.bin"))
+//     {
+//         ftp.getFileToFlash("/", "14ShowFile.bin");
+//     }
+//     if (!ffat.findFile("22_Config.bin"))
+//     {
+//         ftp.getFileToFlash("/", "22_Config.bin");
+//     }
+//     if (!ffat.findFile("32_Image.icl"))
+//     {
+//         ftp.getFileToFlash("/", "32_Image.icl");
+//     }
+
+//     if (!ffat.findFile("mainboard.bin"))
+//     {
+//         ftp.getFileToFlash("/", "mainboard.bin");
+//     }
+// }
+
+bool Update::getFirmware()
 {
-    ffat.listDir("/", 0);
+    String msg = reqServer(FIRMWARE_REQ_URL, "");
 
-    if (!ffat.findFile("13TouchFile.bin"))
+    doc.clear();
+    DeserializationError code = deserializeJson(doc, msg);
+    if (code)
     {
-        ftp.getFileToFlash("/", "13TouchFile.bin");
-    }
-    if (!ffat.findFile("14ShowFile.bin"))
-    {
-        ftp.getFileToFlash("/", "14ShowFile.bin");
-    }
-    if (!ffat.findFile("22_Config.bin"))
-    {
-        ftp.getFileToFlash("/", "22_Config.bin");
-    }
-    if (!ffat.findFile("32_Image.icl"))
-    {
-        ftp.getFileToFlash("/", "32_Image.icl");
+        Serial.printf("[error]: tcp json deserialize failed: %s\r\n", code.c_str());
+        return false;
     }
 
-    if (!ffat.findFile("mainboard.bin"))
-    {
-        ftp.getFileToFlash("/", "mainboard.bin");
-    }
-}
+    memset(&firmware_info, 0, sizeof(PackageInfo_t));
 
-bool Update::checkConnect()
-{
-    if (WiFi.status() != WL_CONNECTED)
+    firmware_info.fileName = doc["fileName"].as<String>();
+    firmware_info.fileType = doc["fileType"].as<int>();
+    firmware_info.fileUrl = doc["fileUrl"].as<String>();
+    firmware_info.phoneModel = doc["phoneModel"].as<String>();
+    firmware_info.version = doc["version"].as<int>();
+
+    if (firmware_info.phoneModel != "ROTEX-Z003")
+    {
+        return false;
+    }
+
+    if (firmware_info.fileType != 0)
     {
         return false;
     }
 
     return true;
-}
-
-bool Update::reqServer(String url, String msg)
-{
-    if (!checkConnect())
-    {
-        return false;
-    }
-
-    HTTPClient http;
-
-    http.begin(url);
-    http.addHeader("Content-Type", "application/json");
-    // start connection and send HTTP header
-    int code = http.POST(msg);
-
-    if (code > 0)
-    {
-        Serial.printf("[http] post.code: %d \r\n", code);
-
-
-
-    }
-    return false;
 }

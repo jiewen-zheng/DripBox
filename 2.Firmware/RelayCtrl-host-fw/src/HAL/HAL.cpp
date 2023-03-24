@@ -1,18 +1,19 @@
 #include "HAL.h"
 
-HAL::UART_SCR scr;
-HAL::MainBoard board;
 HAL::FlashFFAT ffat;
+HAL::MainBoard board;
+HAL::UartScreen screen(&board);
 
 void HAL::Init()
 {
     Serial.begin(115200);
-
     Serial.println("system init ...");
 
     ffat.init();
-    // scr.init();
-    // board.init();
+    board.init();
+    screen.init();
+
+    // Update display in parallel thread.
 
     // ffat.createDir("/dirrr");
     // ffat.listDir("/", 1);

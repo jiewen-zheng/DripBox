@@ -1,4 +1,4 @@
-#include "app.h"
+#include "main_app.h"
 
 #include "HAL/HAL.h"
 #include "HAL/uncompress.h"
@@ -12,9 +12,27 @@ Uncompress uncomp;
 
 static char debugBuff[128];
 
+#define taskNU 10
+
+TaskHandle_t handleTaskUptate;
+void TaskUpdate(void *parameter)
+{
+    // ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+
+    for (;;)
+    {
+        for (uint8_t i = 0; i < taskNU; i++)
+        {
+            Serial.println("update task");
+            delay(500);
+        }
+        vTaskSuspend(NULL);
+    }
+}
+
 void app_init()
 {
-    ftp.connectWiFi("monster", "sunflower6697");
+    // ftp.connectWiFi("monster", "sunflower6697");
 
     ffat.listDir("/", 0);
 
@@ -24,17 +42,25 @@ void app_init()
         ffat.createDir("/config");
     }
 
-    // if (!ffat.findFile("config.json"))
-    // {
-    //     ftp.getFileToFlash("/", "config.json");
-    // }
+    // running task
+    // xTaskNotifyGive(handleTaskUptate);
+
+    // xTaskCreate(
+    //     TaskUpdate,
+    //     "updateTask",
+    //     15360,
+    //     nullptr,
+    //     configMAX_PRIORITIES - 1,
+    //     &handleTaskUptate);
+
+    // vTaskSuspend(handleTaskUptate);
 }
 
 void app_loop()
 {
     // ftp.getFileUrl();
-    //  scr.handle();
-    //  board.handle();
+    screen.handle();
+    board.handle();
 }
 
 void serialEvent()
@@ -45,20 +71,10 @@ void serialEvent()
         uint16_t rd_len = Serial.read(debugBuff, sizeof(debugBuff)); // read data;
 
         // MB_SERIAL.write(debugBuff, rd_len);
-        if (memcmp(debugBuff, "help", 4) == 0)
-        {
-            Serial.println("available cmd:");
-            Serial.println("[list] [delete] [scrup] [mbup] [mbsend] [seturl]");
-        }
-        else if (memcmp(debugBuff, "list", 4) == 0)
+
+        if (memcmp(debugBuff, "list", 4) == 0)
         {
             ffat.listDir("/", 0);
-        }
-        else if (memcmp(debugBuff, "seturl", 6) == 0)
-        {
-            String url = String(&debugBuff[7]);
-            Serial.print(url);
-            ftp.setServerUrl(url);
         }
         else if (memcmp(debugBuff, "delete", 6) == 0)
         {
@@ -68,12 +84,12 @@ void serialEvent()
         }
         else if (memcmp(debugBuff, "scrup", 5) == 0)
         {
-            update_checkFile();
-            scr.upgrade();
+            // update_checkFile();
+            screen.upgrade();
         }
         else if (memcmp(debugBuff, "mbup", 4) == 0)
         {
-            update_checkFile();
+            // update_checkFile();
             board.setUpgrade(true);
         }
         else if (memcmp(debugBuff, "mbsend ", 7) == 0)
@@ -99,37 +115,20 @@ void serialEvent()
         }
         else if (memcmp(debugBuff, "read", 4) == 0)
         {
-
             String file = String(&debugBuff[5]);
             ffat.readFile(file.c_str());
         }
-        else if (memcmp(debugBuff, "json", 4) == 0)
+        else if (memcmp(debugBuff, "run", 3) == 0)
         {
-            String file = "";
-            if (debugBuff[6] != '/')
-            {
-                file += "/";
-            }
-
-            file += String(&debugBuff[5]);
-
-            char *buff = (char *)malloc(1024);
-            if (!buff)
-            {
-                return;
-            }
-
-            ffat.readFile(file.c_str(), (uint8_t *)buff, 1024);
-
-            StaticJsonDocument<1024> doc;
-            deserializeJson(doc, buff);
-            free(buff);
-            serializeJson(doc, Serial);
+            vTaskResume(handleTaskUptate);
+        }
+        else if (memcmp(debugBuff, "stop", 4) == 0)
+        {
+            vTaskSuspend(handleTaskUptate);
         }
         else
         {
             Serial.printf("unknown: \"%s\"", debugBuff);
-            Serial.println("usage: \"help\" view help.");
         }
     }
 }

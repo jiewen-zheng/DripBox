@@ -1,50 +1,12 @@
-
-#include <ArduinoJson.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
 
 #include "ftpClient.h"
 #include "HAL/HAL.h"
 
-DynamicJsonDocument doc(2048); // heap
+// DynamicJsonDocument doc(2048); // heap
 
-bool ftpClient::connectWiFi(String ssid, String pass)
-{
-    Serial.println("");
-    Serial.print("WiFi Connecting: ");
-    Serial.print(ssid.c_str());
-    Serial.print("@");
-    Serial.println(pass.c_str());
-
-    WiFi.disconnect();
-    WiFi.mode(WIFI_MODE_STA);
-
-    WiFi.begin(ssid.c_str(), pass.c_str());
-    WiFi.setAutoConnect(true);
-
-    uint16_t timeout = 0;
-    do
-    {
-        delay(500);
-        Serial.print(".");
-    } while ((WiFi.status() != WL_CONNECTED) && (++timeout < 20)); // 10s未连接则超时退出
-
-    if (WiFi.status() != WL_CONNECTED)
-    {
-        log_e("wifi connect failed");
-        return false;
-    }
-
-    Serial.println("");
-    Serial.println("wifi connect succeed!");
-    Serial.printf("MAC address: %s \r\n", WiFi.macAddress().c_str());
-    Serial.printf("Obtained IP address: ");
-    Serial.println(WiFi.localIP());
-
-    return true;
-}
-
-bool ftpClient::checkConnect()
+bool FtpClient::checkConnect()
 {
     if (WiFi.status() != WL_CONNECTED)
     {
@@ -54,31 +16,11 @@ bool ftpClient::checkConnect()
     return true;
 }
 
-void ftpClient::setServerUrl(String url)
-{
-    serverURL = url;
-}
-
-bool ftpClient::getFileUrl()
-{
-    // StaticJsonDocument<256> doc;
-
-    // JsonObject body = doc.createNestedObject("body");
-
-    // body["phoneModel"] = "ROTEX-Z003"; // 设备型号
-    // body["fileType"] = "0";            // 固件使用0，软件使用1
-
-    String str = "http://59.110.138.60:8008/fileInfo/selectOne?phoneModel=ROTEX-Z003&fileType=0";
-
-    reqServer(str, "");
-    return true;
-}
-
-bool ftpClient::reqServer(String url, String msg)
+String FtpClient::reqServer(String url, String msg)
 {
     if (!checkConnect())
     {
-        return false;
+        return "";
     }
 
     HTTPClient http;
@@ -96,29 +38,20 @@ bool ftpClient::reqServer(String url, String msg)
     {
         Serial.printf("[http] post... failed, error: %s.\r\n", http.errorToString(code).c_str());
         http.end();
-        return false;
+        return "";
     }
 
     if (code == HTTP_CODE_OK)
     {
-        doc.clear();
-        // 反序列化Json
-        DeserializationError error = deserializeJson(doc, http.getString());
-        if (error)
-        {
-            Serial.printf("[error]: http json deserialize failed: %s.\r\n", error.c_str());
-            http.end();
-            return false;
-        }
-
-        serializeJsonPretty(doc, Serial); // debug
+        http.end();
+        return http.getString();
     }
 
     http.end();
-    return true;
+    return "";
 }
 
-bool ftpClient::getFileToFlash(String path, String fileName)
+bool FtpClient::getFileToFlash(String path, String fileName)
 {
     HTTPClient http;
 
@@ -202,5 +135,3 @@ bool ftpClient::getFileToFlash(String path, String fileName)
     http.end();
     return true;
 }
-
-ftpClient ftp;

@@ -2,16 +2,18 @@
 #define __HAL_H
 
 #include "HAL_Def.h"
-#include "uartSCR.h"
+#include "uartScreen.h"
 #include "mainBoard.h"
 #include "FlashFFAT.h"
+
+#include "FreeRTOS.h"
 
 namespace HAL
 {
     void Init();
     void Update();
 }
-extern HAL::UART_SCR scr;
-extern HAL::MainBoard board;
 extern HAL::FlashFFAT ffat;
+extern HAL::UartScreen screen;
+extern HAL::MainBoard board;
 #endif

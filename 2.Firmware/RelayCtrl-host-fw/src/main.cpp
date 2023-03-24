@@ -1,7 +1,6 @@
 #include <Arduino.h>
-#include "APP/app.h"
+#include "APP/main_app.h"
 #include "HAL/HAL.h"
-
 
 void setup()
 {
