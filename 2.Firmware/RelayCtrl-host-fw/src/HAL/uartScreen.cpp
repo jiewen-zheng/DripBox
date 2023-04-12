@@ -576,6 +576,16 @@ void UartScreen::button_apply(uint16_t addr, uint16_t value)
         board->moveTest(scrConfig.test);
         break;
 
+    case btn_format:
+        if (checkFormatPass(&frameCheck.data[3]))
+        {
+            Serial.println("[scr] format");
+            FFat.end();
+            FFat.format();
+            reset();
+            ESP.restart();
+        }
+        break;
     default:
         Serial.println("[scr] not define button");
         break;
@@ -829,6 +839,16 @@ void HAL::UartScreen::LogUpgradeMsg(const char *msg)
 void HAL::UartScreen::updateLogMsg()
 {
     dispVersion(versionMsg.dev.c_str(), versionMsg.firm.c_str(), versionMsg.soft.c_str());
+}
+
+bool HAL::UartScreen::checkFormatPass(uint8_t *pass)
+{
+    if (memcmp(pass, FORMAT_PASS, 6) == 0)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 String HAL::UartScreen::getWifiSSID()

@@ -9,6 +9,8 @@
 #define FRAME_HEAD 0x5AA5
 #define SAVE_RAM_ADDR 0x8000
 
+#define FORMAT_PASS "abc123"
+
 #define MAX_LOG_NUM 2
 
 typedef void (*update_cb)(void);
@@ -47,6 +49,8 @@ namespace HAL
         btn_firmwareUpdate = 0x1023,
         btn_softwareUpdate = 0x1024,
 
+        btn_format = 0x3000,
+
         btn_testRadeWrite = 0x1037, // 偏移值读取，1读，2写
         btn_testStart = 0x1036,     // 开始测试
         btn_testPoint = 0x1030,     // 移动到点位选择，1左眼，2右眼，3嘴巴
@@ -75,7 +79,8 @@ namespace HAL
 
     enum
     {
-        text_wifiSSID = 0x2000, // wifi ssid addr
+        text_format_pass = 0x3000, // format ffat
+        text_wifiSSID = 0x2000,    // wifi ssid addr
         text_wifiPASS = 0x2100,
         text_deviceID = 0x1100,
         text_firmwareVer = 0x1130,
@@ -174,6 +179,8 @@ namespace HAL
 
         void updataRSSI(uint16_t update_time = 3000);
         void updateLogMsg();
+
+        bool checkFormatPass(uint8_t *pass);
 
         bool sendFrame(uint8_t cmd, uint8_t *buf, uint16_t len, bool checkFlag = true, int retry = 3);
 

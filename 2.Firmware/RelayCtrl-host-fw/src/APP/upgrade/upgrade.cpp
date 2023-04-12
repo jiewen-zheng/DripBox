@@ -349,7 +349,10 @@ void Upgrade::updateSotfware()
         return;
     }
 
+    p_screen->pageSwitch(10);
+
     String url = ftp->getSoftwareURL();
+    p_screen->LogUpgradeMsg("update software...");
 
     if (url != "")
     {

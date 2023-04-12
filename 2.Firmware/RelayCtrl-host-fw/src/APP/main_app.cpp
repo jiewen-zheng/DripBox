@@ -78,7 +78,13 @@ void serialEvent()
             return;
         }
 
-        if (memcmp(debugBuff, "list", 4) == 0)
+        if (memcmp(debugBuff, "format", 6) == 0)
+        {
+            FFat.end();
+            FFat.format();
+            ESP.restart();
+        }
+        else if (memcmp(debugBuff, "list", 4) == 0)
         {
             String dir = String(&debugBuff[5]);
             ffat.listDir(dir.c_str(), 0);
