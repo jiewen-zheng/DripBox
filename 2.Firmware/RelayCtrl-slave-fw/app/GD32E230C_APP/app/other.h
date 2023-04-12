@@ -3,8 +3,9 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "systick.h"
 
-#define OFFSET_ADDR (GD32E23X_FLASH_BASE_ADDR + 60 * GD32E23X_FLASH_PAGE_SIZE)
+#define OFFSET_ADDR (GD32E23X_FLASH_BASE_ADDR + 62 * GD32E23X_FLASH_PAGE_SIZE)
 
 enum
 {
@@ -35,6 +36,8 @@ bool load_offset();
 bool save_offset(OffSet_t *offset);
 void set_offset(AxleType_t axle, int value);
 OffSet_t *get_offset();
+
+void stop_device(bool stop);
 
 void other_handle();
 #endif

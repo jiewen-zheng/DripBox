@@ -388,8 +388,15 @@ bool run()
     {
         return false;
     }
+		
+		/* 无剩余数据 */
+		if(left_package_size == 0){
+			return true;
+		}
 
+			
     /* 处理剩余数据 */
+		retry_num = YS_RETRY_NUM;
     while (--retry_num > 0)
     {
         if (!check_end_package(package_index + 1, left_package_size))

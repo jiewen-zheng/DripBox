@@ -6,6 +6,8 @@
         "array": "cpp",
         "string_view": "cpp",
         "*.tcc": "cpp",
-        "*.tpp": "cpp"
+        "*.tpp": "cpp",
+        "cstring": "cpp",
+        "algorithm": "cpp"
     }
 }

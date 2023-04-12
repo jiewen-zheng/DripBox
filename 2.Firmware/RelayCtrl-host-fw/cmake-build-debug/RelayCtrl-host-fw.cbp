@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="RelayCtrl-host-fw"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Production">
+				<Option working_dir="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 Production"/>
+					<CompileFile command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Debug">
+				<Option working_dir="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 Debug"/>
+					<CompileFile command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Z_DUMMY_TARGET">
+				<Option output="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Z_DUMMY_TARGET" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 Z_DUMMY_TARGET"/>
+					<CompileFile command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Z_DUMMY_TARGET/fast">
+				<Option output="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Z_DUMMY_TARGET" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../include"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed"/>
+					<Add directory="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/../lib/gcc/x86_64-w64-mingw32/11.2.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 Z_DUMMY_TARGET/fast"/>
+					<CompileFile command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/software/JetBrains/CLion 2022.2.1/bin/mingw/bin/mingw32-make.exe -f &quot;D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/exflash/EF.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/exflash/EF.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/exflash/ef_diskio.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/exflash/ef_diskio.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/exflash/w25qx_define.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/msc/diskio_usb.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/msc/diskio_usb.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/msc/msc_common.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/msc/msc_host.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/msc/msc_host.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/msc/msc_host_vfs.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/msc/msc_host_vfs.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/msc/msc_scsi_bot.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/msc/msc_scsi_bot.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/Linux/bmp_icons.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/Linux/main.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/README.md">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/examples/lcd_example/bmp_icons.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/examples/lcd_example/lcd_example.ino">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/examples/list_files/bmp_icons.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/examples/list_files/list_files.ino">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/examples/unzip_sdcard/unzip_sdcard.ino">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/library.properties">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/adler32.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/crc32.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/crc32.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/gzguts.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/infback.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/inffast.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/inffast.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/inffixed.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/inflate.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/inflate.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/inftrees.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/inftrees.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/unzip.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/unzip.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/unzipLIB.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/unzipLIB.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/zconf.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/zlib.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/zutil.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/unzipLIB/src/zutil.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/usb/CMakeLists.txt">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/usb/README.md">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/usb/README_cn.md">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/usb/esp_private/periph_ctrl.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/usb/esp_private/periph_ctrl.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/usb/esp_usbh_cdc.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/usb/esp_usbh_cdc.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/usb/hcd.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/usb/hcd.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/usb/usb_private.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/usb/usb_private.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/ymodem_host/example/dynamic memory/ymodem.ino">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/ymodem_host/example/static memory/ymodem.ino">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/ymodem_host/ym_crc.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/ymodem_host/ym_crc.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/ymodem_host/ymodem_host.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/lib/ymodem_host/ymodem_host.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/APP/common.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/APP/common.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/APP/ftpClient/ftpClient.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/APP/ftpClient/ftpClient.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/APP/main_app.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/APP/main_app.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/APP/upgrade/upgrade.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/APP/upgrade/upgrade.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/FlashFFAT.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/FlashFFAT.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/HAL.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/HAL.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/HAL_Def.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/exflash.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/exflash.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/mainBoard.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/mainBoard.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/uartScreen.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/uartScreen.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/uncompress.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/uncompress.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/usbCDC.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/HAL/usbCDC.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/Utils/src_crc16.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/Utils/src_crc16.h">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/src/main.cpp">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="D:/items/vs_code/DripBox/2.Firmware/RelayCtrl-host-fw/CMakeListsPrivate.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

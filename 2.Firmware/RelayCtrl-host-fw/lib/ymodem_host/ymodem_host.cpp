@@ -1,10 +1,5 @@
 #include "ymodem_host.h"
 
-extern "C"
-{
-#include "ym_crc.h"
-}
-
 #define Y_C 0x43   // 大写字母Ｃ
 #define Y_SOH 0x01 // 数据块起始字符 128字节
 #define Y_STX 0x02 // 数据块起始字符 1024字节
@@ -310,7 +305,7 @@ bool YmodemHost::eot()
     }
 
 #else
-    if (!checkACK(Y_ACK))
+    if (checkACK(Y_ACK) != Y_ACK)
     {
         return false;
     }

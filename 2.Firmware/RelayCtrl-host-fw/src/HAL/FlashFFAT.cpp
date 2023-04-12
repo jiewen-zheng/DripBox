@@ -31,6 +31,7 @@ void FlashFFAT::listDir(const char *dirname, uint8_t levels)
     }
 
     fileList.clear();
+    dirList.clear();
 
     File file = root.openNextFile();
     while (file)
@@ -94,6 +95,18 @@ void FlashFFAT::removeDir(const char *path)
     {
         Serial.printf("- rmdir failed: %s\n", path);
     }
+}
+
+size_t HAL::FlashFFAT::getFileCount(const char *path)
+{
+    listDir(path, 0);
+
+    return fileList.size();
+}
+
+FileInfo_t HAL::FlashFFAT::getFileInfo(size_t index)
+{
+    return fileList.at(index);
 }
 
 bool HAL::FlashFFAT::findDir(const char *dirPath)
@@ -266,6 +279,21 @@ void FlashFFAT::deleteFile(const char *path)
     else
     {
         Serial.printf("- file \"%s\" failed to be deleted.\r\n", path);
+    }
+}
+
+void HAL::FlashFFAT::deleteAllFile(const char *path)
+{
+    listDir(path, 0);
+
+    for (auto iter : fileList)
+    {
+        deleteFile(iter.path.c_str());
+    }
+
+    for (auto iter : dirList)
+    {
+        deleteFile(iter.path.c_str());
     }
 }
 

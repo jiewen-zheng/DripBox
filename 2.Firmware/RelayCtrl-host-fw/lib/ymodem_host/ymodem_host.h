@@ -4,6 +4,11 @@
 #include <Arduino.h>
 #include "FS.h"
 
+extern "C"
+{
+#include "ym_crc.h"
+}
+
 /* enable original ymodem */
 // #define YH_ORIGINAL_EN
 

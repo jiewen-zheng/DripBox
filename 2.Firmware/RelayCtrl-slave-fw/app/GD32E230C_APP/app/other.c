@@ -1,9 +1,9 @@
 #include "other.h"
 #include "gd32e23x_flash.h"
-
-#include "motor_ctrl.h"
-
 #include <string.h>
+
+#include "motor_drive.h"
+#include "motor_ctrl.h"
 
 static OffSet_t offset_config = {0};
 
@@ -64,17 +64,17 @@ void set_offset(AxleType_t axle, int value)
     {
     case X_OFFSET:
         offset->xSetFlag = 1;
-        offset->x = value;
+        offset->x += value;
         break;
 
     case Y_OFFSET:
         offset->ySetFlag = 1;
-        offset->y = value;
+        offset->y += value;
         break;
 
     case Z_OFFSET:
         offset->zSetFlag = 1;
-        offset->z = value;
+        offset->z += value;
         break;
 
     default:
@@ -89,13 +89,56 @@ OffSet_t *get_offset()
     return &offset_config;
 }
 
-void device_state_update(DeviceStatus_t *state)
+void stop_device(bool stop)
 {
-    // state->sys_state = 0;
+    DeviceStatus_t *state = get_device_state();
+
+    if (stop)
+    {
+        state->stop_state = 1;
+
+        if (state->run_state == STATE_BASIC || state->run_state == STATE_EMPTY)
+        {
+            WaterPump_Ctrl(100); // close dc motor
+        }
+    }
+    else
+    {
+        state->stop_state = 0;
+
+        if (state->run_state == STATE_BASIC || state->run_state == STATE_EMPTY)
+        {
+            WaterPump_Ctrl(70); // open dc motor
+        }
+    }
+}
+
+void low_water_alarm()
+{
+    static bool beepToggle = 0;
+    static uint32_t time = 0;
+
+    if (get_device_state()->water_too_low != 0)
+    {
+        if (HAL_GetTick() - time > 1000)
+        {
+            time = HAL_GetTick();
+
+            out_beepset(beepToggle);
+            beepToggle ^= 0x01;
+        }
+    }
+    else
+    {
+        out_beepset(0);
+    }
+}
+
+void device_state_update()
+{
+    DeviceStatus_t *state = get_device_state();
+
     state->progress = get_execution_schedule();
-    // state->uv_light = 0;
-    // state->water_pump = 0;
-    // state->stop_state = 0;
     state->x_zero = INT_key_X();
     state->y_zero = INT_key_Y();
     state->z_zero = INT_key_Z();
@@ -104,8 +147,8 @@ void device_state_update(DeviceStatus_t *state)
 
 void other_handle()
 {
-    low_water_alarm();
-    stop_key_handle(false);
+    device_state_update();
 
-    device_state_update(&ReturnData);
+    low_water_alarm();
+    // stop_key_handle(false);
 }

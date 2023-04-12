@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define COMMAND_CRC_EN 1
+
 typedef struct
 {
     uint8_t cmd;

@@ -65,7 +65,7 @@ void motor_set_direction()
     MotorData.motorM_DirUpSet[3] = 0;
 }
 
-uint8_t MOTOR_SetDoutIt(uint8_t naber, uint32_t Conut, uint32_t ConutAll, int16_t *buff)
+uint8_t MOTOR_SetDoutIt(uint32_t Conut, uint32_t ConutAll, int16_t *buff)
 {
     if (Conut > ConutAll - 1)
     {
@@ -89,82 +89,108 @@ uint8_t MOTOR_SetDoutIt(uint8_t naber, uint32_t Conut, uint32_t ConutAll, int16_
     return 1;
 }
 
+void check_motor_location()
+{
+    if (Moter_ReadZero())
+    {
+        set_run_state(STATE_STOP_ZERO);
+    }
+    else
+    {
+        set_run_state(STATE_STOP);
+    }
+}
+
 uint8_t get_execution_schedule()
 {
+    return 0;
     return (uint8_t)(((float)MotorData.SetDoutConut / (float)MotorData.SetDoutConutAll) * 100.0f);
 }
 
 void motor_handle(void)
 {
-
-    if ((MotorData.NewCom != 0) || (Moter_ReadAllStatic() == 0))
+    /* device stop */
+    if (get_device_state()->stop_state != 0)
     {
-        MotorData.NewCom = 0;
-        switch (MotorData.SetDoutNaber)
-        {
-        case 0xFF:
-            // ReturnData.sys_state = 2; // ��0��
-            // backStatus();
-            Moter_DriveGotoZero();
-            OUT_UV(0);
-            // backStatus();
-            MotorData.SetDoutNaber = 0;
-            break;
+        return;
+    }
 
-        case 0:
-            if (MotorData.oneCoorEn == 0)
-            {
-                break;
-            }
-            ReturnData.sys_state = 1;
+    MotorDataType *pMotor = &MotorData;
+    DeviceStatus_t *pState = get_device_state();
+
+    /* goto zero */
+    if (pState->run_state == STATE_GOTOZERO)
+    {
+        Moter_DriveGotoZero();
+        return;
+    }
+
+    /* checke new command and motor all stop */
+    if (pMotor->NewCom == 0 && Moter_ReadAllStatic() != 0)
+    {
+        return;
+    }
+
+    pMotor->NewCom = 0;
+
+    switch (MotorData.SetDoutNaber)
+    {
+    case 0xFF:
+        zero_init();
+        OUT_UV(0);
+        pMotor->SetDoutNaber = 0;
+        break;
+
+    case 0: /* one point move */
+        if (pMotor->oneCoorEn == 0)
+        {
+						check_motor_location();
+            break;
+        }
+        MotorData.oneCoorEn = 0;
+        set_run_state(STATE_POINT_MOVE);
+        for (uint8_t i = 0; i < 3; i++)
+        {
+            Mote_SetCoor(i, MotorData.oneCoor[i], MotorData.oneSpeed[i]); // one point move
+        }
+        WaterPump_Ctrl(MotorData.oneSpeed[3]);
+        break;
+
+    case 1: /* empty */
+        set_run_state(STATE_EMPTY);
+        if (MOTOR_SetDoutIt(MotorData.SetDoutConut, MotorData.SetDoutConutAll, MotorData.SetDoutBuff) == 0)
+        {
+            WaterPump_Ctrl(60);
+						pMotor->SetDoutNaber = 0;
+            pMotor->SetDoutConut = 0;
+            pMotor->oneCoorEn = 0;
+            pMotor->NewCom = 0;
+            return;
+        }
+        break;
+
+    default:
+        if (pMotor->SetDoutNaber == 2)
+        {
+            set_run_state(STATE_BASIC);
+        }
+        else if (pMotor->SetDoutNaber == 3)
+        {
+            set_run_state(STATE_DROP);
+        }
+
+        if (MOTOR_SetDoutIt(MotorData.SetDoutConut, MotorData.SetDoutConutAll, MotorData.SetDoutBuff) == 0)
+        {
+            WaterPump_Ctrl(100);
+            MotorData.SetDoutNaber = 0xFF;
+            MotorData.SetDoutConut = 0;
             MotorData.oneCoorEn = 0;
-            for (uint8_t i = 0; i < 3; i++)
-            {
-                Mote_SetCoor(i, MotorData.oneCoor[i], MotorData.oneSpeed[i]); // one point move
-            }
-            WaterPump_Ctrl(MotorData.oneSpeed[3]);
-            break;
-
-        default:
-            if (MotorData.SetDoutNaber < 9)
-                ReturnData.sys_state = 3;
-            else
-                ReturnData.sys_state = 4;
-
-            ReturnData.progress = (uint8_t)(((float)MotorData.SetDoutConut / (float)MotorData.SetDoutConutAll) * 100.0f);
-
-            /* device stop */
-            if (get_device_state()->stop_state != 0)
-            {
-                break;
-            }
-
-            if (MOTOR_SetDoutIt(MotorData.SetDoutNaber, MotorData.SetDoutConut, MotorData.SetDoutConutAll, MotorData.SetDoutBuff) == 0)
-            {
-                WaterPump_Ctrl(100);
-                ReturnData.sys_state = 2;
-                // backStatus();
-                Moter_DriveGotoZero();
-                OUT_UV(0);
-                MotorData.SetDoutNaber = 0;
-                ReturnData.sys_state = 0;
-            }
-            else
-            {
-                MotorData.SetDoutConut++;
-            }
+            MotorData.NewCom = 1;
             break;
         }
+        MotorData.SetDoutConut++;
+        break;
     }
-    else
-    {
-        ReturnData.progress = 100;
-        if ((Moter_ReadAllStatic() == 0) && (MotorData.SetDoutNaber == 0))
-        {
-            if (Moter_ReadZero() != 0)
-                ReturnData.sys_state = 0;
-            else
-                ReturnData.sys_state = 1;
-        }
-    }
+
+    // check_motor_location();
 }

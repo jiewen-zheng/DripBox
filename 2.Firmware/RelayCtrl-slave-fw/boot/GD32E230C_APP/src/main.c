@@ -20,5 +20,8 @@ int main(void)
 	while (1)
 	{
 		update_app();
+		
+//		usart0_send_data((uint8_t*)"hello mb \r\n", sizeof("hello mb \r\n"));
+//		delay_ms(500);
 	}
 }

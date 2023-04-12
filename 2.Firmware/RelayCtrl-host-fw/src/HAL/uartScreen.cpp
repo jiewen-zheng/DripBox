@@ -12,12 +12,38 @@ using namespace HAL;
 
 HAL::UartScreen::UartScreen(MainBoard *mb)
 {
+    scrConfig = {
+        .mask_type = 1,
+        .milliliters = 2,
+        .depth = 0,
+        .runState = 0,
+        .test = 0,
+    };
+
     board = mb;
 }
 
 HAL::UartScreen::~UartScreen()
 {
     delete board;
+}
+
+void HAL::UartScreen::setUpdateCallback(update_cb firm, update_cb soft)
+{
+    firmware_update = firm;
+    software_update = soft;
+}
+
+void HAL::UartScreen::setWiFiCallback(save_wifi_cb wifi)
+{
+    save_wifi_msg = wifi;
+}
+
+void HAL::UartScreen::setLogMsg(VersionMsg_t *msg)
+{
+    versionMsg.dev = msg->dev;
+    versionMsg.firm = msg->firm;
+    versionMsg.soft = msg->soft;
 }
 
 void UartScreen::init()
@@ -33,13 +59,6 @@ void UartScreen::init()
     // }
 
     // txbuff = buf;
-
-    scrConfig = {
-        .mask_type = 1,
-        .milliliters = 2,
-        .depth = 0,
-        .runState = 0,
-    };
 }
 
 void UartScreen::reset()
@@ -61,12 +80,12 @@ void HAL::UartScreen::clearCache()
 uint16_t UartScreen::sendData(uint8_t *buf, uint16_t len)
 {
     // debug
-    Serial.print("send data is:");
-    for (uint16_t i = 0; i < len; i++)
-    {
-        Serial.printf("%x ", buf[i]);
-    }
-    Serial.println("");
+    // Serial.print("send data is:");
+    // for (uint16_t i = 0; i < len; i++)
+    // {
+    //     Serial.printf("%x ", buf[i]);
+    // }
+    // Serial.println("");
     // debug
 
     uint16_t slen = SCR_SERIAL.write(buf, len);
@@ -137,14 +156,14 @@ uint16_t UartScreen::readData(uint8_t *buf, uint16_t len, uint16_t timeOut)
         }
     } while (rlen < len && (millis() - time < timeOut));
 
-    // debug
-    Serial.printf("read data size=%d\r\n", rlen);
-    for (uint16_t i = 0; i < len; i++)
-    {
-        Serial.printf("%x ", rxbuff[i]);
-    }
-    Serial.println("");
-    // debug
+    // // debug
+    // Serial.printf("read data size=%d\r\n", rlen);
+    // for (uint16_t i = 0; i < len; i++)
+    // {
+    //     Serial.printf("%x ", rxbuff[i]);
+    // }
+    // Serial.println("");
+    // // debug
 
     return rlen;
 }
@@ -155,15 +174,16 @@ bool UartScreen::checkReceiveFrame(uint8_t *buf, uint16_t len)
     memset(&frameCheck, 0, sizeof(FrameCheck_t));
 
     /* 头校验 */
-    uint16_t head = ((uint16_t)buf[0] << 8) | buf[1];
-    if (head != FRAME_HEAD)
+    uint16_t head = buf[0] << 8 | buf[1];
+    if (head != 0x5AA5)
     {
         Serial.println("[scr] frame head unequal to 0x5AA5");
         return false;
     }
 
     /* 获取数据长度 */
-    frameCheck.dataLen = buf[2] - 3;
+    uint16_t data_len = buf[2];
+    frameCheck.dataLen = data_len - 3; // cmd + crc16
 
     /* 校验crc */
     frameCheck.crc = ((uint16_t)buf[len - 2] << 8) | buf[len - 1];
@@ -176,7 +196,7 @@ bool UartScreen::checkReceiveFrame(uint8_t *buf, uint16_t len)
 
     /* 获取数据 */
     frameCheck.frame = buf;
-    frameCheck.frameLen = buf[2] + 3;
+    frameCheck.frameLen = data_len + 3; // head + len
     frameCheck.cmd = buf[3];
     frameCheck.data = &buf[4];
 
@@ -380,35 +400,31 @@ bool UartScreen::readDataFormRam(uint16_t regAddr, int readLen)
     return true;
 }
 
-void UartScreen::button_handle(uint16_t addr, uint16_t value)
+void UartScreen::button_apply(uint16_t addr, uint16_t value)
 {
-    int readData = 0;
+    String read_msg = "";
 
     switch (addr)
     {
-    case btn_baseStatrt:
+    case btn_baseStart:
         if (scrConfig.runState != 0 && scrConfig.runState != 1)
         {
             Serial.println("[scr] other runing");
             return;
         }
+
+        if (!getUserSelectMsg())
+        {
+            return;
+        }
+
+        if (!board->baseLiquid(scrConfig.runState == 0, scrConfig.mask_type, scrConfig.milliliters, scrConfig.depth))
+        {
+            Serial.println("[scr] start failed");
+            return;
+        }
+
         scrConfig.runState = scrConfig.runState == 0 ? 1 : 0;
-
-        // 获取深浅选择
-        readData = getAddrData(icon_depthSelect);
-        if (readData != -1)
-        {
-            Serial.printf("depth = %d", readData);
-            scrConfig.depth = readData;
-        }
-
-        // 获取面膜类型
-        readData = getAddrData(icon_maskSelect);
-        if (readData != -1)
-        {
-            Serial.printf("maks = %d", readData);
-            scrConfig.mask_type = readData;
-        }
 
         updateIcon(icon_baseStart, scrConfig.runState != 0);
         break;
@@ -419,23 +435,19 @@ void UartScreen::button_handle(uint16_t addr, uint16_t value)
             Serial.println("[scr] other runing");
             return;
         }
+
+        if (!getUserSelectMsg())
+        {
+            return;
+        }
+
+        if (!board->dropLiquid(scrConfig.runState == 0, scrConfig.mask_type, scrConfig.milliliters, scrConfig.depth))
+        {
+            Serial.println("[scr] start failed");
+            return;
+        }
+
         scrConfig.runState = scrConfig.runState == 0 ? 2 : 0;
-
-        // 获取毫升数
-        readData = getAddrData(icon_milliliter);
-        if (readData != -1)
-        {
-            Serial.printf("depth = %d", readData);
-            scrConfig.milliliters = readData;
-        }
-
-        // 获取面膜类型
-        readData = getAddrData(icon_maskSelect);
-        if (readData != -1)
-        {
-            Serial.printf("maks = %d", readData);
-            scrConfig.mask_type = readData;
-        }
 
         updateIcon(icon_dropStart, scrConfig.runState != 0);
         break;
@@ -448,14 +460,19 @@ void UartScreen::button_handle(uint16_t addr, uint16_t value)
         }
         // scrConfig.runState = scrConfig.runState == 0 ? 3 : 0;
         scrConfig.runState != 0 ? pushTheButton(popup_empty_stop) : pushTheButton(popup_empty_start);
-
-        updateIcon(icon_emptying, scrConfig.runState != 0);
+        // updateIcon(icon_emptying, scrConfig.runState != 0);
         break;
 
     case btn_popup_empty_start:
         if (value != 0)
         {
+            if (!board->empty(scrConfig.runState == 0))
+            {
+                Serial.println("[scr] start failed");
+                return;
+            }
             scrConfig.runState = scrConfig.runState == 0 ? 3 : 0;
+
             updateIcon(icon_emptying, scrConfig.runState != 0);
         }
         break;
@@ -463,6 +480,12 @@ void UartScreen::button_handle(uint16_t addr, uint16_t value)
     case btn_popup_empty_stop:
         if (value != 0)
         {
+            if (!board->empty(scrConfig.runState == 0))
+            {
+                Serial.println("[scr] stop failed");
+                return;
+            }
+
             scrConfig.runState = scrConfig.runState == 0 ? 3 : 0;
             updateIcon(icon_emptying, scrConfig.runState != 0);
         }
@@ -489,8 +512,68 @@ void UartScreen::button_handle(uint16_t addr, uint16_t value)
         }
         break;
 
+    case btn_wifi_page:
+        if (scrConfig.runState == 0)
+        {
+            pageSwitch(1);
+        }
+        break;
+
+    case btn_calibrat:
+        if (scrConfig.runState == 0)
+        {
+            pageSwitch(7);
+        }
+        break;
+
     case btn_connectWiFi:
-        connectWiFi(getWifiSSID(), getWifiPASS());
+        if (connectWiFi(getWifiSSID(), getWifiPASS()))
+        {
+            save_wifi_msg(wifi_ssid.c_str(), wifi_pass.c_str());
+        }
+        break;
+
+    case btn_firmwareUpdate:
+        firmware_update();
+        break;
+
+    case btn_softwareUpdate:
+        software_update();
+        break;
+
+    case btn_testRadeWrite:
+        if (value == 1)
+        {
+            /* read */
+            if (board->readOffset())
+            {
+                writeAddrData(text_testRade, (uint8_t *)board->getOffsetMsg().c_str(), board->getOffsetMsg().length());
+            }
+        }
+        else if (value == 2)
+        {
+            /* write */
+            if (board->writeOffset())
+            {
+                writeAddrData(text_testWrite, (uint8_t *)board->getOffsetMsg().c_str(), board->getOffsetMsg().length());
+            }
+        }
+        break;
+
+    case btn_testPoint:
+        if (board->moveTestPoint(value))
+        {
+            updateTestPointIcon(value);
+        }
+        break;
+
+    case btn_testMove:
+        board->setOffset(value);
+        break;
+
+    case btn_testStart:
+        scrConfig.test ^= 0x01;
+        board->moveTest(scrConfig.test);
         break;
 
     default:
@@ -499,17 +582,15 @@ void UartScreen::button_handle(uint16_t addr, uint16_t value)
     }
 }
 
-void UartScreen::handle()
+void HAL::UartScreen::dataPack_handle()
 {
     static uint16_t rindex = 0;
-    static unsigned long time = millis();
-
+    /* get uart data */
     if (SCR_SERIAL.available())
     {
         rindex += readData(&rxbuff[rindex], SCR_SERIAL.available(), 0);
         return;
     }
-
     if (rindex == 0)
     {
         return;
@@ -524,14 +605,37 @@ void UartScreen::handle()
     rindex = 0;
 
     /* handle button */
-    button_handle(frameCheck.buttonAddr, frameCheck.buttonVal);
+    button_apply(frameCheck.buttonAddr, frameCheck.buttonVal);
+}
 
-    /* timed refersh icon */
-    if (millis() - time > 2000)
+void HAL::UartScreen::synchroDeviceState()
+{
+    DeviceState_t *dev = board->getDeviceState();
+
+    if (dev->run_state == STOP_ZERO || dev->run_state == STOP)
     {
-        time = millis();
-        updataRSSI();
+        if (scrConfig.runState != 0)
+        {
+            scrConfig.runState = 0;
+            updateIcon(icon_baseStart, 0);
+            updateIcon(icon_dropStart, 0);
+            updateIcon(icon_emptying, 0);
+        }
     }
+}
+
+void UartScreen::handle()
+{
+
+    /* update wifi rssi icon */
+    updataRSSI();
+    // updateLog();
+
+    /* uart frame data handle */
+    dataPack_handle();
+
+    // Serial.printf("run state = %d \r\n", scrConfig.runState);
+    // synchroDeviceState();
 }
 
 void UartScreen::upgrade()
@@ -545,6 +649,14 @@ void UartScreen::upgrade()
     Serial.println("[scr] write update finish");
     delay(5000);
     reset();
+}
+
+bool HAL::UartScreen::upgreadFile(const char *path, int fileNumber)
+{
+    Serial.printf("upgreadFilePath: %s \r\n", path);
+    Serial.printf("number: %d \r\n", fileNumber);
+    // return false;
+    return writeFile(path, fileNumber);
 }
 
 uint8_t *HAL::UartScreen::getAddrData(uint16_t addr, uint16_t len)
@@ -591,10 +703,62 @@ int HAL::UartScreen::getAddrData(uint16_t addr)
 
 void HAL::UartScreen::writeAddrData(uint16_t addr, uint8_t *pdata, uint16_t len)
 {
+    uint8_t clear[36] = {0};
+
     uint8_t buff[2];
     buff[0] = addr >> 8;
     buff[1] = addr;
+
+    clear[0] = addr >> 8;
+    clear[1] = addr;
+
+    /* clear */
+    sendFrame(0x82, clear, 32);
+
     sendFrameNotCheck(0x82, buff, 2, pdata, len);
+}
+
+bool HAL::UartScreen::getUserSelectMsg()
+{
+    int readData = -1;
+
+    // 获取面膜类型
+    readData = getAddrData(icon_maskSelect);
+    if (readData != -1)
+    {
+        Serial.printf("maks = %d", readData);
+        scrConfig.mask_type = readData;
+    }
+    else
+    {
+        return false;
+    }
+
+    // 获取深浅选择
+    readData = getAddrData(icon_depthSelect);
+    if (readData != -1)
+    {
+        Serial.printf("depth = %d", readData);
+        scrConfig.depth = readData;
+    }
+    else
+    {
+        return false;
+    }
+
+    // 获取毫升数
+    readData = getAddrData(icon_milliliter);
+    if (readData != -1)
+    {
+        Serial.printf("depth = %d", readData);
+        scrConfig.milliliters = readData;
+    }
+    else
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void HAL::UartScreen::updateIcon(uint16_t addr, uint16_t value)
@@ -609,6 +773,25 @@ void HAL::UartScreen::updateIcon(uint16_t addr, uint16_t value)
     /* check feedback "OK" */
     sendFrame(0x82, buff, 4);
     // sendFrameNotCheck(0x82, buff, 4);
+}
+
+void HAL::UartScreen::updateTestPointIcon(uint8_t value)
+{
+    updateIcon(icon_testLeftEye, 0);
+    updateIcon(icon_testRightEye, 0);
+    updateIcon(icon_testMouth, 0);
+    if (value == 1)
+    {
+        updateIcon(icon_testLeftEye, 1);
+    }
+    else if (value == 2)
+    {
+        updateIcon(icon_testRightEye, 1);
+    }
+    else if (value == 3)
+    {
+        updateIcon(icon_testMouth, 1);
+    }
 }
 
 void HAL::UartScreen::pushTheButton(uint8_t pushNu)
@@ -630,9 +813,22 @@ void HAL::UartScreen::pushTheButton(uint8_t pushNu)
     sendFrame(0x82, buff, 10);
 }
 
-void HAL::UartScreen::dispVersion(char *device_id, char *firmware, char *software)
+void HAL::UartScreen::dispVersion(const char *device_id, const char *firmware, const char *software)
 {
-    writeAddrData(0x00, (uint8_t *)device_id, strlen(device_id));
+    writeAddrData(text_deviceID, (uint8_t *)device_id, strlen(device_id));
+
+    writeAddrData(text_firmwareVer, (uint8_t *)firmware, strlen(firmware));
+    writeAddrData(text_softwareVer, (uint8_t *)software, strlen(software));
+}
+
+void HAL::UartScreen::LogUpgradeMsg(const char *msg)
+{
+    writeAddrData(text_updateLog, (uint8_t *)msg, strlen(msg));
+}
+
+void HAL::UartScreen::updateLogMsg()
+{
+    dispVersion(versionMsg.dev.c_str(), versionMsg.firm.c_str(), versionMsg.soft.c_str());
 }
 
 String HAL::UartScreen::getWifiSSID()
@@ -652,9 +848,10 @@ String HAL::UartScreen::getWifiSSID()
     }
     memcpy(data, ssid, sptr - (char *)ssid);
 
+    wifi_ssid = String(data);
     Serial.printf("ssid = ");
-    Serial.println(String(data));
-    return String(data);
+    Serial.println(wifi_ssid);
+    return wifi_ssid;
 }
 
 String HAL::UartScreen::getWifiPASS()
@@ -676,13 +873,22 @@ String HAL::UartScreen::getWifiPASS()
     }
     memcpy(data, pass, pptr - (char *)pass);
 
+    wifi_pass = String(data);
     Serial.printf("pass = ");
-    Serial.println(String(data));
-    return String(data);
+    Serial.println(wifi_pass);
+    return wifi_pass;
 }
 
-void HAL::UartScreen::updataRSSI()
+void HAL::UartScreen::updataRSSI(uint16_t update_time)
 {
+    static unsigned long time = millis();
+
+    if (millis() - time < update_time)
+    {
+        return;
+    }
+    time = millis();
+
     int8_t rssi = getWifiRSSI();
 
     if (rssi == 0)
@@ -699,4 +905,29 @@ void HAL::UartScreen::updataRSSI()
         value = 3;
 
     updateIcon(icon_wifi, value);
+}
+
+void HAL::UartScreen::pageSwitch(uint16_t page)
+{
+    uint8_t buf[6] = {0};
+
+    /* 将数据转村到flash */
+    buf[0] = 0x00;
+    buf[1] = 0x84;
+    buf[2] = 0x5A;
+    buf[3] = 0x01;
+    buf[4] = page >> 8;
+    buf[5] = page;
+
+    sendFrame(0x82, buf, 6);
+}
+
+void HAL::UartScreen::firmware_have_update()
+{
+    updateIcon(icon_firmwareUpdate, 0x0001);
+}
+
+void HAL::UartScreen::software_have_update()
+{
+    updateIcon(icon_softwareUpdate, 0x0001);
 }

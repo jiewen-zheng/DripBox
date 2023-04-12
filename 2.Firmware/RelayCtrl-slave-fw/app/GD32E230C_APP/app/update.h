@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include "gd32e23x_flash.h"
 
+//#define OFFSET_ADDR (GD32E23X_FLASH_BASE_ADDR + 62 * GD32E23X_FLASH_PAGE_SIZE)
+
 /* update flag save address */
 #define USER_UPDATE_FLAG_ADDR (GD32E23X_FLASH_BASE_ADDR + GD32E23X_FLASH_PAGE_SIZE * 63)
 #define USER_UPDATE_FLAG 0x55AAA55A
@@ -11,8 +13,10 @@
 /* app flash start address */
 #define USER_APP_START_ADDR (GD32E23X_FLASH_BASE_ADDR + GD32E23X_FLASH_PAGE_SIZE * 15)
 
+
+
 /* app max size */
-#define USER_APP_MAX_SIZE (45 * GD32E23X_FLASH_PAGE_SIZE)
+#define USER_APP_MAX_SIZE (47 * GD32E23X_FLASH_PAGE_SIZE)
 
 /* file name max length */
 #ifndef YS_FILENAME_MAX_LEN

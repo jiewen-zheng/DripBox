@@ -1,80 +1,87 @@
-#include "main_app.h"
-
-#include "HAL/HAL.h"
-#include "HAL/uncompress.h"
-#include "update/update.h"
-#include "ftpClient/ftpClient.h"
-
 #include <FFat.h>
 #include <ArduinoJson.h>
 
-Uncompress uncomp;
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
-static char debugBuff[128];
+#include "main_app.h"
+#include "common.h"
+#include "HAL/HAL.h"
+#include "upgrade/upgrade.h"
+#include "ftpClient/ftpClient.h"
 
-#define taskNU 10
+static char debugBuff[32];
 
 TaskHandle_t handleTaskUptate;
 void TaskUpdate(void *parameter)
 {
-    // ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
 
     for (;;)
     {
-        for (uint8_t i = 0; i < taskNU; i++)
-        {
-            Serial.println("update task");
-            delay(500);
-        }
-        vTaskSuspend(NULL);
+        upgrade.updateFirmware();
+        delay(50);
     }
 }
 
 void app_init()
 {
-    // ftp.connectWiFi("monster", "sunflower6697");
+    // connectWiFi("monster", "sunflower6697");
+    upgrade.init(&ffat, &screen, &board);
+    upgrade.displayVersion();
 
-    ffat.listDir("/", 0);
+    xTaskCreate(
+        TaskUpdate,
+        "updateTask",
+        10240,
+        nullptr,
+        configMAX_PRIORITIES - 1,
+        &handleTaskUptate);
 
-    if (!ffat.findDir("/config"))
-    {
-        Serial.println("creat config dir");
-        ffat.createDir("/config");
-    }
-
-    // running task
-    // xTaskNotifyGive(handleTaskUptate);
-
-    // xTaskCreate(
-    //     TaskUpdate,
-    //     "updateTask",
-    //     15360,
-    //     nullptr,
-    //     configMAX_PRIORITIES - 1,
-    //     &handleTaskUptate);
-
-    // vTaskSuspend(handleTaskUptate);
+    xTaskNotifyGive(handleTaskUptate);
 }
 
 void app_loop()
 {
-    // ftp.getFileUrl();
-    screen.handle();
-    board.handle();
+    // Serial.println("software update");
+    // delay(500);
+    if (!upgrade.firmUpdateState())
+    {
+        screen.handle();
+        board.handle();
+    }
+
+    upgrade.updateSotfware();
 }
 
 void serialEvent()
 {
     if (Serial.available() > 0)
     {
+        uint16_t rd_len = 0;
         memset(debugBuff, 0, sizeof(debugBuff));
-        uint16_t rd_len = Serial.read(debugBuff, sizeof(debugBuff)); // read data;
+        do
+        {
+            rd_len += Serial.read(&debugBuff[rd_len], sizeof(debugBuff)); // read data;
+        } while (Serial.available());
 
         // MB_SERIAL.write(debugBuff, rd_len);
+        if (debugBuff[0] == 0x5a && debugBuff[1] == 0xa5)
+        {
+            screen.sendFrame(debugBuff[2], (uint8_t *)&debugBuff[3], rd_len - 3);
+            return;
+        }
+
+        if (debugBuff[0] == 0x5a)
+        {
+            board.sendFrame(debugBuff[1], (uint8_t *)&debugBuff[2], rd_len - 2);
+            return;
+        }
 
         if (memcmp(debugBuff, "list", 4) == 0)
         {
-            ffat.listDir("/", 0);
+            String dir = String(&debugBuff[5]);
+            ffat.listDir(dir.c_str(), 0);
         }
         else if (memcmp(debugBuff, "delete", 6) == 0)
         {
@@ -82,25 +89,22 @@ void serialEvent()
             Serial.printf("delete file: %s \r\n", file.c_str());
             ffat.deleteFile(file.c_str());
         }
-        else if (memcmp(debugBuff, "scrup", 5) == 0)
+        else if (memcmp(debugBuff, "remove", 6) == 0)
         {
-            // update_checkFile();
-            screen.upgrade();
+            String path = String(&debugBuff[7]);
+            ffat.deleteAllFile(path.c_str());
         }
-        else if (memcmp(debugBuff, "mbup", 4) == 0)
+        else if (memcmp(debugBuff, "firmware", 8) == 0)
         {
-            // update_checkFile();
-            board.setUpgrade(true);
+            upgrade.setUpdateFirmware(true);
         }
-        else if (memcmp(debugBuff, "mbsend ", 7) == 0)
+        else if (memcmp(debugBuff, "software", 8) == 0)
+        {
+            upgrade.setUpdateSoftware(true);
+        }
+        else if (memcmp(debugBuff, "mbsend", 6) == 0)
         {
             board.sendData((uint8_t *)(debugBuff + 7), rd_len - 7);
-        }
-        else if (memcmp(debugBuff, "unzip", 5) == 0)
-        {
-
-            String file = String(&debugBuff[6]);
-            uncomp.unzipFile(file.c_str(), "/");
         }
         else if (memcmp(debugBuff, "write", 5) == 0)
         {
@@ -117,14 +121,6 @@ void serialEvent()
         {
             String file = String(&debugBuff[5]);
             ffat.readFile(file.c_str());
-        }
-        else if (memcmp(debugBuff, "run", 3) == 0)
-        {
-            vTaskResume(handleTaskUptate);
-        }
-        else if (memcmp(debugBuff, "stop", 4) == 0)
-        {
-            vTaskSuspend(handleTaskUptate);
         }
         else
         {

@@ -6,30 +6,32 @@
 
 #include "ConstCoor.h"
 #include "motor_ctrl.h"
+
 #include "other.h"
 #include "update.h"
 
+#include <string.h>
+
 /* command check save cache */
 static CommType_t params;
-
-/* device state cache */
-DeviceStatus_t ReturnData;
 
 void CommSend(uint8_t com, uint8_t *dataBuf, uint16_t len)
 {
     uint8_t *comm_back_buf = usart0_txbuf;
 
+    uint16_t f_len = len + 3;
+
     comm_back_buf[0] = 0x5A;
-    comm_back_buf[1] = 0xA5;
-    comm_back_buf[2] = len + 1;
+    comm_back_buf[1] = f_len >> 8;
+    comm_back_buf[2] = f_len;
     comm_back_buf[3] = com;
 
     memcpy(comm_back_buf + 4, dataBuf, len);
 
     /* crc check is "data + cmd" */
     uint16_t crc = ym_crc16(comm_back_buf + 3, len + 1);
-    comm_back_buf[len + 4] = (uint8_t)crc;
-    comm_back_buf[len + 5] = (uint8_t)(crc >> 8);
+    comm_back_buf[len + 4] = crc >> 8;
+    comm_back_buf[len + 5] = crc;
 
     usart0_send_data(comm_back_buf, len + 6);
 }
@@ -37,16 +39,19 @@ void CommSend(uint8_t com, uint8_t *dataBuf, uint16_t len)
 void back_device_status()
 {
     uint8_t status[10] = {0};
-    status[0] = ReturnData.sys_state;     // running mode:
-    status[1] = ReturnData.progress;      // run schedule 0~100
-    status[2] = ReturnData.uv_light;      // "uv" light switch state (0 close, 1 open)
-    status[3] = ReturnData.water_pump;    // water pump state
-    status[4] = ReturnData.stop_state;    // stop switch state (0 close, 1 open)
-    status[5] = ReturnData.x_zero;        // "x" make zero switch (0 not zero, 1 zero)
-    status[6] = ReturnData.y_zero;        // "y" make zero switch (0 not zero, 1 zero)
-    status[7] = ReturnData.z_zero;        // "z" make zero switch (0 not zero, 1 zero)
-    status[8] = ReturnData.water_too_low; // basic liquid too little
-    status[9] = ReturnData.error + 1;     //	run error
+
+    DeviceStatus_t *state = get_device_state();
+
+    status[0] = state->run_state;     // running mode:
+    status[1] = state->progress;      // run schedule 0~100
+    status[2] = state->uv_light;      // "uv" light switch state (0 close, 1 open)
+    status[3] = state->water_pump;    // water pump state
+    status[4] = state->stop_state;    // stop switch state (0 close, 1 open)
+    status[5] = state->x_zero;        // "x" make zero switch (0 not zero, 1 zero)
+    status[6] = state->y_zero;        // "y" make zero switch (0 not zero, 1 zero)
+    status[7] = state->z_zero;        // "z" make zero switch (0 not zero, 1 zero)
+    status[8] = state->water_too_low; // basic liquid too little
+    status[9] = state->error + 1;     //	run error
     CommSend(0X89, status, 10);
 }
 
@@ -55,9 +60,9 @@ void back_offset()
     OffSet_t *offset = get_offset();
     uint8_t back_offset[3] = {0};
 
-    back_offset[0] = offset->x;
-    back_offset[1] = offset->y;
-    back_offset[2] = offset->z;
+    back_offset[0] = offset->x / 100;
+    back_offset[1] = offset->y / 100;
+    back_offset[2] = offset->z / 100;
 
     CommSend(0X90, back_offset, 3);
 }
@@ -70,9 +75,9 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
     {
         /* basic liquid */
     case 0x81:
-        pMotor->SetDoutNaber = data[0];
-        pMotor->SetDoutBuff = (int16_t *)TrackData[data[0] * 2 - 2];
-        pMotor->SetDoutConutAll = TrackData[data[0] * 2 - 1];
+        pMotor->SetDoutNaber = 2;
+        pMotor->SetDoutBuff = (int16_t *)basic_data_point[data[0] * 2 - 2];
+        pMotor->SetDoutConutAll = basic_data_point[data[0] * 2 - 1];
 
         pMotor->SetDoutConut = 0;
         pMotor->oneCoorEn = 0;
@@ -81,9 +86,9 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
 
         /* dropping liquid */
     case 0x82:
-        pMotor->SetDoutNaber = data[0] + 8; // offset to dropping liquid buffer address
-        pMotor->SetDoutBuff = (int16_t *)TrackData[data[0] * 2 + 14];
-        pMotor->SetDoutConutAll = TrackData[data[0] * 2 + 15];
+        pMotor->SetDoutNaber = 3;
+        pMotor->SetDoutBuff = (int16_t *)drop_data_point[data[0] * 2 - 2];
+        pMotor->SetDoutConutAll = drop_data_point[data[0] * 2 - 1];
 
         pMotor->SetDoutConut = 0;
         pMotor->oneCoorEn = 0;
@@ -92,22 +97,31 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
 
         /* pipe line row empty */
     case 0x83:
-        emptying_function(data[0]);
+        pMotor->SetDoutNaber = 1;
+        pMotor->SetDoutBuff = (int16_t *)empty_point;
+        pMotor->SetDoutConutAll = empty_point_len;
+        // emptying_function(data[0]);
+
+        pMotor->SetDoutConut = 0;
+        pMotor->oneCoorEn = 0;
+        pMotor->NewCom = 1;
         break;
 
         /* goto zero point */
     case 0x85:
         /* stop water pump */
-        if (pMotor->SetDoutNaber < 9)
+				usart0_send_data((uint8_t*)"OK", 2);
+        if (pMotor->SetDoutNaber == 1 || pMotor->SetDoutNaber == 2)
         {
             WaterPump_Ctrl(160);
             delay_ms(1000);
         }
         WaterPump_Ctrl(100);
         pMotor->SetDoutNaber = 0xFF;
+        pMotor->SetDoutConut = 0;
         pMotor->oneCoorEn = 0;
         pMotor->NewCom = 1;
-        stop_key_handle(true); // clear stop flag
+        // stop_key_handle(true); // clear stop flag
         break;
 
         /* "UV" light control */
@@ -151,6 +165,11 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
         }
         break;
 
+    /* stop now running */
+    case 0x8B:
+        stop_device(data[0]);
+        break;
+
     /* system reset*/
     case 0x8F:
         NVIC_SystemReset();
@@ -161,35 +180,42 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
         back_offset();
         break;
 
-    /* set "x" offset */
+    /* write offset data */
     case 0x91:
-        set_offset(X_OFFSET, (int)data[0] * 100);
+				set_offset(X_OFFSET, (int8_t)data[0] * 100);
+				set_offset(Y_OFFSET, (int8_t)data[1] * 100);
+				set_offset(Z_OFFSET, (int8_t)data[2] * 100);
+        break;
+
+    /* move to test point, eye or month */
+    case 0x92:
+        move_to_testPoint(data[0], msg);
+        break;
+
+    /* set "x" offset */
+    case 0x93:
+        set_offset(X_OFFSET, (int8_t)data[0] * 100);
         move_to_testPoint(0, msg); // offset move
         break;
 
     /* set "y" offset */
-    case 0x92:
-        set_offset(Y_OFFSET, (int)data[0] * 100);
+    case 0x94:
+        set_offset(Y_OFFSET, (int8_t)data[0] * 100);
         move_to_testPoint(0, msg); // offset move
         break;
 
     /* set "z" offset */
-    case 0x93:
-        set_offset(Z_OFFSET, (int)data[0] * 100);
+    case 0x95:
+        set_offset(Z_OFFSET, (int8_t)data[0] * 100);
         move_to_testPoint(0, msg); // offset move
-        break;
-
-    /* move to test point, eye or month */
-    case 0x94:
-        move_to_testPoint(data[0], msg);
         break;
 
     /* auto test */
     case 0x96:
         OUT_UV(data[0]);
         MotorData.SetDoutNaber = 99;
-        MotorData.SetDoutBuff = (int16_t *)MedicineOut_99;
-        MotorData.SetDoutConutAll = MedicineOut_99_len;
+        MotorData.SetDoutBuff = (int16_t *)test_point;
+        MotorData.SetDoutConutAll = test_point_len;
 
         MotorData.SetDoutConut = 0;
         MotorData.oneCoorEn = 0;
@@ -205,8 +231,8 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
         break;
     }
 
-    if (cmd != 0x89)
-        printf("OK");
+    if (cmd != 0x89 || cmd != 0x85 || cmd != 0x90)
+        usart0_send_data((uint8_t*)"OK", 2);
 }
 
 /**
@@ -216,28 +242,29 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
 CommType_t *comm_check(uint8_t *pbuf, uint16_t len)
 {
     /* check head */
-    uint16_t head = ((uint16_t)pbuf[0] << 8) | pbuf[1];
-    if (head != 0x5AA5)
+    uint8_t head = pbuf[0];
+    if (head != 0x5A)
     {
         return NULL;
     }
 
     /* get data len */
-    params.dataLen = pbuf[2] - 3; // lost crc and cmd.
+    params.dataLen = (((uint16_t)pbuf[1] << 8) | pbuf[2]) - 3; // lost crc and cmd.
 
     /* check crc */
     params.crc = ((uint16_t)pbuf[len - 2] << 8) | pbuf[len - 1];
-    uint16_t crc = ym_crc16(&pbuf[3], params.dataLen + 1);
+    uint16_t crc = ym_crc16(&pbuf[3], params.dataLen + 1); // cmd + data
 
-#if COMM_CRC_EN
+#if COMMAND_CRC_EN
     if (crc != params.crc)
     {
         return NULL;
+				printf("crc error");
     }
 #endif
 
     /* get data */
-    params.frameLen = pbuf[2] + 3; // add head and self
+    params.frameLen = len;
     params.cmd = pbuf[3];
     params.data = &pbuf[4];
 

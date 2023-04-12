@@ -120,7 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>hvK</Name>
+          <Name>d</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -163,20 +163,45 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>s</ItemText>
+          <ItemText>ReturnData</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>MedicineOut_1</ItemText>
+          <ItemText>pState-&gt;run_state,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>TrackData,0x10</ItemText>
+          <ItemText>pMotor-&gt;NewCom</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pMotor-&gt;NewCom</ItemText>
+        </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>MotorData.oneCoorEn</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>MotorData,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>data</ItemText>
+        </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>comm</ItemText>
+        </Ww>
+        <Ww>
+          <count>8</count>
           <WinNumber>1</WinNumber>
           <ItemText>params</ItemText>
         </Ww>
@@ -185,7 +210,7 @@
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x0800fc00</ItemText>
+          <ItemText>0x0800f800</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
@@ -627,8 +652,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\drive\motor_drive.c</PathWithFileName>
-      <FilenameWithoutPath>motor_drive.c</FilenameWithoutPath>
+      <PathWithFileName>..\drive\ConstCoor.c</PathWithFileName>
+      <FilenameWithoutPath>ConstCoor.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -639,8 +664,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\drive\motor_drive.h</PathWithFileName>
-      <FilenameWithoutPath>motor_drive.h</FilenameWithoutPath>
+      <PathWithFileName>..\drive\ConstCoor.h</PathWithFileName>
+      <FilenameWithoutPath>ConstCoor.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -651,8 +676,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\drive\ConstCoor.c</PathWithFileName>
-      <FilenameWithoutPath>ConstCoor.c</FilenameWithoutPath>
+      <PathWithFileName>..\drive\motor_drive.c</PathWithFileName>
+      <FilenameWithoutPath>motor_drive.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -663,8 +688,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\drive\ConstCoor.h</PathWithFileName>
-      <FilenameWithoutPath>ConstCoor.h</FilenameWithoutPath>
+      <PathWithFileName>..\drive\motor_drive.h</PathWithFileName>
+      <FilenameWithoutPath>motor_drive.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

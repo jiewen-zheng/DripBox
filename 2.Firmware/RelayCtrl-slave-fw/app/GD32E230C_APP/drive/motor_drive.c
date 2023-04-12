@@ -3,8 +3,19 @@
 #include "ConstCoor.h"
 
 #include <stdio.h>
+#include <string.h>
 
 MotorDataType MotorData;
+
+/* device state cache */
+static DeviceStatus_t ReturnData;
+
+void device_params_init()
+{
+	memset(&MotorData, 0, sizeof(MotorDataType));
+	memset(&ReturnData, 0, sizeof(DeviceStatus_t));
+	set_run_state(STATE_STOP);
+}
 
 /**************************************************************************************************
 **************************************************************************************************/
@@ -97,6 +108,7 @@ static void water_pump_pwm_handle()
 
 static void axle_motor_pwm_handle()
 {
+	// read key
 	if (ReadX0 == 0)
 		MotorData.zeroKeyTir[0] = 1;
 	else
@@ -110,6 +122,7 @@ static void axle_motor_pwm_handle()
 	else
 		MotorData.zeroKeyTir[2] = 0;
 
+	// delay count
 	MotorData.StepDelayUsCount[0] += MinSpeedUs;
 	MotorData.StepDelayUsCount[1] += MinSpeedUs;
 	MotorData.StepDelayUsCount[2] += MinSpeedUs;
@@ -121,17 +134,18 @@ static void axle_motor_pwm_handle()
 		MotorData.StepDelayUsCount[i] = 0;
 		if (MotorData.zeroGotoMode[i] == 1)
 		{
-			if (MotorData.zeroKeyTir[i] != 0)
+			if (MotorData.zeroKeyTir[i] != 0) // check key, yet trigger
 			{
 				MotorData.itCoor[i] = 0;
 				MotorData.setCoor[i] = 0;
-				MotorData.zeroGotoMode[i] = 0; // ��������ģʽ
+				MotorData.zeroGotoMode[i] = 0; // set normal mode
 				MotorData.itStop[i] = 0;
 			}
 			else
 			{
 				MotorData.itStop[i] = 1;
-				if (MotorData.motorM_DirUpSet[i] == 0) // ���������
+				/* dir */
+				if (MotorData.motorM_DirUpSet[i] == 0)
 				{
 					if (i == 0)
 						MOTORX_DIR_H;
@@ -150,6 +164,7 @@ static void axle_motor_pwm_handle()
 						MOTORZ_DIR_L;
 				}
 
+				/* trigger pulse level */
 				if (i == 0)
 				{
 					if (MotorData.itOutStep[i] == 0)
@@ -346,6 +361,7 @@ void Mote_OutDisable(void)
 void Mote_OutEnable(void)
 {
 	MOTOR_EN_L;
+	delay_ms(1000);
 }
 
 int32_t Moter_ReadCoor(uint8_t MoterNaber)
@@ -378,6 +394,7 @@ uint8_t Moter_ReadAllStatic(void)
 	}
 }
 
+/* set motor goto zero mode */
 void Mote_SetGotoZero(uint8_t MoterNaber)
 {
 	if (MoterNaber > 3)
@@ -399,55 +416,61 @@ void Mote_SetGotoZero(uint8_t MoterNaber)
 	}
 }
 
-void Moter_DriveGotoZero(void)
+void zero_init()
 {
-	ReturnData.sys_state = 2;
-	out_beepset(0); // �رշ�����
-
+	set_run_state(STATE_GOTOZERO);
 	MotorData.setCoor[0] = MotorData.itCoor[0];
 	MotorData.setCoor[1] = MotorData.itCoor[1];
 	MotorData.setCoor[2] = MotorData.itCoor[2];
 
-	Mote_SetCoor(Moter_ReadCoor(0) + 500, 0, 1000);
-	while (1)
-	{
-		delay_ms(10);
-		iwdg_feed();
-		if (Moter_ReadAllStatic() == 0)
-			break;
-	} // �ȴ����
-
-	Mote_SetCoor(Moter_ReadCoor(0) + 500, 1, 1000);
-	while (1)
-	{
-		delay_ms(10);
-		iwdg_feed();
-		if (Moter_ReadAllStatic() == 0)
-			break;
-	} // �ȴ����
-
-	Mote_SetGotoZero(0);
-	while (1)
-	{
-		delay_ms(10);
-		iwdg_feed();
-		if (Moter_ReadAllStatic() == 0)
-			break;
-	} // �ȴ����
-
-	Mote_SetGotoZero(1);
-	Mote_SetGotoZero(2);
-	while (1)
-	{
-		delay_ms(10);
-		iwdg_feed();
-		if (Moter_ReadAllStatic() == 0)
-			break;
-	} // �ȴ����
-
-	ReturnData.sys_state = 0;
+	ReturnData.zero_stage = 0;
 }
 
+/* goto zero handle */
+bool Moter_DriveGotoZero(void)
+{
+	if (Moter_ReadAllStatic() != 0)
+	{
+		return 0;
+	}
+
+	switch (ReturnData.zero_stage)
+	{
+	case 0:
+		Mote_SetCoor(Moter_ReadCoor(0) + 500, 0, 1000); // x point
+		// Mote_SetGotoZero(0);
+		ReturnData.zero_stage += 1;
+		break;
+	case 1:
+		Mote_SetCoor(Moter_ReadCoor(1) + 500, 1, 1000); // y point
+		// Mote_SetGotoZero(1);
+		ReturnData.zero_stage += 1;
+		break;
+
+	case 2:
+		Mote_SetGotoZero(0); // x goto zero
+		ReturnData.zero_stage += 1;
+		break;
+
+	case 3:
+		Mote_SetGotoZero(1); // y goto zero
+		Mote_SetGotoZero(2); // z goto zero
+		ReturnData.zero_stage += 1;
+		break;
+
+	case 4:
+		set_run_state(STATE_STOP_ZERO);
+		return 1;
+		break;
+
+	default:
+		break;
+	}
+
+	return 0;
+}
+
+/* checke motor at zero point */
 uint8_t Moter_ReadZero(void)
 {
 	if ((MotorData.itCoor[0] == 0) &&
@@ -462,15 +485,17 @@ uint8_t Moter_ReadZero(void)
 
 void OUT_UV(uint8_t onoff)
 {
+	DeviceStatus_t *state = get_device_state();
+
 	if (onoff == 0)
 	{
 		UV_LED_L;
-		ReturnData.uv_light = 0;
+		state->uv_light = 0;
 	}
 	else
 	{
 		UV_LED_H;
-		ReturnData.uv_light = 1;
+		state->uv_light = 1;
 	}
 }
 
@@ -488,32 +513,35 @@ void OUT_LED(uint8_t onoff)
 
 void WaterPump_Ctrl(int32_t onoff)
 {
+	DeviceStatus_t *state = get_device_state();
+
 	MotorData.DCMOTE_PWM = (int8_t)onoff - 100;
-	if (onoff == 0)
+	if (onoff == 100)
 	{
-		ReturnData.water_pump = 0;
+		state->water_pump = 0;
 	}
 	else
 	{
-		ReturnData.water_pump = 1;
+		state->water_pump = 1;
 	}
 }
 
 uint8_t INT_key_stop(void)
 {
-	return ReadStopKey;
+	return ReadStopKey();
 }
 
+/* timer interrupt update */
 uint8_t INT_key_X(void)
 {
 	return MotorData.zeroKeyTir[0];
 }
-
+/* timer interrupt update */
 uint8_t INT_key_Y(void)
 {
 	return MotorData.zeroKeyTir[1];
 }
-
+/* timer interrupt update */
 uint8_t INT_key_Z(void)
 {
 	return MotorData.zeroKeyTir[2];
@@ -529,60 +557,10 @@ uint8_t INT_normalSalineLow(void)
 
 void out_beepset(uint8_t mode)
 {
-	if (mode != CLOSE)
+	if (mode != 0)
 		BEEP_H;
 	else
 		BEEP_L;
-}
-
-void low_water_alarm()
-{
-	static bool beepToggle = 0;
-	static uint32_t time = 0;
-
-	if (get_device_state()->water_too_low != 0)
-	{
-		if (HAL_GetTick() - time > 1000)
-		{
-			time = HAL_GetTick();
-
-			out_beepset(beepToggle);
-			beepToggle ^= 0x01;
-		}
-	}
-	else
-	{
-		out_beepset(0);
-	}
-}
-
-void emptying_function(uint8_t sta)
-{
-
-	out_beepset(0);
-	if (sta != 0)
-	{
-		for (int i = 0; i < 2; i++)
-		{
-			Mote_SetCoor(i, 15500, 300);
-		}
-		while (Moter_ReadAllStatic() != 0)
-		{
-			iwdg_feed();
-		}
-		WaterPump_Ctrl(60); // �ſ�
-	}
-	else
-	{
-		WaterPump_Ctrl(160);
-		delay_1ms(1000);
-		WaterPump_Ctrl(100);
-		MotorData.SetDoutNaber = 0xFF;
-		MotorData.oneCoorEn = 0;
-		MotorData.NewCom = 1;
-		stop_key_handle(false);
-	}
-	iwdg_feed();
 }
 
 DeviceStatus_t *get_device_state()
@@ -590,51 +568,70 @@ DeviceStatus_t *get_device_state()
 	return &ReturnData;
 }
 
+void set_device_AllState(DeviceStatus_t state)
+{
+	ReturnData = state;
+}
+
+void set_run_state(RunState_t state)
+{
+	DeviceStatus_t *dev_state = get_device_state();
+
+	dev_state->run_state = state;
+}
+
+RunState_t get_run_state()
+{
+	DeviceStatus_t *dev_state = get_device_state();
+
+	return dev_state->run_state;
+}
+
 /**
  * @brief stop swtich handle
  */
 void stop_key_handle(bool stop)
 {
-	static uint8_t key_flag = 0;
+	// static uint8_t key_flag = 0;
 
-	uint8_t *stop_sta = &get_device_state()->stop_state;
+	// uint8_t *stop_sta = &get_device_state()->stop_state;
 
-	/* stop break */
-	if (!stop)
-	{
-		KEY_LED_L;			 // close key led
-		WaterPump_Ctrl(100); // close water pump
-		*stop_sta = CLOSE;	 // clear falg
-		return;
-	}
+	// /* stop break */
+	// if (!stop)
+	// {
+	// 	KEY_LED_L;			 // close key led
+	// 	WaterPump_Ctrl(100); // close water pump
+	// 	*stop_sta = CLOSE;	 // clear falg
+	// 	return;
+	// }
 
-	/* check key pressed */
-	if (ReadStopKey == RESET)
-	{
-		key_flag = 1;
-	}
+	// /* check key pressed */
+	// if (ReadStopKey == RESET)
+	// {
+	// 	key_flag = 1;
+	// }
 
-	/* check key release */
-	if (ReadStopKey != RESET && key_flag)
-	{
-		key_flag = 0;
+	// /* check key release */
+	// if (ReadStopKey != RESET && key_flag)
+	// {
+	// 	key_flag = 0;
 
-		if (*stop_sta == CLOSE)
-		{
-			*stop_sta = OPEN;
-			KEY_LED_H;
-			WaterPump_Ctrl(100);
-		}
-		else
-		{
-			*stop_sta = CLOSE;
-			KEY_LED_L;
-			if (get_device_state()->sys_state == 3)
-			{
-				WaterPump_Ctrl(65);
-			}
-		}
-	}
+	// 	if (*stop_sta == CLOSE)
+	// 	{
+	// 		*stop_sta = OPEN;
+	// 		KEY_LED_H;
+	// 		WaterPump_Ctrl(100);
+	// 	}
+	// 	else
+	// 	{
+	// 		*stop_sta = CLOSE;
+	// 		KEY_LED_L;
+	// 		if (get_device_state()->sys_state == 3)
+	// 		{
+	// 			WaterPump_Ctrl(65);
+	// 		}
+	// 	}
+	// }
 }
 
 void run_old(uint32_t time)
@@ -658,7 +655,7 @@ void run_old(uint32_t time)
 		{
 			for (uint8_t i = 0; i < 2; i++)
 			{
-				Mote_SetCoor(i, MedicineOut_99[count * 8 + i * 2], MedicineOut_99[count * 8 + i * 2 + 1]);
+				Mote_SetCoor(i, test_point[count * 8 + i * 2], test_point[count * 8 + i * 2 + 1]);
 			}
 			Mote_SetCoor(2, 0, 500);
 

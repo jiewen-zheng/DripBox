@@ -14,4 +14,16 @@
 #define MB_UART_TX_PIN 19
 #define MB_UART_RX_PIN 20
 
+typedef struct
+{
+    uint8_t *data;
+    uint16_t dataLen;
+    uint16_t crc;
+    uint8_t *frame;
+    uint16_t frameLen;
+    uint8_t cmd;
+    uint16_t buttonAddr;
+    uint16_t buttonVal;
+} FrameCheck_t;
+
 #endif

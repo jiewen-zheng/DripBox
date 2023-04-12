@@ -1,10 +1,14 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <ArduinoJson.h>
 
 #include "ftpClient.h"
 #include "HAL/HAL.h"
+#include "HAL/uncompress.h"
 
-// DynamicJsonDocument doc(2048); // heap
+/* 存储post数据包 */
+DynamicJsonDocument doc(4096); // heap
+Uncompress uncomp;
 
 bool FtpClient::checkConnect()
 {
@@ -24,16 +28,16 @@ String FtpClient::reqServer(String url, String msg)
     }
 
     HTTPClient http;
-    Serial.println("msg=");
-    Serial.println(msg);
+
     http.begin(url);
-    http.addHeader("Content-Type", "application/json");
+    // http.addHeader("Content-Type", "application/json");
 
     //    http.addHeader("Accept", "*/*");
     // start connection and send HTTP header
     Serial.println("[http] post...");
-    int code = http.POST("");
+    int code = http.POST(msg);
 
+    Serial.printf("http post code: %d \r\n", code);
     if (code <= 0)
     {
         Serial.printf("[http] post... failed, error: %s.\r\n", http.errorToString(code).c_str());
@@ -43,15 +47,16 @@ String FtpClient::reqServer(String url, String msg)
 
     if (code == HTTP_CODE_OK)
     {
+        String read_msg = http.getString();
         http.end();
-        return http.getString();
+        return read_msg;
     }
 
     http.end();
     return "";
 }
 
-bool FtpClient::getFileToFlash(String path, String fileName)
+bool FtpClient::getFileToFlash(String path, String fileName, String url)
 {
     HTTPClient http;
 
@@ -67,7 +72,6 @@ bool FtpClient::getFileToFlash(String path, String fileName)
     }
     String storage_path = path + fileName;
 
-    String url = "http://59.110.138.60:8008/File/download?id=1677313300167";
     http.begin(url);
 
     Serial.println("[http] get...");
@@ -125,6 +129,8 @@ bool FtpClient::getFileToFlash(String path, String fileName)
         if (len > 0)
         {
             Serial.println("[HTTP] connection closed, file download failed.");
+            http.end();
+            return false;
         }
         else
         {
@@ -134,4 +140,141 @@ bool FtpClient::getFileToFlash(String path, String fileName)
 
     http.end();
     return true;
+}
+
+bool FtpClient::getUpdateFileUrl(PackageInfo_t *info, String req_url)
+{
+
+    String msg = reqServer(req_url, "");
+
+    Serial.println(msg);
+    if (msg == "")
+    {
+        Serial.println("[ftp] req server no data");
+        return false;
+    }
+
+    doc.clear();
+    DeserializationError code = deserializeJson(doc, msg);
+    if (code)
+    {
+        Serial.printf("[error]: tcp json deserialize failed: %s\r\n", code.c_str());
+        return false;
+    }
+    JsonObject data = doc["data"];
+
+    memset(info, 0, sizeof(PackageInfo_t));
+
+    info->fileName = data["fileName"].as<String>();
+    Serial.println("name: " + info->fileName);
+    info->fileType = data["fileType"].as<int>();
+    Serial.println("type: " + String(info->fileType));
+    info->fileUrl = data["fileUrl"].as<String>();
+    Serial.println("url: " + info->fileUrl);
+    info->phoneModel = data["phoneModel"].as<String>();
+    Serial.println("model: " + info->phoneModel);
+    info->version = data["version"].as<int>();
+    Serial.println("version: " + String(info->version));
+
+    return true;
+}
+
+FtpState_e FtpClient::getFirmware(int now_ver)
+{
+    // get firmware download url
+    if (!getUpdateFileUrl(&firmware_info, FIRMWARE_REQ_URL))
+    {
+        Serial.println("[update] get firmware failed");
+        return SERVER_ERROR;
+    }
+
+    if (firmware_info.fileType != 0 || firmware_info.phoneModel != "ROTEX-Z003")
+    {
+        Serial.println("[update] get firmware message error");
+        return SERVER_ERROR;
+    }
+
+    if (firmware_info.version <= now_ver)
+    {
+        return NOT_UPDATE;
+    }
+
+    return REQ_OK;
+}
+
+bool FtpClient::firmwareDownload()
+{
+    ffat.deleteAllFile("/firmware");
+
+    // downlowe file to root directory
+    bool code = getFileToFlash("/", firmware_info.fileName, firmware_info.fileUrl);
+
+    if (!code)
+    {
+        return false;
+    }
+
+    // Check whether it is a .zip file
+    char *ptr = strstr(firmware_info.fileName.c_str(), ".zip");
+
+    if (ptr)
+    {
+        String zip_path = "/" + firmware_info.fileName;
+        // unzip file to firmware directory
+        if (uncomp.unzipFile(zip_path.c_str(), "/firmware/"))
+        {
+            // delete the .zip file, after unzip it
+            ffat.deleteFile(zip_path.c_str());
+        }
+        else
+        {
+            false;
+        }
+    }
+
+    return true;
+}
+
+int FtpClient::getFirmwareVersion()
+{
+    return firmware_info.version;
+}
+
+FtpState_e FtpClient::getSoftware(int now_ver)
+{
+
+    if (!getUpdateFileUrl(&software_info, SOFTWARE_REQ_URL))
+    {
+        Serial.println("[update] get software failed");
+        return SERVER_ERROR;
+    }
+
+    if (software_info.fileType != 1 || software_info.phoneModel != "ROTEX-Z003")
+    {
+        Serial.println("[update] get software message error");
+        return SERVER_ERROR;
+    }
+
+    if (software_info.version <= now_ver)
+    {
+        return NOT_UPDATE;
+    }
+
+    // bool code = getFileToFlash("/", software_info.fileName, software_info.fileUrl);
+
+    // if (!code)
+    // {
+    //     return false;
+    // }
+    return REQ_OK;
+}
+
+String FtpClient::getSoftwareURL()
+{
+    return software_info.fileUrl;
+}
+
+int FtpClient::getSoftwareVersion()
+{
+    return software_info.version;
 }

@@ -49,6 +49,7 @@ void Uncompress::init()
 
 bool Uncompress::unzipFile(const char *filePath, const char *unzipPath)
 {
+    bool succeed = false;
     int code;
 
     code = zip.openZIP(filePath, Open, Close, Read, Seek);
@@ -113,9 +114,16 @@ bool Uncompress::unzipFile(const char *filePath, const char *unzipPath)
         zip.closeCurrentFile();
 
         if (size > 0)
+        {
             Serial.printf("[error] file \"%s\" unzip failed.\r\n", Name);
+            succeed = false;
+            break;
+        }
         else
+        {
             Serial.printf("file \"%s\" unzip succeed.\r\n", Name);
+            succeed = true;
+        }
 
         code = zip.gotoNextFile();
     } while (code == UNZ_OK);
@@ -123,5 +131,5 @@ bool Uncompress::unzipFile(const char *filePath, const char *unzipPath)
     free(buff);
 
     zip.closeZIP();
-    return false;
+    return succeed == true;
 }

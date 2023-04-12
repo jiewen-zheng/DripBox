@@ -1,12 +1,10 @@
 ./output/main.o: ..\src\main.c \
   ..\..\GD32E23x_Firmware_Library\CMSIS\GD\GD32E23x\Include\gd32e23x.h \
   ..\..\GD32E23x_Firmware_Library\CMSIS\GD\GD32E23x\Include\core_cm23.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdint.h \
-  C:\Users\Admin\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_version.h \
-  C:\Users\Admin\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_compiler.h \
-  C:\Users\Admin\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include\cmsis_armclang.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\arm_compat.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\arm_acle.h \
+  D:\software\Keil_v5\UV4\ARM\ARMCLANG\Bin\..\include\stdint.h \
+  D:\software\Keil_v5\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h \
+  D:\software\Keil_v5\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h \
+  D:\software\Keil_v5\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armclang.h \
   ..\..\GD32E23x_Firmware_Library\CMSIS\GD\GD32E23x\Include\system_gd32e23x.h \
   ..\..\GD32E23x_Firmware_Library\CMSIS\GD\GD32E23x\Include\gd32e23x_libopt.h \
   ..\..\GD32E23x_Firmware_Library\GD32E23x_standard_peripheral\Include\gd32e23x_adc.h \
@@ -29,6 +27,7 @@
   ..\..\GD32E23x_Firmware_Library\GD32E23x_standard_peripheral\Include\gd32e23x_misc.h \
   ..\..\GD32E23x_Firmware_Library\GD32E23x_standard_peripheral\Include\gd32e23x_cmp.h \
   ..\src\systick.h ..\drive\usart.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h ..\app\update.h \
-  ..\app\ymodem_slave.h C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdbool.h \
+  D:\software\Keil_v5\UV4\ARM\ARMCLANG\Bin\..\include\stdio.h \
+  ..\app\update.h ..\app\ymodem_slave.h \
+  D:\software\Keil_v5\UV4\ARM\ARMCLANG\Bin\..\include\stdbool.h \
   ..\drive\gd32e23x_flash.h

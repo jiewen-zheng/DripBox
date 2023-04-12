@@ -5,6 +5,19 @@
 #include <FS.h>
 #include <vector>
 
+typedef struct
+{
+    String path;
+    String name;
+    uint32_t size;
+} FileInfo_t;
+
+typedef struct
+{
+    String path;
+    String name;
+} DirInfo_t;
+
 namespace HAL
 {
 
@@ -14,13 +27,18 @@ namespace HAL
         fs::FS *fs;
 
     public:
+        // FlashFFAT();
         void init();
 
         void listDir(const char *dirname, uint8_t levels);
         void createDir(const char *path); // spiffs 不支持目录
         void removeDir(const char *path); // spiffs 不支持目录
 
-        bool findDir(const char *dirPath);
+        size_t getFileCount(const char *path);
+        FileInfo_t getFileInfo(size_t index);
+
+        bool
+        findDir(const char *dirPath);
         bool findFile(const char *fileName);
 
         void readFile(const char *path);
@@ -38,19 +56,6 @@ namespace HAL
         void testFileIO(const char *path);
 
     private:
-        typedef struct
-        {
-            String path;
-            String name;
-            uint32_t size;
-        } FileInfo_t;
-
-        typedef struct
-        {
-            String path;
-            String name;
-        } DirInfo_t;
-
         std::vector<FileInfo_t> fileList;
         std::vector<DirInfo_t> dirList;
     };

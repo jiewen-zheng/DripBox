@@ -12,8 +12,10 @@ namespace HAL
 {
     void Init();
     void Update();
+
 }
 extern HAL::FlashFFAT ffat;
 extern HAL::UartScreen screen;
 extern HAL::MainBoard board;
+
 #endif

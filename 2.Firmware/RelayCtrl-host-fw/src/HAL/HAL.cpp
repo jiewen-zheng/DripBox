@@ -10,19 +10,19 @@ void HAL::Init()
     Serial.println("system init ...");
 
     ffat.init();
-    board.init();
     screen.init();
+    board.init();
 
-    // Update display in parallel thread.
+    ffat.listDir("/", 0);
+    if (!ffat.findDir("/config"))
+    {
+        Serial.println("creat config dir");
+        ffat.createDir("/config");
+    }
 
-    // ffat.createDir("/dirrr");
-    // ffat.listDir("/", 1);
-    // ffat.writeFile("/dirrr/name.txt", "haha");
-    // ffat.readFile("/dirrr/name.txt");
-    // ffat.listDir("/", 1);
-
-    // ffat.deleteFile("/dirrr/name.txt");
-    // ffat.listDir("/", 1);
-    // ffat.removeDir("/dirrr");
-    // ffat.listDir("/", 1);
+    if (!ffat.findDir("/firmware"))
+    {
+        Serial.println("creat firmware dir");
+        ffat.createDir("/firmware");
+    }
 }
