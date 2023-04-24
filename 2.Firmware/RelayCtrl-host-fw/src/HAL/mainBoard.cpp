@@ -108,7 +108,7 @@ bool HAL::MainBoard::checkCmdACK(const char *ack)
     uint8_t buf[2];
 
     int len = readData(buf, 2, 2000);
-    if (len != 2 || memcmp(buf, ack, 2) != 0)
+    if (len < 2 || memcmp(buf, ack, 2) != 0)
     {
         return false;
     }
@@ -158,6 +158,11 @@ void HAL::MainBoard::saveDeviceState(uint8_t *data, uint16_t len)
 DeviceState_t *HAL::MainBoard::getDeviceState()
 {
     return &deviceState;
+}
+
+uint8_t HAL::MainBoard::getDeviceRunState()
+{
+    return deviceState.run_state;
 }
 
 void HAL::MainBoard::reqDeviceData(uint16_t time)

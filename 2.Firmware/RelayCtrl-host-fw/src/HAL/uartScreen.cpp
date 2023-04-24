@@ -638,8 +638,10 @@ void UartScreen::handle()
 {
 
     /* update wifi rssi icon */
-    updataRSSI();
-    // updateLog();
+    updateRSSI();
+
+    /* update the icon when the run stops */
+    updateRunState();
 
     /* uart frame data handle */
     dataPack_handle();
@@ -841,6 +843,60 @@ void HAL::UartScreen::updateLogMsg()
     dispVersion(versionMsg.dev.c_str(), versionMsg.firm.c_str(), versionMsg.soft.c_str());
 }
 
+void HAL::UartScreen::updateRunState(uint16_t time)
+{
+    static unsigned long inter_time = millis();
+
+
+    if(scrConfig.runState == 0){
+        inter_time = millis();
+        return;
+    }
+
+    if (millis() - inter_time < time){
+        return;
+    }
+    inter_time = millis();
+
+    
+    BoardRunState_t board_state = board->getDeviceRunState();
+
+    // Serial.printf("board state%d", board_state);
+
+    switch (board_state)
+    {
+    case STOP_ZERO: // basic liquid
+    case STOP:
+        updateIcon(icon_baseStart, 0);
+        updateIcon(icon_dropStart, 0);
+        updateIcon(icon_emptying, 0);
+        scrConfig.runState = 0;
+        break;
+
+    case GOTO_ZERO:
+        break;
+
+    case EMPTY:
+        updateIcon(icon_emptying, 1);
+        scrConfig.runState = 3;
+        break;
+
+    case BASIC:
+        updateIcon(icon_baseStart, 1);
+        scrConfig.runState = 1;
+        break;
+
+    case DROP:
+        updateIcon(icon_dropStart, 1);
+        scrConfig.runState = 2;
+        break;
+
+     default:
+        break;
+    }
+    
+}
+
 bool HAL::UartScreen::checkFormatPass(uint8_t *pass)
 {
     if (memcmp(pass, FORMAT_PASS, 6) == 0)
@@ -899,7 +955,7 @@ String HAL::UartScreen::getWifiPASS()
     return wifi_pass;
 }
 
-void HAL::UartScreen::updataRSSI(uint16_t update_time)
+void HAL::UartScreen::updateRSSI(uint16_t update_time)
 {
     static unsigned long time = millis();
 

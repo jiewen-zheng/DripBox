@@ -177,8 +177,10 @@ namespace HAL
         void button_apply(uint16_t addr, uint16_t value);
         void dataPack_handle();
 
-        void updataRSSI(uint16_t update_time = 3000);
-        void updateLogMsg();
+        void updateRSSI(uint16_t update_time = 3000);
+        void updateLogMsg(); // 显示版本信息
+
+        void updateRunState(uint16_t time = 3000);
 
         bool checkFormatPass(uint8_t *pass);
 

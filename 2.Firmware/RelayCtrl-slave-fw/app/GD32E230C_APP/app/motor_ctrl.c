@@ -167,6 +167,7 @@ void motor_handle(void)
             pMotor->NewCom = 0;
             return;
         }
+				MotorData.SetDoutConut++;
         break;
 
     default:

@@ -75,6 +75,8 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
     {
         /* basic liquid */
     case 0x81:
+				if(data[0] > MAX_MASK_TYPE*2+1) // check maks type
+					break;
         pMotor->SetDoutNaber = 2;
         pMotor->SetDoutBuff = (int16_t *)basic_data_point[data[0] * 2 - 2];
         pMotor->SetDoutConutAll = basic_data_point[data[0] * 2 - 1];
@@ -86,6 +88,8 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
 
         /* dropping liquid */
     case 0x82:
+				if(data[0] > MAX_MASK_TYPE*4+1)	// check maks type
+					break;
         pMotor->SetDoutNaber = 3;
         pMotor->SetDoutBuff = (int16_t *)drop_data_point[data[0] * 2 - 2];
         pMotor->SetDoutConutAll = drop_data_point[data[0] * 2 - 1];
@@ -109,19 +113,18 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
 
         /* goto zero point */
     case 0x85:
+				usart0_send_data((uint8_t *)"OK", 2);
         /* stop water pump */
-				usart0_send_data((uint8_t*)"OK", 2);
         if (pMotor->SetDoutNaber == 1 || pMotor->SetDoutNaber == 2)
         {
             WaterPump_Ctrl(160);
-            delay_ms(1000);
+            delay_ms(2000);
         }
         WaterPump_Ctrl(100);
         pMotor->SetDoutNaber = 0xFF;
         pMotor->SetDoutConut = 0;
         pMotor->oneCoorEn = 0;
         pMotor->NewCom = 1;
-        // stop_key_handle(true); // clear stop flag
         break;
 
         /* "UV" light control */
@@ -230,9 +233,10 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
     default:
         break;
     }
-
-    if (cmd != 0x89 || cmd != 0x85 || cmd != 0x90)
-        usart0_send_data((uint8_t*)"OK", 2);
+		
+		if (cmd != 0x85 && cmd != 0x89 && cmd != 0x90){
+			usart0_send_data((uint8_t *)"OK", 2);
+		}
 }
 
 /**

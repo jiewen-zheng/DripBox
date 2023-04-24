@@ -6,6 +6,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+
+
 #define MinSpeedUs 100
 #define MaxPlusX 30000
 #define MaxPlusY 30000

@@ -2546,7 +2546,7 @@ const int16_t test_point[] = {
  * @brief empty point buffer, move to little mask center
  */
 const int16_t empty_point[] = {
-	15500, 500, 15500, 500, 15500, 0, 100,
+	15500, 500, 15500, 500, 1000, 500, 0, 100,
 };
 
 
@@ -2554,31 +2554,40 @@ const int16_t empty_point[] = {
  * @brief basic liquid buffer pointer.
  */
 const uint32_t basic_data_point[12 * 2] = {
-    (uint32_t)MedicineOut_1, ARRAY_SIZE(MedicineOut_1), // little mask shallow
-    (uint32_t)MedicineOut_2, ARRAY_SIZE(MedicineOut_2), // little mask deep
-    (uint32_t)MedicineOut_3, ARRAY_SIZE(MedicineOut_3), // big mask shallow
-    (uint32_t)MedicineOut_4, ARRAY_SIZE(MedicineOut_4),	// big mask deep 
+    (uint32_t)MedicineOut_1,	ARRAY_SIZE(MedicineOut_1), 	// little mask shallow
+    (uint32_t)MedicineOut_2,	ARRAY_SIZE(MedicineOut_2), 	// little mask deep
+    (uint32_t)MedicineOut_3,	ARRAY_SIZE(MedicineOut_3), 	// big mask shallow
+    (uint32_t)MedicineOut_4,	ARRAY_SIZE(MedicineOut_4),	// big mask deep 
+		(uint32_t)MedicineOut_26,	ARRAY_SIZE(MedicineOut_26), // t 
+    (uint32_t)MedicineOut_27, ARRAY_SIZE(MedicineOut_27),
+    (uint32_t)MedicineOut_28, ARRAY_SIZE(MedicineOut_28), // f
+    (uint32_t)MedicineOut_29, ARRAY_SIZE(MedicineOut_29),
     0, 0, // eye shallow
     0, 0,
     0, 0, // neck shallow
     0, 0,
-    (uint32_t)MedicineOut_26, ARRAY_SIZE(MedicineOut_26), // t 
-    (uint32_t)MedicineOut_27, ARRAY_SIZE(MedicineOut_27),
-    (uint32_t)MedicineOut_28, ARRAY_SIZE(MedicineOut_28), // f
-    (uint32_t)MedicineOut_29, ARRAY_SIZE(MedicineOut_29)};
+};
 
 /**
  * @brief drop liquid buffer pointer.
  */
 const uint32_t drop_data_point[24 * 2] = {
-    (uint32_t)MedicineOut_9, ARRAY_SIZE(MedicineOut_9), // little mask 2ml
+    (uint32_t)MedicineOut_9,	ARRAY_SIZE(MedicineOut_9), // little mask 2ml
     (uint32_t)MedicineOut_10, ARRAY_SIZE(MedicineOut_10),
     (uint32_t)MedicineOut_11, ARRAY_SIZE(MedicineOut_11),
     (uint32_t)MedicineOut_12, ARRAY_SIZE(MedicineOut_12),
-    (uint32_t)MedicineOut_13, ARRAY_SIZE(MedicineOut_13), // big mask
+    (uint32_t)MedicineOut_13, ARRAY_SIZE(MedicineOut_13), // big mask 2ml
     (uint32_t)MedicineOut_14, ARRAY_SIZE(MedicineOut_14),
     (uint32_t)MedicineOut_15, ARRAY_SIZE(MedicineOut_15),
     (uint32_t)MedicineOut_16, ARRAY_SIZE(MedicineOut_16),
+		(uint32_t)MedicineOut_30, ARRAY_SIZE(MedicineOut_30), // t mask 2ml
+    (uint32_t)MedicineOut_31, ARRAY_SIZE(MedicineOut_31),
+    (uint32_t)MedicineOut_32, ARRAY_SIZE(MedicineOut_32),
+    (uint32_t)MedicineOut_33, ARRAY_SIZE(MedicineOut_33),
+    (uint32_t)MedicineOut_34, ARRAY_SIZE(MedicineOut_34), // f mask 2ml
+    (uint32_t)MedicineOut_35, ARRAY_SIZE(MedicineOut_35),
+    (uint32_t)MedicineOut_36, ARRAY_SIZE(MedicineOut_36),
+    (uint32_t)MedicineOut_37, ARRAY_SIZE(MedicineOut_37),
     0, 0, // eye
     0, 0,
     0, 0,
@@ -2587,13 +2596,6 @@ const uint32_t drop_data_point[24 * 2] = {
     0, 0,
     0, 0,
     0, 0,
-    (uint32_t)MedicineOut_30, ARRAY_SIZE(MedicineOut_30), // t
-    (uint32_t)MedicineOut_31, ARRAY_SIZE(MedicineOut_31),
-    (uint32_t)MedicineOut_32, ARRAY_SIZE(MedicineOut_32),
-    (uint32_t)MedicineOut_33, ARRAY_SIZE(MedicineOut_33),
-    (uint32_t)MedicineOut_34, ARRAY_SIZE(MedicineOut_34), // f
-    (uint32_t)MedicineOut_35, ARRAY_SIZE(MedicineOut_35),
-    (uint32_t)MedicineOut_36, ARRAY_SIZE(MedicineOut_36),
-    (uint32_t)MedicineOut_37, ARRAY_SIZE(MedicineOut_37)};
+};
 
 		

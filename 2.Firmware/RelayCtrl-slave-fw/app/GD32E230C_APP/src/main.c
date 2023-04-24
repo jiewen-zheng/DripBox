@@ -42,8 +42,8 @@ int main(void)
 
 	for (;;)
 	{
-		// usart0_send_data((uint8_t*)"hello", 10);
-		iwdg_feed();
+		//usart0_send_data((uint8_t*)"hello", 5);
+		// iwdg_feed();
 
 		comm_handle();
 		motor_handle();
