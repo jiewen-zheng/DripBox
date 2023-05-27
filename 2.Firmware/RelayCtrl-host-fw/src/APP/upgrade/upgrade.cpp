@@ -396,8 +396,8 @@ void Upgrade::displayVersion()
     msg.firm = "firmware-v" + String(fileMsg.firm_ver) + ".0";
     msg.soft = "software-v" + String(fileMsg.soft_ver) + ".0 ";
 
-    p_screen->setLogMsg(&msg);
-    p_screen->updateLogMsg();
+    p_screen->setVerMsg(&msg);
+    p_screen->updateVerMsg();
 }
 
 void Upgrade::save_wifi_msg(String ssid, String pass)

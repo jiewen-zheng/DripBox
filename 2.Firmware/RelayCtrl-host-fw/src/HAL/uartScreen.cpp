@@ -39,7 +39,7 @@ void HAL::UartScreen::setWiFiCallback(save_wifi_cb wifi)
     save_wifi_msg = wifi;
 }
 
-void HAL::UartScreen::setLogMsg(VersionMsg_t *msg)
+void HAL::UartScreen::setVerMsg(VersionMsg_t *msg)
 {
     versionMsg.dev = msg->dev;
     versionMsg.firm = msg->firm;
@@ -51,6 +51,7 @@ void UartScreen::init()
 
     SCR_SERIAL.begin(115200, SERIAL_8N1, SCR_UART_RX_PIN, SCR_UART_TX_PIN);
 
+    Block.init();
     // uint8_t *buf = (uint8_t *)malloc(sizeof(uint8_t) * 256);
     // if (!buf)
     // {
@@ -460,7 +461,7 @@ void UartScreen::button_apply(uint16_t addr, uint16_t value)
         }
         // scrConfig.runState = scrConfig.runState == 0 ? 3 : 0;
         scrConfig.runState != 0 ? pushTheButton(popup_empty_stop) : pushTheButton(popup_empty_start);
-        // updateIcon(icon_emptying, scrConfig.runState != 0);
+
         break;
 
     case btn_popup_empty_start:
@@ -545,10 +546,13 @@ void UartScreen::button_apply(uint16_t addr, uint16_t value)
         if (value == 1)
         {
             /* read */
-            if (board->readOffset())
-            {
-                writeAddrData(text_testRade, (uint8_t *)board->getOffsetMsg().c_str(), board->getOffsetMsg().length());
-            }
+            board->readOffset();
+
+            /* msg update in "syncDevice()" */
+            // if (board->readOffset())
+            // {
+            //     writeAddrData(text_testRade, (uint8_t *)board->getOffsetMsg().c_str(), board->getOffsetMsg().length());
+            // }
         }
         else if (value == 2)
         {
@@ -618,36 +622,32 @@ void HAL::UartScreen::dataPack_handle()
     button_apply(frameCheck.buttonAddr, frameCheck.buttonVal);
 }
 
-void HAL::UartScreen::synchroDeviceState()
+void HAL::UartScreen::syncDevice(uint16_t time)
 {
-    DeviceState_t *dev = board->getDeviceState();
+    static unsigned long inter_time = millis();
 
-    if (dev->run_state == STOP_ZERO || dev->run_state == STOP)
+    if (millis() - inter_time < time)
     {
-        if (scrConfig.runState != 0)
-        {
-            scrConfig.runState = 0;
-            updateIcon(icon_baseStart, 0);
-            updateIcon(icon_dropStart, 0);
-            updateIcon(icon_emptying, 0);
-        }
+        return;
     }
-}
-
-void UartScreen::handle()
-{
-
-    /* update wifi rssi icon */
-    updateRSSI();
+    inter_time = millis();
 
     /* update the icon when the run stops */
     updateRunState();
 
+    updateOffsetMsg();
+}
+
+void UartScreen::handle()
+{
+    /* update wifi rssi icon */
+    updateRSSI();
+
+    /* sync device all message */
+    syncDevice();
+
     /* uart frame data handle */
     dataPack_handle();
-
-    // Serial.printf("run state = %d \r\n", scrConfig.runState);
-    // synchroDeviceState();
 }
 
 void UartScreen::upgrade()
@@ -838,27 +838,22 @@ void HAL::UartScreen::LogUpgradeMsg(const char *msg)
     writeAddrData(text_updateLog, (uint8_t *)msg, strlen(msg));
 }
 
-void HAL::UartScreen::updateLogMsg()
+void HAL::UartScreen::updateVerMsg()
 {
     dispVersion(versionMsg.dev.c_str(), versionMsg.firm.c_str(), versionMsg.soft.c_str());
 }
 
-void HAL::UartScreen::updateRunState(uint16_t time)
+void HAL::UartScreen::updateRunState()
 {
-    static unsigned long inter_time = millis();
-
-
-    if(scrConfig.runState == 0){
-        inter_time = millis();
+    if (scrConfig.runState == 0)
+    {
+        Block.unlock();
         return;
     }
 
-    if (millis() - inter_time < time){
-        return;
-    }
-    inter_time = millis();
+    /* lock box */
+    Block.lock();
 
-    
     BoardRunState_t board_state = board->getDeviceRunState();
 
     // Serial.printf("board state%d", board_state);
@@ -891,10 +886,21 @@ void HAL::UartScreen::updateRunState(uint16_t time)
         scrConfig.runState = 2;
         break;
 
-     default:
+    default:
         break;
     }
-    
+}
+
+void HAL::UartScreen::updateOffsetMsg()
+{
+    String msg = board->getOffsetMsg();
+
+    if (msg.length() == 0)
+    {
+        return;
+    }
+
+    writeAddrData(text_testRade, (uint8_t *)msg.c_str(), msg.length());
 }
 
 bool HAL::UartScreen::checkFormatPass(uint8_t *pass)

@@ -293,15 +293,20 @@ bool HAL::MainBoard::readOffset()
 
     sendFrame(0x90, &data, 1);
 
-    bool read = offset.read;
-    offset.read = false;
-
-    return read != false;
+    return offset.read;
 }
 
 String HAL::MainBoard::getOffsetMsg()
 {
+    /* not read offset msg */
+    if (!offset.read)
+    {
+        return "";
+    }
+
+    offset.read = false;
     String msg = "x:" + String(offset.x) + " y:" + String(offset.y) + " z:" + String(offset.z);
+
     return msg;
 }
 

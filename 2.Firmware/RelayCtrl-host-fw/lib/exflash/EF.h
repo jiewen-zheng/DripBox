@@ -2,7 +2,7 @@
 #define __EF_H
 
 #include "FS.h"
-#include <SPI.H>
+#include "SPI.h"
 
 namespace fs
 {

@@ -14,6 +14,10 @@
 #define MB_UART_TX_PIN 19
 #define MB_UART_RX_PIN 20
 
+/* Box Lock */
+#define BLOCK_TRIGGER_PIN 9
+#define BLOCK_LOCK_PIN 10
+
 typedef struct
 {
     uint8_t *data;

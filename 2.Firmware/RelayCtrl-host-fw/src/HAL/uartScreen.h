@@ -5,10 +5,12 @@
 #include "FS.h"
 
 #include "mainBoard.h"
+#include "boxLock.h"
 
 #define FRAME_HEAD 0x5AA5
 #define SAVE_RAM_ADDR 0x8000
 
+/* 格式化磁盘密码 */
 #define FORMAT_PASS "abc123"
 
 #define MAX_LOG_NUM 2
@@ -125,6 +127,9 @@ namespace HAL
     class UartScreen
     {
     private:
+        BoxLock Block;
+
+    private:
         uint8_t txbuff[256]; // 一包按240字节数据发送，最大使用248字节空间
         uint8_t rxbuff[256];
         FrameCheck_t frameCheck;
@@ -143,14 +148,13 @@ namespace HAL
 
         void setUpdateCallback(update_cb firm, update_cb soft);
         void setWiFiCallback(save_wifi_cb wifi);
-
-        void setLogMsg(VersionMsg_t *msg);
+        void setVerMsg(VersionMsg_t *msg);
 
         void init();
         void reset();
 
         void handle();
-        void synchroDeviceState();
+        void syncDevice(uint16_t time = 2000);
 
         void upgrade();
         bool upgreadFile(const char *path, int fileNumber);
@@ -177,10 +181,10 @@ namespace HAL
         void button_apply(uint16_t addr, uint16_t value);
         void dataPack_handle();
 
-        void updateRSSI(uint16_t update_time = 3000);
-        void updateLogMsg(); // 显示版本信息
-
-        void updateRunState(uint16_t time = 3000);
+        void updateRSSI(uint16_t update_time = 3000); // 更新wifi信号质量
+        void updateVerMsg();                          // 显示版本信息
+        void updateRunState();                        // 更新设备运行状态
+        void updateOffsetMsg();                       // 更新偏移读取值
 
         bool checkFormatPass(uint8_t *pass);
 
