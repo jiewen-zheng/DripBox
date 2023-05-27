@@ -2,7 +2,7 @@
 #define __UART_SCR_H
 
 #include "HAL_Def.h"
-#include "FS.h"
+#include <FS.h>
 
 #include "mainBoard.h"
 #include "boxLock.h"
@@ -127,7 +127,7 @@ namespace HAL
     class UartScreen
     {
     private:
-        BoxLock Block;
+        HAL::BoxLock Block;
 
     private:
         uint8_t txbuff[256]; // 一包按240字节数据发送，最大使用248字节空间
@@ -141,6 +141,9 @@ namespace HAL
         update_cb firmware_update;
         update_cb software_update;
         save_wifi_cb save_wifi_msg;
+
+        /* 读取偏移标志位，需要更新读取的偏移数据 */
+        bool readOffset_flag = false;
 
     public:
         UartScreen(MainBoard *mb);
@@ -156,7 +159,7 @@ namespace HAL
         void handle();
         void syncDevice(uint16_t time = 2000);
 
-        void upgrade();
+        // void upgrade();
         bool upgreadFile(const char *path, int fileNumber);
 
     public:

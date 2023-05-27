@@ -10,8 +10,8 @@ namespace HAL
     private:
         /* data */
     public:
-        BoxLock(/* args */);
-        ~BoxLock();
+        // BoxLock(/* args */);
+        // ~BoxLock();
 
         void init();
 

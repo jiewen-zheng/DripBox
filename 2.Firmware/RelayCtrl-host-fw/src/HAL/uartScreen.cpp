@@ -547,20 +547,19 @@ void UartScreen::button_apply(uint16_t addr, uint16_t value)
         {
             /* read */
             board->readOffset();
-
+            readOffset_flag = true;
             /* msg update in "syncDevice()" */
-            // if (board->readOffset())
-            // {
-            //     writeAddrData(text_testRade, (uint8_t *)board->getOffsetMsg().c_str(), board->getOffsetMsg().length());
-            // }
         }
         else if (value == 2)
         {
+            read_msg = "Write Faile";
             /* write */
             if (board->writeOffset())
             {
-                writeAddrData(text_testWrite, (uint8_t *)board->getOffsetMsg().c_str(), board->getOffsetMsg().length());
+                read_msg = board->getOffsetMsg();
             }
+
+            writeAddrData(text_testWrite, (uint8_t *)read_msg.c_str(), read_msg.length());
         }
         break;
 
@@ -650,18 +649,18 @@ void UartScreen::handle()
     dataPack_handle();
 }
 
-void UartScreen::upgrade()
-{
-    Serial.println("[scr] Start update screen.");
-    writeFile("/13TouchFile.bin", 13);
-    writeFile("/14ShowFile.bin", 14);
-    writeFile("/22_Config.bin", 22);
-    writeFile("/32_Image.icl", 32);
+// void UartScreen::upgrade()
+// {
+//     Serial.println("[scr] Start update screen.");
+//     writeFile("/13TouchFile.bin", 13);
+//     writeFile("/14ShowFile.bin", 14);
+//     writeFile("/22_Config.bin", 22);
+//     writeFile("/32_Image.icl", 32);
 
-    Serial.println("[scr] write update finish");
-    delay(5000);
-    reset();
-}
+//     Serial.println("[scr] write update finish");
+//     delay(5000);
+//     reset();
+// }
 
 bool HAL::UartScreen::upgreadFile(const char *path, int fileNumber)
 {
@@ -830,6 +829,7 @@ void HAL::UartScreen::dispVersion(const char *device_id, const char *firmware, c
     writeAddrData(text_deviceID, (uint8_t *)device_id, strlen(device_id));
 
     writeAddrData(text_firmwareVer, (uint8_t *)firmware, strlen(firmware));
+
     writeAddrData(text_softwareVer, (uint8_t *)software, strlen(software));
 }
 
@@ -840,6 +840,9 @@ void HAL::UartScreen::LogUpgradeMsg(const char *msg)
 
 void HAL::UartScreen::updateVerMsg()
 {
+    Serial.println(versionMsg.dev);
+    Serial.println(versionMsg.firm);
+    Serial.println(versionMsg.soft);
     dispVersion(versionMsg.dev.c_str(), versionMsg.firm.c_str(), versionMsg.soft.c_str());
 }
 
@@ -895,11 +898,12 @@ void HAL::UartScreen::updateOffsetMsg()
 {
     String msg = board->getOffsetMsg();
 
-    if (msg.length() == 0)
+    if (!readOffset_flag || msg.length() == 0)
     {
         return;
     }
 
+    readOffset_flag = false;
     writeAddrData(text_testRade, (uint8_t *)msg.c_str(), msg.length());
 }
 

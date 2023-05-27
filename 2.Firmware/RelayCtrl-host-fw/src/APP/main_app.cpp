@@ -28,6 +28,8 @@ void app_init()
 {
     // connectWiFi("monster", "sunflower6697");
     upgrade.init(&ffat, &screen, &board);
+
+    delay(2000);
     upgrade.displayVersion();
 
     xTaskCreate(

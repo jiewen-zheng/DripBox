@@ -304,8 +304,7 @@ String HAL::MainBoard::getOffsetMsg()
         return "";
     }
 
-    offset.read = false;
-    String msg = "x:" + String(offset.x) + " y:" + String(offset.y) + " z:" + String(offset.z);
+    String msg = "x:" + String((int8_t)offset.x) + " y:" + String((int8_t)offset.y) + " z:" + String((int8_t)offset.z);
 
     return msg;
 }
@@ -346,8 +345,7 @@ void HAL::MainBoard::dataPack_handle()
     }
 
     // debug
-    Serial.printf("[mb] read data len=%d :%.*s \r\n", rlen, rlen, rxbuff);
-
+    Serial.printf("[mb] read data len: %d\r\n", rlen);
     for (uint16_t i = 0; i < rlen; i++)
     {
         Serial.printf("%x ", rxbuff[i]);

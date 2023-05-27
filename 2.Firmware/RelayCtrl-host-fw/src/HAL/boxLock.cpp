@@ -9,6 +9,8 @@ void HAL::BoxLock::init()
 
 bool HAL::BoxLock::lock()
 {
+    Serial.printf("[lock] triggrt pin:%d", digitalRead(BLOCK_TRIGGER_PIN));
+
     if (digitalRead(BLOCK_TRIGGER_PIN) == HIGH)
     {
         digitalWrite(BLOCK_LOCK_PIN, HIGH);

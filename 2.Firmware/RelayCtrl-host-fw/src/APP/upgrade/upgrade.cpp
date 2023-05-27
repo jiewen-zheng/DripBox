@@ -51,9 +51,9 @@ Upgrade::Upgrade()
     fileMsg = {
         .wifi_ssid = "",
         .wifi_pass = "",
-        .firm_ver = 0,
+        .firm_ver = 1,
         .firm_update = false,
-        .soft_ver = 0,
+        .soft_ver = 1,
         .soft_update = false,
     };
 }
