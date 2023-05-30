@@ -4,7 +4,7 @@
 #include "HAL/HAL.h"
 #include "APP/ftpClient/ftpClient.h"
 
-#define UPGRADE_MAX_RETRY_NUM   3
+#define UPGRADE_MAX_RETRY_NUM 3
 
 class Upgrade
 {

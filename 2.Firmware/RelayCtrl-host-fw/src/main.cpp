@@ -17,5 +17,5 @@ void loop()
   // put your main code here, to run repeatedly:
   app_loop();
   // Serial.println("hello world");
-  delay(5);
+  delay(10);
 }

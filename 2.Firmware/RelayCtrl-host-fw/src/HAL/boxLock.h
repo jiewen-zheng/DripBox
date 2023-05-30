@@ -5,18 +5,24 @@
 
 namespace HAL
 {
+#define UnlockTime 8000U // unlock time 8000 ms
+
     class BoxLock
     {
     private:
         /* data */
+        bool lockState = false;
+
     public:
         // BoxLock(/* args */);
         // ~BoxLock();
 
         void init();
 
-        bool lock();
-        void unlock();
+        void lock();
+        void unlock(bool trig = false);
+        void unlock_delay(uint32_t time = 5000);
+        bool getClose();
     };
 
 }

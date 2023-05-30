@@ -405,6 +405,7 @@ void UartScreen::button_apply(uint16_t addr, uint16_t value)
 {
     String read_msg = "";
 
+    sync_time = millis();
     switch (addr)
     {
     case btn_baseStart:
@@ -412,6 +413,16 @@ void UartScreen::button_apply(uint16_t addr, uint16_t value)
         {
             Serial.println("[scr] other runing");
             return;
+        }
+
+        /* not start without locking door */
+        if (scrConfig.runState == 0)
+        {
+            if (!Block.getClose())
+            {
+                Serial.println("[scr] door not close");
+                return;
+            }
         }
 
         if (!getUserSelectMsg())
@@ -435,6 +446,16 @@ void UartScreen::button_apply(uint16_t addr, uint16_t value)
         {
             Serial.println("[scr] other runing");
             return;
+        }
+
+        /* not start without locking door */
+        if (scrConfig.runState == 0)
+        {
+            if (!Block.getClose())
+            {
+                Serial.println("[scr] door not close");
+                return;
+            }
         }
 
         if (!getUserSelectMsg())
@@ -525,6 +546,14 @@ void UartScreen::button_apply(uint16_t addr, uint16_t value)
         {
             pageSwitch(7);
         }
+        break;
+
+    case btn_OpenDoor:
+        if (scrConfig.runState)
+        {
+            break;
+        }
+        Block.unlock(true);
         break;
 
     case btn_connectWiFi:
@@ -623,13 +652,13 @@ void HAL::UartScreen::dataPack_handle()
 
 void HAL::UartScreen::syncDevice(uint16_t time)
 {
-    static unsigned long inter_time = millis();
+    // static unsigned long sync_time = millis();
 
-    if (millis() - inter_time < time)
+    if (millis() - sync_time < time)
     {
         return;
     }
-    inter_time = millis();
+    sync_time = millis();
 
     /* update the icon when the run stops */
     updateRunState();
@@ -848,18 +877,31 @@ void HAL::UartScreen::updateVerMsg()
 
 void HAL::UartScreen::updateRunState()
 {
+    BoardRunState_t board_state = board->getDeviceRunState();
+
     if (scrConfig.runState == 0)
     {
+        switch (board_state)
+        {
+        case STOP_ZERO: // basic liquid
+        case STOP:
+        case GOTO_ZERO:
+            break;
+        case EMPTY:
+            board->empty(0);
+            break;
+        case BASIC:
+            board->baseLiquid(0, 0, 0, 0);
+            break;
+        case DROP:
+            board->dropLiquid(0, 0, 0, 0);
+            break;
+        default:
+            break;
+        }
         Block.unlock();
         return;
     }
-
-    /* lock box */
-    Block.lock();
-
-    BoardRunState_t board_state = board->getDeviceRunState();
-
-    // Serial.printf("board state%d", board_state);
 
     switch (board_state)
     {
@@ -869,6 +911,7 @@ void HAL::UartScreen::updateRunState()
         updateIcon(icon_dropStart, 0);
         updateIcon(icon_emptying, 0);
         scrConfig.runState = 0;
+        Block.unlock();
         break;
 
     case GOTO_ZERO:
@@ -882,11 +925,15 @@ void HAL::UartScreen::updateRunState()
     case BASIC:
         updateIcon(icon_baseStart, 1);
         scrConfig.runState = 1;
+        /* lock box */
+        Block.lock();
         break;
 
     case DROP:
         updateIcon(icon_dropStart, 1);
         scrConfig.runState = 2;
+        /* lock box */
+        Block.lock();
         break;
 
     default:

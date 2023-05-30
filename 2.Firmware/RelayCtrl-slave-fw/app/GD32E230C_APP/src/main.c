@@ -35,15 +35,16 @@ int main(void)
 	zero_init();
 	while (Moter_DriveGotoZero() == 0)
 	{
-		delay_ms(10);
+		asm volatile("nop");
+		// delay_ms(10);
 	}
-	// iwdg_init();
+	iwdg_init();
 	printf("start success");
 
 	for (;;)
 	{
-		//usart0_send_data((uint8_t*)"hello", 5);
-		// iwdg_feed();
+		// usart0_send_data((uint8_t*)"hello", 5);
+		iwdg_feed();
 
 		comm_handle();
 		motor_handle();
@@ -52,5 +53,3 @@ int main(void)
 		delay_ms(1);
 	}
 }
-
-

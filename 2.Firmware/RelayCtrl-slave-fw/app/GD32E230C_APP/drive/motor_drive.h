@@ -6,8 +6,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-
-
 #define MinSpeedUs 100
 #define MaxPlusX 30000
 #define MaxPlusY 30000
@@ -93,7 +91,7 @@ typedef uint8_t RunState_t;
 typedef struct
 {
 	uint8_t zero_stage;	   // goto zero stage
-	uint8_t run_state;	   // running mode: 0 stop zero, 1 stop not zero, 2 go to zero, 3 empot, 4 basic, 5 drop
+	RunState_t run_state;  // running mode: 0 stop zero, 1 stop not zero, 2 go to zero, 3 empot, 4 basic, 5 drop
 	uint8_t progress;	   // run schedule 0~100
 	uint8_t uv_light;	   // "uv" light switch state (0 close, 1 open)
 	uint8_t water_pump;	   // water pump state(0 close, 1 open)

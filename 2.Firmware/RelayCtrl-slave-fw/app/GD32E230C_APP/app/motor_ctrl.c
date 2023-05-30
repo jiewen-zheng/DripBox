@@ -144,7 +144,7 @@ void motor_handle(void)
     case 0: /* one point move */
         if (pMotor->oneCoorEn == 0)
         {
-						check_motor_location();
+            check_motor_location();
             break;
         }
         MotorData.oneCoorEn = 0;
@@ -161,13 +161,14 @@ void motor_handle(void)
         if (MOTOR_SetDoutIt(MotorData.SetDoutConut, MotorData.SetDoutConutAll, MotorData.SetDoutBuff) == 0)
         {
             WaterPump_Ctrl(60);
-						pMotor->SetDoutNaber = 0;
-            pMotor->SetDoutConut = 0;
-            pMotor->oneCoorEn = 0;
-            pMotor->NewCom = 0;
-            return;
+            // pState->empty = 1; // 标记排空
+            // pMotor->SetDoutNaber = 0;
+            // pMotor->SetDoutConut = 0;
+            // pMotor->oneCoorEn = 0;
+            // pMotor->NewCom = 0;
+            break;
         }
-				MotorData.SetDoutConut++;
+        MotorData.SetDoutConut++;
         break;
 
     default:

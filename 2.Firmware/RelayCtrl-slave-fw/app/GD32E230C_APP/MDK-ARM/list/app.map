@@ -563,12 +563,12 @@ Section Cross References
     command.o(.text.back_offset) refers to usart.o(.text.usart0_send_data) for usart0_send_data
     command.o(.text.back_offset) refers to usart.o(.bss.usart0_txbuf) for usart0_txbuf
     command.o(.ARM.exidx.text.back_offset) refers to command.o(.text.back_offset) for [Anonymous Symbol]
+    command.o(.text.comm_execute) refers to motor_drive.o(.text.get_device_state) for get_device_state
     command.o(.text.comm_execute) refers to usart.o(.text.usart0_send_data) for usart0_send_data
     command.o(.text.comm_execute) refers to motor_drive.o(.text.WaterPump_Ctrl) for WaterPump_Ctrl
     command.o(.text.comm_execute) refers to systick.o(.text.delay_ms) for delay_ms
     command.o(.text.comm_execute) refers to motor_drive.o(.text.OUT_UV) for OUT_UV
     command.o(.text.comm_execute) refers to motor_drive.o(.text.OUT_LED) for OUT_LED
-    command.o(.text.comm_execute) refers to motor_drive.o(.text.get_device_state) for get_device_state
     command.o(.text.comm_execute) refers to crc16.o(.text.ym_crc16) for ym_crc16
     command.o(.text.comm_execute) refers to other.o(.text.stop_device) for stop_device
     command.o(.text.comm_execute) refers to other.o(.text.get_offset) for get_offset
@@ -659,11 +659,11 @@ Section Cross References
     motor_ctrl.o(.text.motor_handle) refers to motor_drive.o(.text.Moter_DriveGotoZero) for Moter_DriveGotoZero
     motor_ctrl.o(.text.motor_handle) refers to motor_drive.o(.text.set_run_state) for set_run_state
     motor_ctrl.o(.text.motor_handle) refers to motor_drive.o(.text.Mote_SetCoor) for Mote_SetCoor
-    motor_ctrl.o(.text.motor_handle) refers to motor_drive.o(.text.WaterPump_Ctrl) for WaterPump_Ctrl
     motor_ctrl.o(.text.motor_handle) refers to motor_drive.o(.text.Moter_ReadAllStatic) for Moter_ReadAllStatic
     motor_ctrl.o(.text.motor_handle) refers to motor_drive.o(.text.zero_init) for zero_init
     motor_ctrl.o(.text.motor_handle) refers to motor_drive.o(.text.OUT_UV) for OUT_UV
     motor_ctrl.o(.text.motor_handle) refers to motor_ctrl.o(.text.MOTOR_SetDoutIt) for MOTOR_SetDoutIt
+    motor_ctrl.o(.text.motor_handle) refers to motor_drive.o(.text.WaterPump_Ctrl) for WaterPump_Ctrl
     motor_ctrl.o(.text.motor_handle) refers to motor_drive.o(.text.Moter_ReadZero) for Moter_ReadZero
     motor_ctrl.o(.text.motor_handle) refers to motor_drive.o(.bss.MotorData) for MotorData
     motor_ctrl.o(.ARM.exidx.text.motor_handle) refers to motor_ctrl.o(.text.motor_handle) for [Anonymous Symbol]
@@ -910,10 +910,12 @@ Section Cross References
     main.o(.text.main) refers to motor_drive.o(.text.Mote_OutEnable) for Mote_OutEnable
     main.o(.text.main) refers to motor_drive.o(.text.zero_init) for zero_init
     main.o(.text.main) refers to motor_drive.o(.text.Moter_DriveGotoZero) for Moter_DriveGotoZero
-    main.o(.text.main) refers to systick.o(.text.delay_ms) for delay_ms
+    main.o(.text.main) refers to systick.o(.text.iwdg_init) for iwdg_init
+    main.o(.text.main) refers to systick.o(.text.iwdg_feed) for iwdg_feed
     main.o(.text.main) refers to command.o(.text.comm_handle) for comm_handle
     main.o(.text.main) refers to motor_ctrl.o(.text.motor_handle) for motor_handle
     main.o(.text.main) refers to other.o(.text.other_handle) for other_handle
+    main.o(.text.main) refers to systick.o(.text.delay_ms) for delay_ms
     main.o(.ARM.exidx.text.main) refers to main.o(.text.main) for [Anonymous Symbol]
     systick.o(.ARM.exidx.text.delay_us) refers to systick.o(.text.delay_us) for [Anonymous Symbol]
     systick.o(.text.systick_config) refers to system_gd32e23x.o(.data.SystemCoreClock) for SystemCoreClock
@@ -1513,7 +1515,6 @@ Removing Unused input sections from the image.
     Removing gd32e23x_fwdgt.o(.ARM.exidx.text.fwdgt_write_enable), (8 bytes).
     Removing gd32e23x_fwdgt.o(.text.fwdgt_write_disable), (12 bytes).
     Removing gd32e23x_fwdgt.o(.ARM.exidx.text.fwdgt_write_disable), (8 bytes).
-    Removing gd32e23x_fwdgt.o(.text.fwdgt_enable), (16 bytes).
     Removing gd32e23x_fwdgt.o(.ARM.exidx.text.fwdgt_enable), (8 bytes).
     Removing gd32e23x_fwdgt.o(.text.fwdgt_prescaler_value_config), (48 bytes).
     Removing gd32e23x_fwdgt.o(.ARM.exidx.text.fwdgt_prescaler_value_config), (8 bytes).
@@ -1521,9 +1522,7 @@ Removing Unused input sections from the image.
     Removing gd32e23x_fwdgt.o(.ARM.exidx.text.fwdgt_reload_value_config), (8 bytes).
     Removing gd32e23x_fwdgt.o(.text.fwdgt_window_value_config), (56 bytes).
     Removing gd32e23x_fwdgt.o(.ARM.exidx.text.fwdgt_window_value_config), (8 bytes).
-    Removing gd32e23x_fwdgt.o(.text.fwdgt_counter_reload), (16 bytes).
     Removing gd32e23x_fwdgt.o(.ARM.exidx.text.fwdgt_counter_reload), (8 bytes).
-    Removing gd32e23x_fwdgt.o(.text.fwdgt_config), (84 bytes).
     Removing gd32e23x_fwdgt.o(.ARM.exidx.text.fwdgt_config), (8 bytes).
     Removing gd32e23x_fwdgt.o(.text.fwdgt_flag_get), (20 bytes).
     Removing gd32e23x_fwdgt.o(.ARM.exidx.text.fwdgt_flag_get), (8 bytes).
@@ -1717,9 +1716,7 @@ Removing Unused input sections from the image.
     Removing gd32e23x_rcu.o(.ARM.exidx.text.rcu_interrupt_enable), (8 bytes).
     Removing gd32e23x_rcu.o(.text.rcu_interrupt_disable), (24 bytes).
     Removing gd32e23x_rcu.o(.ARM.exidx.text.rcu_interrupt_disable), (8 bytes).
-    Removing gd32e23x_rcu.o(.text.rcu_osci_stab_wait), (228 bytes).
     Removing gd32e23x_rcu.o(.ARM.exidx.text.rcu_osci_stab_wait), (8 bytes).
-    Removing gd32e23x_rcu.o(.text.rcu_osci_on), (24 bytes).
     Removing gd32e23x_rcu.o(.ARM.exidx.text.rcu_osci_on), (8 bytes).
     Removing gd32e23x_rcu.o(.text.rcu_osci_off), (24 bytes).
     Removing gd32e23x_rcu.o(.ARM.exidx.text.rcu_osci_off), (8 bytes).
@@ -2368,9 +2365,7 @@ Removing Unused input sections from the image.
     Removing systick.o(.ARM.exidx.text.delay_ms), (8 bytes).
     Removing systick.o(.ARM.exidx.text.delay_decrement), (8 bytes).
     Removing systick.o(.ARM.exidx.text.HAL_GetTick), (8 bytes).
-    Removing systick.o(.text.iwdg_init), (60 bytes).
     Removing systick.o(.ARM.exidx.text.iwdg_init), (8 bytes).
-    Removing systick.o(.text.iwdg_feed), (4 bytes).
     Removing systick.o(.ARM.exidx.text.iwdg_feed), (8 bytes).
     Removing crc16.o(.text), (0 bytes).
     Removing crc16.o(.ARM.exidx.text.ym_crc16), (8 bytes).
@@ -2382,7 +2377,7 @@ Removing Unused input sections from the image.
     Removing depilogue.o(.text), (190 bytes).
     Removing depilogue.o(i.__ARM_clz), (46 bytes).
 
-1132 unused section(s) (total 23660 bytes) removed from the image.
+1125 unused section(s) (total 23228 bytes) removed from the image.
 
 ==============================================================================
 
@@ -2534,211 +2529,229 @@ Image Symbol Table
     __arm_cp.17_0                            0x08004110   Number         4  motor_drive.o(.text.WaterPump_Ctrl)
     __arm_cp.17_1                            0x08004114   Number         4  motor_drive.o(.text.WaterPump_Ctrl)
     [Anonymous Symbol]                       0x08004118   Section        0  command.o(.text.comm_execute)
-    __arm_cp.3_0                             0x08004458   Number         4  command.o(.text.comm_execute)
-    __arm_cp.3_1                             0x0800445c   Number         4  command.o(.text.comm_execute)
-    __arm_cp.3_2                             0x08004460   Number         4  command.o(.text.comm_execute)
-    __arm_cp.3_5                             0x08004464   Number         4  command.o(.text.comm_execute)
-    __arm_cp.3_6                             0x08004468   Number         4  command.o(.text.comm_execute)
-    __arm_cp.3_7                             0x0800446c   Number         4  command.o(.text.comm_execute)
-    __arm_cp.3_8                             0x08004470   Number         4  command.o(.text.comm_execute)
-    [Anonymous Symbol]                       0x08004474   Section        0  command.o(.text.comm_handle)
-    __arm_cp.5_0                             0x08004524   Number         4  command.o(.text.comm_handle)
-    __arm_cp.5_3                             0x08004538   Number         4  command.o(.text.comm_handle)
-    __arm_cp.5_6                             0x08004540   Number         4  command.o(.text.comm_handle)
-    __arm_cp.5_7                             0x08004544   Number         4  command.o(.text.comm_handle)
-    [Anonymous Symbol]                       0x08004548   Section        0  motor_drive.o(.text.con_io_init)
-    __arm_cp.2_0                             0x08004594   Number         4  motor_drive.o(.text.con_io_init)
-    __arm_cp.2_1                             0x08004598   Number         4  motor_drive.o(.text.con_io_init)
-    __arm_cp.2_2                             0x0800459c   Number         4  motor_drive.o(.text.con_io_init)
-    __arm_cp.2_3                             0x080045a0   Number         4  motor_drive.o(.text.con_io_init)
-    [Anonymous Symbol]                       0x080045a4   Section        0  systick.o(.text.delay_decrement)
-    __arm_cp.4_1                             0x080045bc   Number         4  systick.o(.text.delay_decrement)
-    [Anonymous Symbol]                       0x080045c0   Section        0  systick.o(.text.delay_ms)
-    __arm_cp.3_0                             0x080045cc   Number         4  systick.o(.text.delay_ms)
-    [Anonymous Symbol]                       0x080045d0   Section        0  motor_drive.o(.text.device_params_init)
-    __arm_cp.0_0                             0x080045ec   Number         4  motor_drive.o(.text.device_params_init)
-    __arm_cp.0_1                             0x080045f0   Number         4  motor_drive.o(.text.device_params_init)
-    [Anonymous Symbol]                       0x080045f4   Section        0  gd32e23x_dma.o(.text.dma_channel_disable)
-    [Anonymous Symbol]                       0x08004604   Section        0  gd32e23x_dma.o(.text.dma_channel_enable)
-    [Anonymous Symbol]                       0x08004614   Section        0  gd32e23x_dma.o(.text.dma_circulation_disable)
-    [Anonymous Symbol]                       0x08004624   Section        0  gd32e23x_dma.o(.text.dma_deinit)
-    __arm_cp.0_0                             0x08004650   Number         4  gd32e23x_dma.o(.text.dma_deinit)
-    [Anonymous Symbol]                       0x08004654   Section        0  gd32e23x_dma.o(.text.dma_init)
-    [Anonymous Symbol]                       0x080046c4   Section        0  gd32e23x_dma.o(.text.dma_memory_address_config)
-    __arm_cp.10_0                            0x080046d0   Number         4  gd32e23x_dma.o(.text.dma_memory_address_config)
-    [Anonymous Symbol]                       0x080046d4   Section        0  gd32e23x_dma.o(.text.dma_memory_to_memory_disable)
-    __arm_cp.7_0                             0x080046e8   Number         4  gd32e23x_dma.o(.text.dma_memory_to_memory_disable)
-    [Anonymous Symbol]                       0x080046ec   Section        0  gd32e23x_dma.o(.text.dma_transfer_number_config)
-    [Anonymous Symbol]                       0x080046f8   Section        0  gd32e23x_dma.o(.text.dma_transfer_number_get)
-    __arm_cp.12_0                            0x08004704   Number         4  gd32e23x_dma.o(.text.dma_transfer_number_get)
-    [Anonymous Symbol]                       0x08004708   Section        0  gd32e23x_flash.o(.text.erase_flash_page)
-    __arm_cp.0_0                             0x08004758   Number         4  gd32e23x_flash.o(.text.erase_flash_page)
-    __arm_cp.0_1                             0x0800475c   Number         4  gd32e23x_flash.o(.text.erase_flash_page)
-    [Anonymous Symbol]                       0x08004760   Section        0  fifo.o(.text.fifo_dynamic_get_occupy_size)
-    [Anonymous Symbol]                       0x08004778   Section        0  fifo.o(.text.fifo_dynamic_read)
-    [Anonymous Symbol]                       0x080047e0   Section        0  fifo.o(.text.fifo_dynamic_register)
-    [Anonymous Symbol]                       0x08004830   Section        0  fifo.o(.text.fifo_dynamic_write)
-    __arm_cp.5_0                             0x0800489c   Number         4  fifo.o(.text.fifo_dynamic_write)
-    [Anonymous Symbol]                       0x080048a0   Section        0  gd32e23x_fmc.o(.text.fmc_flag_clear)
-    [Anonymous Symbol]                       0x080048a8   Section        0  gd32e23x_fmc.o(.text.fmc_lock)
-    __arm_cp.1_0                             0x080048b4   Number         4  gd32e23x_fmc.o(.text.fmc_lock)
-    [Anonymous Symbol]                       0x080048b8   Section        0  gd32e23x_fmc.o(.text.fmc_page_erase)
-    [Anonymous Symbol]                       0x0800491c   Section        0  gd32e23x_fmc.o(.text.fmc_unlock)
-    __arm_cp.0_0                             0x08004930   Number         4  gd32e23x_fmc.o(.text.fmc_unlock)
-    __arm_cp.0_1                             0x08004934   Number         4  gd32e23x_fmc.o(.text.fmc_unlock)
-    __arm_cp.0_2                             0x08004938   Number         4  gd32e23x_fmc.o(.text.fmc_unlock)
-    [Anonymous Symbol]                       0x0800493c   Section        0  gd32e23x_fmc.o(.text.fmc_word_program)
-    __arm_cp.9_0                             0x08004998   Number         4  gd32e23x_fmc.o(.text.fmc_word_program)
-    __arm_cp.9_1                             0x0800499c   Number         4  gd32e23x_fmc.o(.text.fmc_word_program)
-    [Anonymous Symbol]                       0x080049a0   Section        0  usart.o(.text.fputc)
-    __arm_cp.7_0                             0x080049c0   Number         4  usart.o(.text.fputc)
-    __arm_cp.7_1                             0x080049c4   Number         4  usart.o(.text.fputc)
-    [Anonymous Symbol]                       0x080049c8   Section        0  motor_drive.o(.text.get_device_state)
-    __arm_cp.24_0                            0x080049cc   Number         4  motor_drive.o(.text.get_device_state)
-    [Anonymous Symbol]                       0x080049d0   Section        0  motor_ctrl.o(.text.get_execution_schedule)
-    [Anonymous Symbol]                       0x080049d4   Section        0  other.o(.text.get_offset)
-    [Anonymous Symbol]                       0x080049d8   Section        0  gd32e23x_gpio.o(.text.gpio_af_set)
-    __arm_cp.11_0                            0x08004abc   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
-    __arm_cp.11_1                            0x08004ac0   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
-    __arm_cp.11_2                            0x08004ac4   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
-    __arm_cp.11_3                            0x08004ac8   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
-    __arm_cp.11_4                            0x08004acc   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
-    __arm_cp.11_5                            0x08004ad0   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
-    [Anonymous Symbol]                       0x08004ad4   Section        0  gd32e23x_gpio.o(.text.gpio_bit_reset)
-    [Anonymous Symbol]                       0x08004ad8   Section        0  gd32e23x_gpio.o(.text.gpio_bit_set)
-    [Anonymous Symbol]                       0x08004adc   Section        0  gd32e23x_gpio.o(.text.gpio_input_bit_get)
-    [Anonymous Symbol]                       0x08004ae6   Section        0  gd32e23x_gpio.o(.text.gpio_mode_set)
-    [Anonymous Symbol]                       0x08004b28   Section        0  gd32e23x_gpio.o(.text.gpio_output_options_set)
-    [Anonymous Symbol]                       0x08004b6e   Section        0  gd32e23x_gpio.o(.text.gpio_port_write)
-    [Anonymous Symbol]                       0x08004b74   Section        0  other.o(.text.load_offset)
-    __arm_cp.0_0                             0x08004bbc   Number         4  other.o(.text.load_offset)
-    __arm_cp.0_1                             0x08004bc0   Number         4  other.o(.text.load_offset)
-    __arm_cp.0_2                             0x08004bc4   Number         4  other.o(.text.load_offset)
-    [Anonymous Symbol]                       0x08004bc8   Section        0  main.o(.text.main)
-    [Anonymous Symbol]                       0x08004c68   Section        0  motor_drive.o(.text.motor_Tim_Init)
-    __arm_cp.3_0                             0x08004cbc   Number         4  motor_drive.o(.text.motor_Tim_Init)
-    __arm_cp.3_1                             0x08004cc0   Number         4  motor_drive.o(.text.motor_Tim_Init)
-    [Anonymous Symbol]                       0x08004cc4   Section        0  motor_ctrl.o(.text.motor_handle)
-    [Anonymous Symbol]                       0x08004de0   Section        0  motor_ctrl.o(.text.motor_set_direction)
-    __arm_cp.1_0                             0x08004df8   Number         4  motor_ctrl.o(.text.motor_set_direction)
-    [Anonymous Symbol]                       0x08004dfc   Section        0  motor_ctrl.o(.text.move_to_testPoint)
-    __arm_cp.0_0                             0x08004e74   Number         4  motor_ctrl.o(.text.move_to_testPoint)
-    __arm_cp.0_1                             0x08004e78   Number         4  motor_ctrl.o(.text.move_to_testPoint)
-    __arm_cp.0_2                             0x08004e7c   Number         4  motor_ctrl.o(.text.move_to_testPoint)
-    __arm_cp.0_3                             0x08004e80   Number         4  motor_ctrl.o(.text.move_to_testPoint)
-    [Anonymous Symbol]                       0x08004e84   Section        0  gd32e23x_misc.o(.text.nvic_irq_enable)
-    __arm_cp.0_0                             0x08004ee0   Number         4  gd32e23x_misc.o(.text.nvic_irq_enable)
-    __arm_cp.0_1                             0x08004ee4   Number         4  gd32e23x_misc.o(.text.nvic_irq_enable)
-    __arm_cp.0_2                             0x08004ee8   Number         4  gd32e23x_misc.o(.text.nvic_irq_enable)
-    [Anonymous Symbol]                       0x08004eec   Section        0  gd32e23x_misc.o(.text.nvic_vector_table_set)
-    __arm_cp.3_0                             0x08004ef8   Number         4  gd32e23x_misc.o(.text.nvic_vector_table_set)
-    __arm_cp.3_1                             0x08004efc   Number         4  gd32e23x_misc.o(.text.nvic_vector_table_set)
-    [Anonymous Symbol]                       0x08004f00   Section        0  other.o(.text.other_handle)
-    __arm_cp.7_0                             0x08004f64   Number         4  other.o(.text.other_handle)
-    __arm_cp.7_1                             0x08004f68   Number         4  other.o(.text.other_handle)
-    __arm_cp.7_2                             0x08004f6c   Number         4  other.o(.text.other_handle)
-    [Anonymous Symbol]                       0x08004f70   Section        0  motor_drive.o(.text.out_beepset)
-    __arm_cp.23_0                            0x08004f84   Number         4  motor_drive.o(.text.out_beepset)
-    [Anonymous Symbol]                       0x08004f88   Section        0  gd32e23x_flash.o(.text.program_flash)
-    [Anonymous Symbol]                       0x08004fcc   Section        0  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
-    __arm_cp.38_0                            0x080050dc   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
-    __arm_cp.38_1                            0x080050e0   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
-    __arm_cp.38_2                            0x080050e4   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
-    __arm_cp.38_3                            0x080050e8   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
-    __arm_cp.38_5                            0x080050fc   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
-    __arm_cp.38_6                            0x08005100   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
-    __arm_cp.38_7                            0x08005104   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
-    [Anonymous Symbol]                       0x08005108   Section        0  gd32e23x_rcu.o(.text.rcu_periph_clock_enable)
-    [Anonymous Symbol]                       0x0800511c   Section        0  gd32e23x_rcu.o(.text.rcu_periph_reset_disable)
-    [Anonymous Symbol]                       0x08005130   Section        0  gd32e23x_rcu.o(.text.rcu_periph_reset_enable)
-    __arm_cp.5_0                             0x08005144   Number         4  gd32e23x_rcu.o(.text.rcu_periph_reset_enable)
-    [Anonymous Symbol]                       0x08005148   Section        0  other.o(.text.set_offset)
-    __arm_cp.2_0                             0x080051ac   Number         4  other.o(.text.set_offset)
-    __arm_cp.2_1                             0x080051b0   Number         4  other.o(.text.set_offset)
-    __arm_cp.2_2                             0x080051b4   Number         4  other.o(.text.set_offset)
-    [Anonymous Symbol]                       0x080051b8   Section        0  motor_drive.o(.text.set_run_state)
-    [Anonymous Symbol]                       0x080051c0   Section        0  other.o(.text.stop_device)
-    [Anonymous Symbol]                       0x080051f4   Section        0  systick.o(.text.systick_config)
-    __arm_cp.1_0                             0x08005230   Number         4  systick.o(.text.systick_config)
-    __arm_cp.1_1                             0x08005234   Number         4  systick.o(.text.systick_config)
-    __arm_cp.1_2                             0x08005238   Number         4  systick.o(.text.systick_config)
-    __arm_cp.1_3                             0x0800523c   Number         4  systick.o(.text.systick_config)
-    [Anonymous Symbol]                       0x08005240   Section        0  motor_drive.o(.text.timer0_update_handle)
-    __arm_cp.4_1                             0x08005508   Number         4  motor_drive.o(.text.timer0_update_handle)
-    __arm_cp.4_2                             0x0800550c   Number         4  motor_drive.o(.text.timer0_update_handle)
-    __arm_cp.4_3                             0x08005510   Number         4  motor_drive.o(.text.timer0_update_handle)
-    [Anonymous Symbol]                       0x08005514   Section        0  gd32e23x_timer.o(.text.timer_auto_reload_shadow_enable)
-    [Anonymous Symbol]                       0x08005520   Section        0  gd32e23x_timer.o(.text.timer_deinit)
-    __arm_cp.0_0                             0x08005584   Number         4  gd32e23x_timer.o(.text.timer_deinit)
-    __arm_cp.0_1                             0x08005588   Number         4  gd32e23x_timer.o(.text.timer_deinit)
-    __arm_cp.0_2                             0x0800558c   Number         4  gd32e23x_timer.o(.text.timer_deinit)
-    __arm_cp.0_5                             0x08005590   Number         4  gd32e23x_timer.o(.text.timer_deinit)
-    __arm_cp.0_8                             0x08005594   Number         4  gd32e23x_timer.o(.text.timer_deinit)
-    [Anonymous Symbol]                       0x08005598   Section        0  gd32e23x_timer.o(.text.timer_enable)
-    [Anonymous Symbol]                       0x080055a4   Section        0  gd32e23x_timer.o(.text.timer_init)
-    __arm_cp.2_0                             0x08005634   Number         4  gd32e23x_timer.o(.text.timer_init)
-    __arm_cp.2_1                             0x08005638   Number         4  gd32e23x_timer.o(.text.timer_init)
-    __arm_cp.2_2                             0x0800563c   Number         4  gd32e23x_timer.o(.text.timer_init)
-    __arm_cp.2_3                             0x08005640   Number         4  gd32e23x_timer.o(.text.timer_init)
-    __arm_cp.2_4                             0x08005644   Number         4  gd32e23x_timer.o(.text.timer_init)
-    __arm_cp.2_5                             0x08005648   Number         4  gd32e23x_timer.o(.text.timer_init)
-    __arm_cp.2_6                             0x0800564c   Number         4  gd32e23x_timer.o(.text.timer_init)
-    __arm_cp.2_7                             0x08005650   Number         4  gd32e23x_timer.o(.text.timer_init)
-    [Anonymous Symbol]                       0x08005654   Section        0  gd32e23x_timer.o(.text.timer_interrupt_enable)
-    [Anonymous Symbol]                       0x0800565c   Section        0  gd32e23x_timer.o(.text.timer_interrupt_flag_clear)
-    [Anonymous Symbol]                       0x08005664   Section        0  gd32e23x_timer.o(.text.timer_interrupt_flag_get)
-    [Anonymous Symbol]                       0x08005678   Section        0  gd32e23x_timer.o(.text.timer_primary_output_config)
-    [Anonymous Symbol]                       0x08005690   Section        0  update.o(.text.update_setFlag)
-    __arm_cp.5_0                             0x080056b4   Number         4  update.o(.text.update_setFlag)
-    __arm_cp.5_1                             0x080056b8   Number         4  update.o(.text.update_setFlag)
-    [Anonymous Symbol]                       0x080056bc   Section        0  usart.o(.text.usart0_idle_handle)
-    __arm_cp.6_1                             0x08005718   Number         4  usart.o(.text.usart0_idle_handle)
-    [Anonymous Symbol]                       0x0800571c   Section        0  usart.o(.text.usart0_init)
-    __arm_cp.3_0                             0x08005828   Number         4  usart.o(.text.usart0_init)
-    __arm_cp.3_1                             0x0800582c   Number         4  usart.o(.text.usart0_init)
-    __arm_cp.3_2                             0x08005830   Number         4  usart.o(.text.usart0_init)
-    [Anonymous Symbol]                       0x08005850   Section        0  usart.o(.text.usart0_send_data)
-    __arm_cp.4_1                             0x08005880   Number         4  usart.o(.text.usart0_send_data)
-    [Anonymous Symbol]                       0x08005884   Section        0  gd32e23x_usart.o(.text.usart_baudrate_set)
-    __arm_cp.1_2                             0x080058d0   Number         4  gd32e23x_usart.o(.text.usart_baudrate_set)
-    [Anonymous Symbol]                       0x080058d4   Section        0  gd32e23x_usart.o(.text.usart_data_receive)
-    [Anonymous Symbol]                       0x080058dc   Section        0  gd32e23x_usart.o(.text.usart_data_transmit)
-    __arm_cp.18_0                            0x080058e4   Number         4  gd32e23x_usart.o(.text.usart_data_transmit)
-    [Anonymous Symbol]                       0x080058e8   Section        0  gd32e23x_usart.o(.text.usart_deinit)
-    __arm_cp.0_0                             0x08005910   Number         4  gd32e23x_usart.o(.text.usart_deinit)
-    __arm_cp.0_1                             0x08005914   Number         4  gd32e23x_usart.o(.text.usart_deinit)
-    __arm_cp.0_2                             0x08005918   Number         4  gd32e23x_usart.o(.text.usart_deinit)
-    __arm_cp.0_3                             0x0800591c   Number         4  gd32e23x_usart.o(.text.usart_deinit)
-    [Anonymous Symbol]                       0x08005920   Section        0  gd32e23x_usart.o(.text.usart_dma_receive_config)
-    [Anonymous Symbol]                       0x08005930   Section        0  gd32e23x_usart.o(.text.usart_enable)
-    [Anonymous Symbol]                       0x0800593a   Section        0  gd32e23x_usart.o(.text.usart_flag_get)
-    [Anonymous Symbol]                       0x0800594a   Section        0  gd32e23x_usart.o(.text.usart_interrupt_enable)
-    [Anonymous Symbol]                       0x0800595c   Section        0  gd32e23x_usart.o(.text.usart_interrupt_flag_clear)
-    __arm_cp.73_0                            0x08005980   Number         4  gd32e23x_usart.o(.text.usart_interrupt_flag_clear)
-    [Anonymous Symbol]                       0x08005984   Section        0  gd32e23x_usart.o(.text.usart_interrupt_flag_get)
-    [Anonymous Symbol]                       0x080059a2   Section        0  gd32e23x_usart.o(.text.usart_receive_config)
-    [Anonymous Symbol]                       0x080059b2   Section        0  gd32e23x_usart.o(.text.usart_transmit_config)
-    [Anonymous Symbol]                       0x080059c4   Section        0  crc16.o(.text.ym_crc16)
-    __arm_cp.0_0                             0x080059e8   Number         4  crc16.o(.text.ym_crc16)
-    [Anonymous Symbol]                       0x080059ec   Section        0  motor_drive.o(.text.zero_init)
-    __arm_cp.12_0                            0x08005a00   Number         4  motor_drive.o(.text.zero_init)
-    __arm_cp.12_1                            0x08005a04   Number         4  motor_drive.o(.text.zero_init)
-    i.__0printf$3                            0x08005a08   Section        0  printf3.o(i.__0printf$3)
-    i.__scatterload_copy                     0x08005a28   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x08005a36   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x08005a38   Section       14  handlers.o(i.__scatterload_zeroinit)
-    _printf_core                             0x08005a49   Thumb Code   456  printf3.o(i._printf_core)
-    i._printf_core                           0x08005a48   Section        0  printf3.o(i._printf_core)
-    i.free                                   0x08005c14   Section        0  malloc.o(i.free)
-    i.malloc                                 0x08005c68   Section        0  malloc.o(i.malloc)
-    i.puts                                   0x08005cd4   Section        0  puts.o(i.puts)
-    crc_table                                0x0800e3d4   Data         512  crc16.o(.rodata.crc_table)
-    [Anonymous Symbol]                       0x0800e3d4   Section        0  crc16.o(.rodata.crc_table)
-    .L__const.rcu_clock_freq_get.apb2_exp    0x0800e5d4   Data           8  gd32e23x_rcu.o(.rodata.cst8)
-    .L.str                                   0x0800e6ac   Data           9  update.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x0800e6ac   Section        0  update.o(.rodata.str1.1)
-    .L.str                                   0x0800e6b5   Data           3  command.o(.rodata.str1.1)
-    [Anonymous Symbol]                       0x0800e6b5   Section        0  command.o(.rodata.str1.1)
+    __arm_cp.3_0                             0x08004484   Number         4  command.o(.text.comm_execute)
+    __arm_cp.3_1                             0x08004488   Number         4  command.o(.text.comm_execute)
+    __arm_cp.3_2                             0x0800448c   Number         4  command.o(.text.comm_execute)
+    __arm_cp.3_5                             0x08004490   Number         4  command.o(.text.comm_execute)
+    __arm_cp.3_6                             0x08004494   Number         4  command.o(.text.comm_execute)
+    __arm_cp.3_7                             0x08004498   Number         4  command.o(.text.comm_execute)
+    __arm_cp.3_8                             0x0800449c   Number         4  command.o(.text.comm_execute)
+    [Anonymous Symbol]                       0x080044a0   Section        0  command.o(.text.comm_handle)
+    __arm_cp.5_0                             0x08004550   Number         4  command.o(.text.comm_handle)
+    __arm_cp.5_3                             0x08004564   Number         4  command.o(.text.comm_handle)
+    __arm_cp.5_6                             0x0800456c   Number         4  command.o(.text.comm_handle)
+    __arm_cp.5_7                             0x08004570   Number         4  command.o(.text.comm_handle)
+    [Anonymous Symbol]                       0x08004574   Section        0  motor_drive.o(.text.con_io_init)
+    __arm_cp.2_0                             0x080045c0   Number         4  motor_drive.o(.text.con_io_init)
+    __arm_cp.2_1                             0x080045c4   Number         4  motor_drive.o(.text.con_io_init)
+    __arm_cp.2_2                             0x080045c8   Number         4  motor_drive.o(.text.con_io_init)
+    __arm_cp.2_3                             0x080045cc   Number         4  motor_drive.o(.text.con_io_init)
+    [Anonymous Symbol]                       0x080045d0   Section        0  systick.o(.text.delay_decrement)
+    __arm_cp.4_1                             0x080045e8   Number         4  systick.o(.text.delay_decrement)
+    [Anonymous Symbol]                       0x080045ec   Section        0  systick.o(.text.delay_ms)
+    __arm_cp.3_0                             0x080045f8   Number         4  systick.o(.text.delay_ms)
+    [Anonymous Symbol]                       0x080045fc   Section        0  motor_drive.o(.text.device_params_init)
+    __arm_cp.0_0                             0x08004618   Number         4  motor_drive.o(.text.device_params_init)
+    __arm_cp.0_1                             0x0800461c   Number         4  motor_drive.o(.text.device_params_init)
+    [Anonymous Symbol]                       0x08004620   Section        0  gd32e23x_dma.o(.text.dma_channel_disable)
+    [Anonymous Symbol]                       0x08004630   Section        0  gd32e23x_dma.o(.text.dma_channel_enable)
+    [Anonymous Symbol]                       0x08004640   Section        0  gd32e23x_dma.o(.text.dma_circulation_disable)
+    [Anonymous Symbol]                       0x08004650   Section        0  gd32e23x_dma.o(.text.dma_deinit)
+    __arm_cp.0_0                             0x0800467c   Number         4  gd32e23x_dma.o(.text.dma_deinit)
+    [Anonymous Symbol]                       0x08004680   Section        0  gd32e23x_dma.o(.text.dma_init)
+    [Anonymous Symbol]                       0x080046f0   Section        0  gd32e23x_dma.o(.text.dma_memory_address_config)
+    __arm_cp.10_0                            0x080046fc   Number         4  gd32e23x_dma.o(.text.dma_memory_address_config)
+    [Anonymous Symbol]                       0x08004700   Section        0  gd32e23x_dma.o(.text.dma_memory_to_memory_disable)
+    __arm_cp.7_0                             0x08004714   Number         4  gd32e23x_dma.o(.text.dma_memory_to_memory_disable)
+    [Anonymous Symbol]                       0x08004718   Section        0  gd32e23x_dma.o(.text.dma_transfer_number_config)
+    [Anonymous Symbol]                       0x08004724   Section        0  gd32e23x_dma.o(.text.dma_transfer_number_get)
+    __arm_cp.12_0                            0x08004730   Number         4  gd32e23x_dma.o(.text.dma_transfer_number_get)
+    [Anonymous Symbol]                       0x08004734   Section        0  gd32e23x_flash.o(.text.erase_flash_page)
+    __arm_cp.0_0                             0x08004784   Number         4  gd32e23x_flash.o(.text.erase_flash_page)
+    __arm_cp.0_1                             0x08004788   Number         4  gd32e23x_flash.o(.text.erase_flash_page)
+    [Anonymous Symbol]                       0x0800478c   Section        0  fifo.o(.text.fifo_dynamic_get_occupy_size)
+    [Anonymous Symbol]                       0x080047a4   Section        0  fifo.o(.text.fifo_dynamic_read)
+    [Anonymous Symbol]                       0x0800480c   Section        0  fifo.o(.text.fifo_dynamic_register)
+    [Anonymous Symbol]                       0x0800485c   Section        0  fifo.o(.text.fifo_dynamic_write)
+    __arm_cp.5_0                             0x080048c8   Number         4  fifo.o(.text.fifo_dynamic_write)
+    [Anonymous Symbol]                       0x080048cc   Section        0  gd32e23x_fmc.o(.text.fmc_flag_clear)
+    [Anonymous Symbol]                       0x080048d4   Section        0  gd32e23x_fmc.o(.text.fmc_lock)
+    __arm_cp.1_0                             0x080048e0   Number         4  gd32e23x_fmc.o(.text.fmc_lock)
+    [Anonymous Symbol]                       0x080048e4   Section        0  gd32e23x_fmc.o(.text.fmc_page_erase)
+    [Anonymous Symbol]                       0x08004948   Section        0  gd32e23x_fmc.o(.text.fmc_unlock)
+    __arm_cp.0_0                             0x0800495c   Number         4  gd32e23x_fmc.o(.text.fmc_unlock)
+    __arm_cp.0_1                             0x08004960   Number         4  gd32e23x_fmc.o(.text.fmc_unlock)
+    __arm_cp.0_2                             0x08004964   Number         4  gd32e23x_fmc.o(.text.fmc_unlock)
+    [Anonymous Symbol]                       0x08004968   Section        0  gd32e23x_fmc.o(.text.fmc_word_program)
+    __arm_cp.9_0                             0x080049c4   Number         4  gd32e23x_fmc.o(.text.fmc_word_program)
+    __arm_cp.9_1                             0x080049c8   Number         4  gd32e23x_fmc.o(.text.fmc_word_program)
+    [Anonymous Symbol]                       0x080049cc   Section        0  usart.o(.text.fputc)
+    __arm_cp.7_0                             0x080049ec   Number         4  usart.o(.text.fputc)
+    __arm_cp.7_1                             0x080049f0   Number         4  usart.o(.text.fputc)
+    [Anonymous Symbol]                       0x080049f4   Section        0  gd32e23x_fwdgt.o(.text.fwdgt_config)
+    __arm_cp.7_1                             0x08004a34   Number         4  gd32e23x_fwdgt.o(.text.fwdgt_config)
+    __arm_cp.7_2                             0x08004a38   Number         4  gd32e23x_fwdgt.o(.text.fwdgt_config)
+    __arm_cp.7_3                             0x08004a3c   Number         4  gd32e23x_fwdgt.o(.text.fwdgt_config)
+    [Anonymous Symbol]                       0x08004a40   Section        0  gd32e23x_fwdgt.o(.text.fwdgt_counter_reload)
+    __arm_cp.6_1                             0x08004a48   Number         4  gd32e23x_fwdgt.o(.text.fwdgt_counter_reload)
+    [Anonymous Symbol]                       0x08004a4c   Section        0  gd32e23x_fwdgt.o(.text.fwdgt_enable)
+    __arm_cp.2_0                             0x08004a54   Number         4  gd32e23x_fwdgt.o(.text.fwdgt_enable)
+    __arm_cp.2_1                             0x08004a58   Number         4  gd32e23x_fwdgt.o(.text.fwdgt_enable)
+    [Anonymous Symbol]                       0x08004a5c   Section        0  motor_drive.o(.text.get_device_state)
+    __arm_cp.24_0                            0x08004a60   Number         4  motor_drive.o(.text.get_device_state)
+    [Anonymous Symbol]                       0x08004a64   Section        0  motor_ctrl.o(.text.get_execution_schedule)
+    [Anonymous Symbol]                       0x08004a68   Section        0  other.o(.text.get_offset)
+    [Anonymous Symbol]                       0x08004a6c   Section        0  gd32e23x_gpio.o(.text.gpio_af_set)
+    __arm_cp.11_0                            0x08004b50   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
+    __arm_cp.11_1                            0x08004b54   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
+    __arm_cp.11_2                            0x08004b58   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
+    __arm_cp.11_3                            0x08004b5c   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
+    __arm_cp.11_4                            0x08004b60   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
+    __arm_cp.11_5                            0x08004b64   Number         4  gd32e23x_gpio.o(.text.gpio_af_set)
+    [Anonymous Symbol]                       0x08004b68   Section        0  gd32e23x_gpio.o(.text.gpio_bit_reset)
+    [Anonymous Symbol]                       0x08004b6c   Section        0  gd32e23x_gpio.o(.text.gpio_bit_set)
+    [Anonymous Symbol]                       0x08004b70   Section        0  gd32e23x_gpio.o(.text.gpio_input_bit_get)
+    [Anonymous Symbol]                       0x08004b7a   Section        0  gd32e23x_gpio.o(.text.gpio_mode_set)
+    [Anonymous Symbol]                       0x08004bbc   Section        0  gd32e23x_gpio.o(.text.gpio_output_options_set)
+    [Anonymous Symbol]                       0x08004c02   Section        0  gd32e23x_gpio.o(.text.gpio_port_write)
+    [Anonymous Symbol]                       0x08004c06   Section        0  systick.o(.text.iwdg_feed)
+    [Anonymous Symbol]                       0x08004c0c   Section        0  systick.o(.text.iwdg_init)
+    __arm_cp.6_0                             0x08004c44   Number         4  systick.o(.text.iwdg_init)
+    [Anonymous Symbol]                       0x08004c48   Section        0  other.o(.text.load_offset)
+    __arm_cp.0_0                             0x08004c90   Number         4  other.o(.text.load_offset)
+    __arm_cp.0_1                             0x08004c94   Number         4  other.o(.text.load_offset)
+    __arm_cp.0_2                             0x08004c98   Number         4  other.o(.text.load_offset)
+    [Anonymous Symbol]                       0x08004c9c   Section        0  main.o(.text.main)
+    [Anonymous Symbol]                       0x08004d38   Section        0  motor_drive.o(.text.motor_Tim_Init)
+    __arm_cp.3_0                             0x08004d8c   Number         4  motor_drive.o(.text.motor_Tim_Init)
+    __arm_cp.3_1                             0x08004d90   Number         4  motor_drive.o(.text.motor_Tim_Init)
+    [Anonymous Symbol]                       0x08004d94   Section        0  motor_ctrl.o(.text.motor_handle)
+    [Anonymous Symbol]                       0x08004ea4   Section        0  motor_ctrl.o(.text.motor_set_direction)
+    __arm_cp.1_0                             0x08004ebc   Number         4  motor_ctrl.o(.text.motor_set_direction)
+    [Anonymous Symbol]                       0x08004ec0   Section        0  motor_ctrl.o(.text.move_to_testPoint)
+    __arm_cp.0_0                             0x08004f38   Number         4  motor_ctrl.o(.text.move_to_testPoint)
+    __arm_cp.0_1                             0x08004f3c   Number         4  motor_ctrl.o(.text.move_to_testPoint)
+    __arm_cp.0_2                             0x08004f40   Number         4  motor_ctrl.o(.text.move_to_testPoint)
+    __arm_cp.0_3                             0x08004f44   Number         4  motor_ctrl.o(.text.move_to_testPoint)
+    [Anonymous Symbol]                       0x08004f48   Section        0  gd32e23x_misc.o(.text.nvic_irq_enable)
+    __arm_cp.0_0                             0x08004fa4   Number         4  gd32e23x_misc.o(.text.nvic_irq_enable)
+    __arm_cp.0_1                             0x08004fa8   Number         4  gd32e23x_misc.o(.text.nvic_irq_enable)
+    __arm_cp.0_2                             0x08004fac   Number         4  gd32e23x_misc.o(.text.nvic_irq_enable)
+    [Anonymous Symbol]                       0x08004fb0   Section        0  gd32e23x_misc.o(.text.nvic_vector_table_set)
+    __arm_cp.3_0                             0x08004fbc   Number         4  gd32e23x_misc.o(.text.nvic_vector_table_set)
+    __arm_cp.3_1                             0x08004fc0   Number         4  gd32e23x_misc.o(.text.nvic_vector_table_set)
+    [Anonymous Symbol]                       0x08004fc4   Section        0  other.o(.text.other_handle)
+    __arm_cp.7_0                             0x08005028   Number         4  other.o(.text.other_handle)
+    __arm_cp.7_1                             0x0800502c   Number         4  other.o(.text.other_handle)
+    __arm_cp.7_2                             0x08005030   Number         4  other.o(.text.other_handle)
+    [Anonymous Symbol]                       0x08005034   Section        0  motor_drive.o(.text.out_beepset)
+    __arm_cp.23_0                            0x08005048   Number         4  motor_drive.o(.text.out_beepset)
+    [Anonymous Symbol]                       0x0800504c   Section        0  gd32e23x_flash.o(.text.program_flash)
+    [Anonymous Symbol]                       0x08005090   Section        0  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
+    __arm_cp.38_0                            0x080051a0   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
+    __arm_cp.38_1                            0x080051a4   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
+    __arm_cp.38_2                            0x080051a8   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
+    __arm_cp.38_3                            0x080051ac   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
+    __arm_cp.38_5                            0x080051c0   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
+    __arm_cp.38_6                            0x080051c4   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
+    __arm_cp.38_7                            0x080051c8   Number         4  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
+    [Anonymous Symbol]                       0x080051cc   Section        0  gd32e23x_rcu.o(.text.rcu_osci_on)
+    [Anonymous Symbol]                       0x080051e0   Section        0  gd32e23x_rcu.o(.text.rcu_osci_stab_wait)
+    __arm_cp.27_0                            0x080052b0   Number         4  gd32e23x_rcu.o(.text.rcu_osci_stab_wait)
+    __arm_cp.27_1                            0x080052b4   Number         4  gd32e23x_rcu.o(.text.rcu_osci_stab_wait)
+    __arm_cp.27_3                            0x080052b8   Number         4  gd32e23x_rcu.o(.text.rcu_osci_stab_wait)
+    __arm_cp.27_4                            0x080052bc   Number         4  gd32e23x_rcu.o(.text.rcu_osci_stab_wait)
+    [Anonymous Symbol]                       0x080052c0   Section        0  gd32e23x_rcu.o(.text.rcu_periph_clock_enable)
+    [Anonymous Symbol]                       0x080052d4   Section        0  gd32e23x_rcu.o(.text.rcu_periph_reset_disable)
+    [Anonymous Symbol]                       0x080052e8   Section        0  gd32e23x_rcu.o(.text.rcu_periph_reset_enable)
+    __arm_cp.5_0                             0x080052fc   Number         4  gd32e23x_rcu.o(.text.rcu_periph_reset_enable)
+    [Anonymous Symbol]                       0x08005300   Section        0  other.o(.text.set_offset)
+    __arm_cp.2_0                             0x08005364   Number         4  other.o(.text.set_offset)
+    __arm_cp.2_1                             0x08005368   Number         4  other.o(.text.set_offset)
+    __arm_cp.2_2                             0x0800536c   Number         4  other.o(.text.set_offset)
+    [Anonymous Symbol]                       0x08005370   Section        0  motor_drive.o(.text.set_run_state)
+    [Anonymous Symbol]                       0x08005378   Section        0  other.o(.text.stop_device)
+    [Anonymous Symbol]                       0x080053ac   Section        0  systick.o(.text.systick_config)
+    __arm_cp.1_0                             0x080053e8   Number         4  systick.o(.text.systick_config)
+    __arm_cp.1_1                             0x080053ec   Number         4  systick.o(.text.systick_config)
+    __arm_cp.1_2                             0x080053f0   Number         4  systick.o(.text.systick_config)
+    __arm_cp.1_3                             0x080053f4   Number         4  systick.o(.text.systick_config)
+    [Anonymous Symbol]                       0x080053f8   Section        0  motor_drive.o(.text.timer0_update_handle)
+    __arm_cp.4_1                             0x080056c0   Number         4  motor_drive.o(.text.timer0_update_handle)
+    __arm_cp.4_2                             0x080056c4   Number         4  motor_drive.o(.text.timer0_update_handle)
+    __arm_cp.4_3                             0x080056c8   Number         4  motor_drive.o(.text.timer0_update_handle)
+    [Anonymous Symbol]                       0x080056cc   Section        0  gd32e23x_timer.o(.text.timer_auto_reload_shadow_enable)
+    [Anonymous Symbol]                       0x080056d8   Section        0  gd32e23x_timer.o(.text.timer_deinit)
+    __arm_cp.0_0                             0x0800573c   Number         4  gd32e23x_timer.o(.text.timer_deinit)
+    __arm_cp.0_1                             0x08005740   Number         4  gd32e23x_timer.o(.text.timer_deinit)
+    __arm_cp.0_2                             0x08005744   Number         4  gd32e23x_timer.o(.text.timer_deinit)
+    __arm_cp.0_5                             0x08005748   Number         4  gd32e23x_timer.o(.text.timer_deinit)
+    __arm_cp.0_8                             0x0800574c   Number         4  gd32e23x_timer.o(.text.timer_deinit)
+    [Anonymous Symbol]                       0x08005750   Section        0  gd32e23x_timer.o(.text.timer_enable)
+    [Anonymous Symbol]                       0x0800575c   Section        0  gd32e23x_timer.o(.text.timer_init)
+    __arm_cp.2_0                             0x080057ec   Number         4  gd32e23x_timer.o(.text.timer_init)
+    __arm_cp.2_1                             0x080057f0   Number         4  gd32e23x_timer.o(.text.timer_init)
+    __arm_cp.2_2                             0x080057f4   Number         4  gd32e23x_timer.o(.text.timer_init)
+    __arm_cp.2_3                             0x080057f8   Number         4  gd32e23x_timer.o(.text.timer_init)
+    __arm_cp.2_4                             0x080057fc   Number         4  gd32e23x_timer.o(.text.timer_init)
+    __arm_cp.2_5                             0x08005800   Number         4  gd32e23x_timer.o(.text.timer_init)
+    __arm_cp.2_6                             0x08005804   Number         4  gd32e23x_timer.o(.text.timer_init)
+    __arm_cp.2_7                             0x08005808   Number         4  gd32e23x_timer.o(.text.timer_init)
+    [Anonymous Symbol]                       0x0800580c   Section        0  gd32e23x_timer.o(.text.timer_interrupt_enable)
+    [Anonymous Symbol]                       0x08005814   Section        0  gd32e23x_timer.o(.text.timer_interrupt_flag_clear)
+    [Anonymous Symbol]                       0x0800581c   Section        0  gd32e23x_timer.o(.text.timer_interrupt_flag_get)
+    [Anonymous Symbol]                       0x08005830   Section        0  gd32e23x_timer.o(.text.timer_primary_output_config)
+    [Anonymous Symbol]                       0x08005848   Section        0  update.o(.text.update_setFlag)
+    __arm_cp.5_0                             0x0800586c   Number         4  update.o(.text.update_setFlag)
+    __arm_cp.5_1                             0x08005870   Number         4  update.o(.text.update_setFlag)
+    [Anonymous Symbol]                       0x08005874   Section        0  usart.o(.text.usart0_idle_handle)
+    __arm_cp.6_1                             0x080058d0   Number         4  usart.o(.text.usart0_idle_handle)
+    [Anonymous Symbol]                       0x080058d4   Section        0  usart.o(.text.usart0_init)
+    __arm_cp.3_0                             0x080059e0   Number         4  usart.o(.text.usart0_init)
+    __arm_cp.3_1                             0x080059e4   Number         4  usart.o(.text.usart0_init)
+    __arm_cp.3_2                             0x080059e8   Number         4  usart.o(.text.usart0_init)
+    [Anonymous Symbol]                       0x08005a08   Section        0  usart.o(.text.usart0_send_data)
+    __arm_cp.4_1                             0x08005a38   Number         4  usart.o(.text.usart0_send_data)
+    [Anonymous Symbol]                       0x08005a3c   Section        0  gd32e23x_usart.o(.text.usart_baudrate_set)
+    __arm_cp.1_2                             0x08005a88   Number         4  gd32e23x_usart.o(.text.usart_baudrate_set)
+    [Anonymous Symbol]                       0x08005a8c   Section        0  gd32e23x_usart.o(.text.usart_data_receive)
+    [Anonymous Symbol]                       0x08005a94   Section        0  gd32e23x_usart.o(.text.usart_data_transmit)
+    __arm_cp.18_0                            0x08005a9c   Number         4  gd32e23x_usart.o(.text.usart_data_transmit)
+    [Anonymous Symbol]                       0x08005aa0   Section        0  gd32e23x_usart.o(.text.usart_deinit)
+    __arm_cp.0_0                             0x08005ac8   Number         4  gd32e23x_usart.o(.text.usart_deinit)
+    __arm_cp.0_1                             0x08005acc   Number         4  gd32e23x_usart.o(.text.usart_deinit)
+    __arm_cp.0_2                             0x08005ad0   Number         4  gd32e23x_usart.o(.text.usart_deinit)
+    __arm_cp.0_3                             0x08005ad4   Number         4  gd32e23x_usart.o(.text.usart_deinit)
+    [Anonymous Symbol]                       0x08005ad8   Section        0  gd32e23x_usart.o(.text.usart_dma_receive_config)
+    [Anonymous Symbol]                       0x08005ae8   Section        0  gd32e23x_usart.o(.text.usart_enable)
+    [Anonymous Symbol]                       0x08005af2   Section        0  gd32e23x_usart.o(.text.usart_flag_get)
+    [Anonymous Symbol]                       0x08005b02   Section        0  gd32e23x_usart.o(.text.usart_interrupt_enable)
+    [Anonymous Symbol]                       0x08005b14   Section        0  gd32e23x_usart.o(.text.usart_interrupt_flag_clear)
+    __arm_cp.73_0                            0x08005b38   Number         4  gd32e23x_usart.o(.text.usart_interrupt_flag_clear)
+    [Anonymous Symbol]                       0x08005b3c   Section        0  gd32e23x_usart.o(.text.usart_interrupt_flag_get)
+    [Anonymous Symbol]                       0x08005b5a   Section        0  gd32e23x_usart.o(.text.usart_receive_config)
+    [Anonymous Symbol]                       0x08005b6a   Section        0  gd32e23x_usart.o(.text.usart_transmit_config)
+    [Anonymous Symbol]                       0x08005b7c   Section        0  crc16.o(.text.ym_crc16)
+    __arm_cp.0_0                             0x08005ba0   Number         4  crc16.o(.text.ym_crc16)
+    [Anonymous Symbol]                       0x08005ba4   Section        0  motor_drive.o(.text.zero_init)
+    __arm_cp.12_0                            0x08005bb8   Number         4  motor_drive.o(.text.zero_init)
+    __arm_cp.12_1                            0x08005bbc   Number         4  motor_drive.o(.text.zero_init)
+    i.__0printf$3                            0x08005bc0   Section        0  printf3.o(i.__0printf$3)
+    i.__scatterload_copy                     0x08005be0   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x08005bee   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x08005bf0   Section       14  handlers.o(i.__scatterload_zeroinit)
+    _printf_core                             0x08005c01   Thumb Code   456  printf3.o(i._printf_core)
+    i._printf_core                           0x08005c00   Section        0  printf3.o(i._printf_core)
+    i.free                                   0x08005dcc   Section        0  malloc.o(i.free)
+    i.malloc                                 0x08005e20   Section        0  malloc.o(i.malloc)
+    i.puts                                   0x08005e8c   Section        0  puts.o(i.puts)
+    crc_table                                0x0800e58c   Data         512  crc16.o(.rodata.crc_table)
+    [Anonymous Symbol]                       0x0800e58c   Section        0  crc16.o(.rodata.crc_table)
+    .L__const.rcu_clock_freq_get.apb2_exp    0x0800e78c   Data           8  gd32e23x_rcu.o(.rodata.cst8)
+    .L.str                                   0x0800e864   Data           9  update.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x0800e864   Section        0  update.o(.rodata.str1.1)
+    .L.str                                   0x0800e86d   Data           3  command.o(.rodata.str1.1)
+    [Anonymous Symbol]                       0x0800e86d   Section        0  command.o(.rodata.str1.1)
     .data                                    0x20000000   Section        4  stdout.o(.data)
     .data                                    0x20000004   Section        4  mvars.o(.data)
     .data                                    0x20000008   Section        4  mvars.o(.data)
@@ -2883,130 +2896,137 @@ Image Symbol Table
     TIMER0_BRK_UP_TRG_COM_IRQHandler         0x080040f5   Thumb Code     4  gd32e23x_it.o(.text.TIMER0_BRK_UP_TRG_COM_IRQHandler)
     USART0_IRQHandler                        0x080040f9   Thumb Code     4  gd32e23x_it.o(.text.USART0_IRQHandler)
     WaterPump_Ctrl                           0x080040fd   Thumb Code    28  motor_drive.o(.text.WaterPump_Ctrl)
-    comm_execute                             0x08004119   Thumb Code   860  command.o(.text.comm_execute)
-    comm_handle                              0x08004475   Thumb Code   212  command.o(.text.comm_handle)
-    con_io_init                              0x08004549   Thumb Code    92  motor_drive.o(.text.con_io_init)
-    delay_decrement                          0x080045a5   Thumb Code    28  systick.o(.text.delay_decrement)
-    delay_ms                                 0x080045c1   Thumb Code    16  systick.o(.text.delay_ms)
-    device_params_init                       0x080045d1   Thumb Code    36  motor_drive.o(.text.device_params_init)
-    dma_channel_disable                      0x080045f5   Thumb Code    16  gd32e23x_dma.o(.text.dma_channel_disable)
-    dma_channel_enable                       0x08004605   Thumb Code    16  gd32e23x_dma.o(.text.dma_channel_enable)
-    dma_circulation_disable                  0x08004615   Thumb Code    16  gd32e23x_dma.o(.text.dma_circulation_disable)
-    dma_deinit                               0x08004625   Thumb Code    48  gd32e23x_dma.o(.text.dma_deinit)
-    dma_init                                 0x08004655   Thumb Code   112  gd32e23x_dma.o(.text.dma_init)
-    dma_memory_address_config                0x080046c5   Thumb Code    16  gd32e23x_dma.o(.text.dma_memory_address_config)
-    dma_memory_to_memory_disable             0x080046d5   Thumb Code    24  gd32e23x_dma.o(.text.dma_memory_to_memory_disable)
-    dma_transfer_number_config               0x080046ed   Thumb Code    12  gd32e23x_dma.o(.text.dma_transfer_number_config)
-    dma_transfer_number_get                  0x080046f9   Thumb Code    16  gd32e23x_dma.o(.text.dma_transfer_number_get)
-    erase_flash_page                         0x08004709   Thumb Code    88  gd32e23x_flash.o(.text.erase_flash_page)
-    fifo_dynamic_get_occupy_size             0x08004761   Thumb Code    24  fifo.o(.text.fifo_dynamic_get_occupy_size)
-    fifo_dynamic_read                        0x08004779   Thumb Code   104  fifo.o(.text.fifo_dynamic_read)
-    fifo_dynamic_register                    0x080047e1   Thumb Code    80  fifo.o(.text.fifo_dynamic_register)
-    fifo_dynamic_write                       0x08004831   Thumb Code   112  fifo.o(.text.fifo_dynamic_write)
-    fmc_flag_clear                           0x080048a1   Thumb Code     8  gd32e23x_fmc.o(.text.fmc_flag_clear)
-    fmc_lock                                 0x080048a9   Thumb Code    16  gd32e23x_fmc.o(.text.fmc_lock)
-    fmc_page_erase                           0x080048b9   Thumb Code   100  gd32e23x_fmc.o(.text.fmc_page_erase)
-    fmc_unlock                               0x0800491d   Thumb Code    32  gd32e23x_fmc.o(.text.fmc_unlock)
-    fmc_word_program                         0x0800493d   Thumb Code   100  gd32e23x_fmc.o(.text.fmc_word_program)
-    fputc                                    0x080049a1   Thumb Code    40  usart.o(.text.fputc)
-    get_device_state                         0x080049c9   Thumb Code     8  motor_drive.o(.text.get_device_state)
-    get_execution_schedule                   0x080049d1   Thumb Code     4  motor_ctrl.o(.text.get_execution_schedule)
-    get_offset                               0x080049d5   Thumb Code     4  other.o(.text.get_offset)
-    gpio_af_set                              0x080049d9   Thumb Code   252  gd32e23x_gpio.o(.text.gpio_af_set)
-    gpio_bit_reset                           0x08004ad5   Thumb Code     4  gd32e23x_gpio.o(.text.gpio_bit_reset)
-    gpio_bit_set                             0x08004ad9   Thumb Code     4  gd32e23x_gpio.o(.text.gpio_bit_set)
-    gpio_input_bit_get                       0x08004add   Thumb Code    10  gd32e23x_gpio.o(.text.gpio_input_bit_get)
-    gpio_mode_set                            0x08004ae7   Thumb Code    66  gd32e23x_gpio.o(.text.gpio_mode_set)
-    gpio_output_options_set                  0x08004b29   Thumb Code    70  gd32e23x_gpio.o(.text.gpio_output_options_set)
-    gpio_port_write                          0x08004b6f   Thumb Code     4  gd32e23x_gpio.o(.text.gpio_port_write)
-    load_offset                              0x08004b75   Thumb Code    84  other.o(.text.load_offset)
-    main                                     0x08004bc9   Thumb Code   160  main.o(.text.main)
-    motor_Tim_Init                           0x08004c69   Thumb Code    92  motor_drive.o(.text.motor_Tim_Init)
-    motor_handle                             0x08004cc5   Thumb Code   284  motor_ctrl.o(.text.motor_handle)
-    motor_set_direction                      0x08004de1   Thumb Code    28  motor_ctrl.o(.text.motor_set_direction)
-    move_to_testPoint                        0x08004dfd   Thumb Code   136  motor_ctrl.o(.text.move_to_testPoint)
-    nvic_irq_enable                          0x08004e85   Thumb Code   104  gd32e23x_misc.o(.text.nvic_irq_enable)
-    nvic_vector_table_set                    0x08004eed   Thumb Code    20  gd32e23x_misc.o(.text.nvic_vector_table_set)
-    other_handle                             0x08004f01   Thumb Code   112  other.o(.text.other_handle)
-    out_beepset                              0x08004f71   Thumb Code    24  motor_drive.o(.text.out_beepset)
-    program_flash                            0x08004f89   Thumb Code    66  gd32e23x_flash.o(.text.program_flash)
-    rcu_clock_freq_get                       0x08004fcd   Thumb Code   316  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
-    rcu_periph_clock_enable                  0x08005109   Thumb Code    20  gd32e23x_rcu.o(.text.rcu_periph_clock_enable)
-    rcu_periph_reset_disable                 0x0800511d   Thumb Code    20  gd32e23x_rcu.o(.text.rcu_periph_reset_disable)
-    rcu_periph_reset_enable                  0x08005131   Thumb Code    24  gd32e23x_rcu.o(.text.rcu_periph_reset_enable)
-    set_offset                               0x08005149   Thumb Code   112  other.o(.text.set_offset)
-    set_run_state                            0x080051b9   Thumb Code     8  motor_drive.o(.text.set_run_state)
-    stop_device                              0x080051c1   Thumb Code    52  other.o(.text.stop_device)
-    systick_config                           0x080051f5   Thumb Code    76  systick.o(.text.systick_config)
-    timer0_update_handle                     0x08005241   Thumb Code   724  motor_drive.o(.text.timer0_update_handle)
-    timer_auto_reload_shadow_enable          0x08005515   Thumb Code    10  gd32e23x_timer.o(.text.timer_auto_reload_shadow_enable)
-    timer_deinit                             0x08005521   Thumb Code   120  gd32e23x_timer.o(.text.timer_deinit)
-    timer_enable                             0x08005599   Thumb Code    10  gd32e23x_timer.o(.text.timer_enable)
-    timer_init                               0x080055a5   Thumb Code   176  gd32e23x_timer.o(.text.timer_init)
-    timer_interrupt_enable                   0x08005655   Thumb Code     8  gd32e23x_timer.o(.text.timer_interrupt_enable)
-    timer_interrupt_flag_clear               0x0800565d   Thumb Code     8  gd32e23x_timer.o(.text.timer_interrupt_flag_clear)
-    timer_interrupt_flag_get                 0x08005665   Thumb Code    20  gd32e23x_timer.o(.text.timer_interrupt_flag_get)
-    timer_primary_output_config              0x08005679   Thumb Code    22  gd32e23x_timer.o(.text.timer_primary_output_config)
-    update_setFlag                           0x08005691   Thumb Code    44  update.o(.text.update_setFlag)
-    usart0_idle_handle                       0x080056bd   Thumb Code    96  usart.o(.text.usart0_idle_handle)
-    usart0_init                              0x0800571d   Thumb Code   308  usart.o(.text.usart0_init)
-    usart0_send_data                         0x08005851   Thumb Code    52  usart.o(.text.usart0_send_data)
-    usart_baudrate_set                       0x08005885   Thumb Code    80  gd32e23x_usart.o(.text.usart_baudrate_set)
-    usart_data_receive                       0x080058d5   Thumb Code     8  gd32e23x_usart.o(.text.usart_data_receive)
-    usart_data_transmit                      0x080058dd   Thumb Code    12  gd32e23x_usart.o(.text.usart_data_transmit)
-    usart_deinit                             0x080058e9   Thumb Code    56  gd32e23x_usart.o(.text.usart_deinit)
-    usart_dma_receive_config                 0x08005921   Thumb Code    16  gd32e23x_usart.o(.text.usart_dma_receive_config)
-    usart_enable                             0x08005931   Thumb Code    10  gd32e23x_usart.o(.text.usart_enable)
-    usart_flag_get                           0x0800593b   Thumb Code    16  gd32e23x_usart.o(.text.usart_flag_get)
-    usart_interrupt_enable                   0x0800594b   Thumb Code    18  gd32e23x_usart.o(.text.usart_interrupt_enable)
-    usart_interrupt_flag_clear               0x0800595d   Thumb Code    40  gd32e23x_usart.o(.text.usart_interrupt_flag_clear)
-    usart_interrupt_flag_get                 0x08005985   Thumb Code    30  gd32e23x_usart.o(.text.usart_interrupt_flag_get)
-    usart_receive_config                     0x080059a3   Thumb Code    16  gd32e23x_usart.o(.text.usart_receive_config)
-    usart_transmit_config                    0x080059b3   Thumb Code    16  gd32e23x_usart.o(.text.usart_transmit_config)
-    ym_crc16                                 0x080059c5   Thumb Code    40  crc16.o(.text.ym_crc16)
-    zero_init                                0x080059ed   Thumb Code    28  motor_drive.o(.text.zero_init)
-    __0printf$3                              0x08005a09   Thumb Code    24  printf3.o(i.__0printf$3)
-    __1printf$3                              0x08005a09   Thumb Code     0  printf3.o(i.__0printf$3)
-    __2printf                                0x08005a09   Thumb Code     0  printf3.o(i.__0printf$3)
-    __scatterload_copy                       0x08005a29   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x08005a37   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x08005a39   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    free                                     0x08005c15   Thumb Code    80  malloc.o(i.free)
-    malloc                                   0x08005c69   Thumb Code    92  malloc.o(i.malloc)
-    puts                                     0x08005cd5   Thumb Code    28  puts.o(i.puts)
-    MedicineOut_1                            0x08005cf4   Data         368  constcoor.o(.rodata.MedicineOut_1)
-    MedicineOut_10                           0x08005e64   Data        1696  constcoor.o(.rodata.MedicineOut_10)
-    MedicineOut_11                           0x08006504   Data        2272  constcoor.o(.rodata.MedicineOut_11)
-    MedicineOut_12                           0x08006de4   Data        2816  constcoor.o(.rodata.MedicineOut_12)
-    MedicineOut_13                           0x080078e4   Data        1120  constcoor.o(.rodata.MedicineOut_13)
-    MedicineOut_14                           0x08007d44   Data        1696  constcoor.o(.rodata.MedicineOut_14)
-    MedicineOut_15                           0x080083e4   Data        2272  constcoor.o(.rodata.MedicineOut_15)
-    MedicineOut_16                           0x08008cc4   Data        2848  constcoor.o(.rodata.MedicineOut_16)
-    MedicineOut_2                            0x080097e4   Data         368  constcoor.o(.rodata.MedicineOut_2)
-    MedicineOut_26                           0x08009954   Data         352  constcoor.o(.rodata.MedicineOut_26)
-    MedicineOut_27                           0x08009ab4   Data         352  constcoor.o(.rodata.MedicineOut_27)
-    MedicineOut_28                           0x08009c14   Data         256  constcoor.o(.rodata.MedicineOut_28)
-    MedicineOut_29                           0x08009d14   Data         256  constcoor.o(.rodata.MedicineOut_29)
-    MedicineOut_3                            0x08009e14   Data         448  constcoor.o(.rodata.MedicineOut_3)
-    MedicineOut_30                           0x08009fd4   Data        1088  constcoor.o(.rodata.MedicineOut_30)
-    MedicineOut_31                           0x0800a414   Data        1696  constcoor.o(.rodata.MedicineOut_31)
-    MedicineOut_32                           0x0800aab4   Data        2272  constcoor.o(.rodata.MedicineOut_32)
-    MedicineOut_33                           0x0800b394   Data        2816  constcoor.o(.rodata.MedicineOut_33)
-    MedicineOut_34                           0x0800be94   Data        1088  constcoor.o(.rodata.MedicineOut_34)
-    MedicineOut_35                           0x0800c2d4   Data        1696  constcoor.o(.rodata.MedicineOut_35)
-    MedicineOut_36                           0x0800c974   Data        2272  constcoor.o(.rodata.MedicineOut_36)
-    MedicineOut_37                           0x0800d254   Data        2816  constcoor.o(.rodata.MedicineOut_37)
-    MedicineOut_4                            0x0800dd54   Data         448  constcoor.o(.rodata.MedicineOut_4)
-    MedicineOut_9                            0x0800df14   Data        1120  constcoor.o(.rodata.MedicineOut_9)
-    basic_data_point                         0x0800e374   Data          96  constcoor.o(.rodata.basic_data_point)
-    drop_data_point                          0x0800e5dc   Data         192  constcoor.o(.rodata.drop_data_point)
-    empty_point                              0x0800e69c   Data          16  constcoor.o(.rodata.empty_point)
-    testPoint_leftEye                        0x0800e6b8   Data          24  motor_ctrl.o(.rodata.testPoint_leftEye)
-    testPoint_mouth                          0x0800e6d0   Data          24  motor_ctrl.o(.rodata.testPoint_mouth)
-    testPoint_rigthEye                       0x0800e6e8   Data          24  motor_ctrl.o(.rodata.testPoint_rigthEye)
-    test_point                               0x0800e700   Data          96  constcoor.o(.rodata.test_point)
-    Region$$Table$$Base                      0x0800e760   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x0800e780   Number         0  anon$$obj.o(Region$$Table)
+    comm_execute                             0x08004119   Thumb Code   904  command.o(.text.comm_execute)
+    comm_handle                              0x080044a1   Thumb Code   212  command.o(.text.comm_handle)
+    con_io_init                              0x08004575   Thumb Code    92  motor_drive.o(.text.con_io_init)
+    delay_decrement                          0x080045d1   Thumb Code    28  systick.o(.text.delay_decrement)
+    delay_ms                                 0x080045ed   Thumb Code    16  systick.o(.text.delay_ms)
+    device_params_init                       0x080045fd   Thumb Code    36  motor_drive.o(.text.device_params_init)
+    dma_channel_disable                      0x08004621   Thumb Code    16  gd32e23x_dma.o(.text.dma_channel_disable)
+    dma_channel_enable                       0x08004631   Thumb Code    16  gd32e23x_dma.o(.text.dma_channel_enable)
+    dma_circulation_disable                  0x08004641   Thumb Code    16  gd32e23x_dma.o(.text.dma_circulation_disable)
+    dma_deinit                               0x08004651   Thumb Code    48  gd32e23x_dma.o(.text.dma_deinit)
+    dma_init                                 0x08004681   Thumb Code   112  gd32e23x_dma.o(.text.dma_init)
+    dma_memory_address_config                0x080046f1   Thumb Code    16  gd32e23x_dma.o(.text.dma_memory_address_config)
+    dma_memory_to_memory_disable             0x08004701   Thumb Code    24  gd32e23x_dma.o(.text.dma_memory_to_memory_disable)
+    dma_transfer_number_config               0x08004719   Thumb Code    12  gd32e23x_dma.o(.text.dma_transfer_number_config)
+    dma_transfer_number_get                  0x08004725   Thumb Code    16  gd32e23x_dma.o(.text.dma_transfer_number_get)
+    erase_flash_page                         0x08004735   Thumb Code    88  gd32e23x_flash.o(.text.erase_flash_page)
+    fifo_dynamic_get_occupy_size             0x0800478d   Thumb Code    24  fifo.o(.text.fifo_dynamic_get_occupy_size)
+    fifo_dynamic_read                        0x080047a5   Thumb Code   104  fifo.o(.text.fifo_dynamic_read)
+    fifo_dynamic_register                    0x0800480d   Thumb Code    80  fifo.o(.text.fifo_dynamic_register)
+    fifo_dynamic_write                       0x0800485d   Thumb Code   112  fifo.o(.text.fifo_dynamic_write)
+    fmc_flag_clear                           0x080048cd   Thumb Code     8  gd32e23x_fmc.o(.text.fmc_flag_clear)
+    fmc_lock                                 0x080048d5   Thumb Code    16  gd32e23x_fmc.o(.text.fmc_lock)
+    fmc_page_erase                           0x080048e5   Thumb Code   100  gd32e23x_fmc.o(.text.fmc_page_erase)
+    fmc_unlock                               0x08004949   Thumb Code    32  gd32e23x_fmc.o(.text.fmc_unlock)
+    fmc_word_program                         0x08004969   Thumb Code   100  gd32e23x_fmc.o(.text.fmc_word_program)
+    fputc                                    0x080049cd   Thumb Code    40  usart.o(.text.fputc)
+    fwdgt_config                             0x080049f5   Thumb Code    76  gd32e23x_fwdgt.o(.text.fwdgt_config)
+    fwdgt_counter_reload                     0x08004a41   Thumb Code    12  gd32e23x_fwdgt.o(.text.fwdgt_counter_reload)
+    fwdgt_enable                             0x08004a4d   Thumb Code    16  gd32e23x_fwdgt.o(.text.fwdgt_enable)
+    get_device_state                         0x08004a5d   Thumb Code     8  motor_drive.o(.text.get_device_state)
+    get_execution_schedule                   0x08004a65   Thumb Code     4  motor_ctrl.o(.text.get_execution_schedule)
+    get_offset                               0x08004a69   Thumb Code     4  other.o(.text.get_offset)
+    gpio_af_set                              0x08004a6d   Thumb Code   252  gd32e23x_gpio.o(.text.gpio_af_set)
+    gpio_bit_reset                           0x08004b69   Thumb Code     4  gd32e23x_gpio.o(.text.gpio_bit_reset)
+    gpio_bit_set                             0x08004b6d   Thumb Code     4  gd32e23x_gpio.o(.text.gpio_bit_set)
+    gpio_input_bit_get                       0x08004b71   Thumb Code    10  gd32e23x_gpio.o(.text.gpio_input_bit_get)
+    gpio_mode_set                            0x08004b7b   Thumb Code    66  gd32e23x_gpio.o(.text.gpio_mode_set)
+    gpio_output_options_set                  0x08004bbd   Thumb Code    70  gd32e23x_gpio.o(.text.gpio_output_options_set)
+    gpio_port_write                          0x08004c03   Thumb Code     4  gd32e23x_gpio.o(.text.gpio_port_write)
+    iwdg_feed                                0x08004c07   Thumb Code     4  systick.o(.text.iwdg_feed)
+    iwdg_init                                0x08004c0d   Thumb Code    60  systick.o(.text.iwdg_init)
+    load_offset                              0x08004c49   Thumb Code    84  other.o(.text.load_offset)
+    main                                     0x08004c9d   Thumb Code   156  main.o(.text.main)
+    motor_Tim_Init                           0x08004d39   Thumb Code    92  motor_drive.o(.text.motor_Tim_Init)
+    motor_handle                             0x08004d95   Thumb Code   272  motor_ctrl.o(.text.motor_handle)
+    motor_set_direction                      0x08004ea5   Thumb Code    28  motor_ctrl.o(.text.motor_set_direction)
+    move_to_testPoint                        0x08004ec1   Thumb Code   136  motor_ctrl.o(.text.move_to_testPoint)
+    nvic_irq_enable                          0x08004f49   Thumb Code   104  gd32e23x_misc.o(.text.nvic_irq_enable)
+    nvic_vector_table_set                    0x08004fb1   Thumb Code    20  gd32e23x_misc.o(.text.nvic_vector_table_set)
+    other_handle                             0x08004fc5   Thumb Code   112  other.o(.text.other_handle)
+    out_beepset                              0x08005035   Thumb Code    24  motor_drive.o(.text.out_beepset)
+    program_flash                            0x0800504d   Thumb Code    66  gd32e23x_flash.o(.text.program_flash)
+    rcu_clock_freq_get                       0x08005091   Thumb Code   316  gd32e23x_rcu.o(.text.rcu_clock_freq_get)
+    rcu_osci_on                              0x080051cd   Thumb Code    20  gd32e23x_rcu.o(.text.rcu_osci_on)
+    rcu_osci_stab_wait                       0x080051e1   Thumb Code   224  gd32e23x_rcu.o(.text.rcu_osci_stab_wait)
+    rcu_periph_clock_enable                  0x080052c1   Thumb Code    20  gd32e23x_rcu.o(.text.rcu_periph_clock_enable)
+    rcu_periph_reset_disable                 0x080052d5   Thumb Code    20  gd32e23x_rcu.o(.text.rcu_periph_reset_disable)
+    rcu_periph_reset_enable                  0x080052e9   Thumb Code    24  gd32e23x_rcu.o(.text.rcu_periph_reset_enable)
+    set_offset                               0x08005301   Thumb Code   112  other.o(.text.set_offset)
+    set_run_state                            0x08005371   Thumb Code     8  motor_drive.o(.text.set_run_state)
+    stop_device                              0x08005379   Thumb Code    52  other.o(.text.stop_device)
+    systick_config                           0x080053ad   Thumb Code    76  systick.o(.text.systick_config)
+    timer0_update_handle                     0x080053f9   Thumb Code   724  motor_drive.o(.text.timer0_update_handle)
+    timer_auto_reload_shadow_enable          0x080056cd   Thumb Code    10  gd32e23x_timer.o(.text.timer_auto_reload_shadow_enable)
+    timer_deinit                             0x080056d9   Thumb Code   120  gd32e23x_timer.o(.text.timer_deinit)
+    timer_enable                             0x08005751   Thumb Code    10  gd32e23x_timer.o(.text.timer_enable)
+    timer_init                               0x0800575d   Thumb Code   176  gd32e23x_timer.o(.text.timer_init)
+    timer_interrupt_enable                   0x0800580d   Thumb Code     8  gd32e23x_timer.o(.text.timer_interrupt_enable)
+    timer_interrupt_flag_clear               0x08005815   Thumb Code     8  gd32e23x_timer.o(.text.timer_interrupt_flag_clear)
+    timer_interrupt_flag_get                 0x0800581d   Thumb Code    20  gd32e23x_timer.o(.text.timer_interrupt_flag_get)
+    timer_primary_output_config              0x08005831   Thumb Code    22  gd32e23x_timer.o(.text.timer_primary_output_config)
+    update_setFlag                           0x08005849   Thumb Code    44  update.o(.text.update_setFlag)
+    usart0_idle_handle                       0x08005875   Thumb Code    96  usart.o(.text.usart0_idle_handle)
+    usart0_init                              0x080058d5   Thumb Code   308  usart.o(.text.usart0_init)
+    usart0_send_data                         0x08005a09   Thumb Code    52  usart.o(.text.usart0_send_data)
+    usart_baudrate_set                       0x08005a3d   Thumb Code    80  gd32e23x_usart.o(.text.usart_baudrate_set)
+    usart_data_receive                       0x08005a8d   Thumb Code     8  gd32e23x_usart.o(.text.usart_data_receive)
+    usart_data_transmit                      0x08005a95   Thumb Code    12  gd32e23x_usart.o(.text.usart_data_transmit)
+    usart_deinit                             0x08005aa1   Thumb Code    56  gd32e23x_usart.o(.text.usart_deinit)
+    usart_dma_receive_config                 0x08005ad9   Thumb Code    16  gd32e23x_usart.o(.text.usart_dma_receive_config)
+    usart_enable                             0x08005ae9   Thumb Code    10  gd32e23x_usart.o(.text.usart_enable)
+    usart_flag_get                           0x08005af3   Thumb Code    16  gd32e23x_usart.o(.text.usart_flag_get)
+    usart_interrupt_enable                   0x08005b03   Thumb Code    18  gd32e23x_usart.o(.text.usart_interrupt_enable)
+    usart_interrupt_flag_clear               0x08005b15   Thumb Code    40  gd32e23x_usart.o(.text.usart_interrupt_flag_clear)
+    usart_interrupt_flag_get                 0x08005b3d   Thumb Code    30  gd32e23x_usart.o(.text.usart_interrupt_flag_get)
+    usart_receive_config                     0x08005b5b   Thumb Code    16  gd32e23x_usart.o(.text.usart_receive_config)
+    usart_transmit_config                    0x08005b6b   Thumb Code    16  gd32e23x_usart.o(.text.usart_transmit_config)
+    ym_crc16                                 0x08005b7d   Thumb Code    40  crc16.o(.text.ym_crc16)
+    zero_init                                0x08005ba5   Thumb Code    28  motor_drive.o(.text.zero_init)
+    __0printf$3                              0x08005bc1   Thumb Code    24  printf3.o(i.__0printf$3)
+    __1printf$3                              0x08005bc1   Thumb Code     0  printf3.o(i.__0printf$3)
+    __2printf                                0x08005bc1   Thumb Code     0  printf3.o(i.__0printf$3)
+    __scatterload_copy                       0x08005be1   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x08005bef   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x08005bf1   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    free                                     0x08005dcd   Thumb Code    80  malloc.o(i.free)
+    malloc                                   0x08005e21   Thumb Code    92  malloc.o(i.malloc)
+    puts                                     0x08005e8d   Thumb Code    28  puts.o(i.puts)
+    MedicineOut_1                            0x08005eac   Data         368  constcoor.o(.rodata.MedicineOut_1)
+    MedicineOut_10                           0x0800601c   Data        1696  constcoor.o(.rodata.MedicineOut_10)
+    MedicineOut_11                           0x080066bc   Data        2272  constcoor.o(.rodata.MedicineOut_11)
+    MedicineOut_12                           0x08006f9c   Data        2816  constcoor.o(.rodata.MedicineOut_12)
+    MedicineOut_13                           0x08007a9c   Data        1120  constcoor.o(.rodata.MedicineOut_13)
+    MedicineOut_14                           0x08007efc   Data        1696  constcoor.o(.rodata.MedicineOut_14)
+    MedicineOut_15                           0x0800859c   Data        2272  constcoor.o(.rodata.MedicineOut_15)
+    MedicineOut_16                           0x08008e7c   Data        2848  constcoor.o(.rodata.MedicineOut_16)
+    MedicineOut_2                            0x0800999c   Data         368  constcoor.o(.rodata.MedicineOut_2)
+    MedicineOut_26                           0x08009b0c   Data         352  constcoor.o(.rodata.MedicineOut_26)
+    MedicineOut_27                           0x08009c6c   Data         352  constcoor.o(.rodata.MedicineOut_27)
+    MedicineOut_28                           0x08009dcc   Data         256  constcoor.o(.rodata.MedicineOut_28)
+    MedicineOut_29                           0x08009ecc   Data         256  constcoor.o(.rodata.MedicineOut_29)
+    MedicineOut_3                            0x08009fcc   Data         448  constcoor.o(.rodata.MedicineOut_3)
+    MedicineOut_30                           0x0800a18c   Data        1088  constcoor.o(.rodata.MedicineOut_30)
+    MedicineOut_31                           0x0800a5cc   Data        1696  constcoor.o(.rodata.MedicineOut_31)
+    MedicineOut_32                           0x0800ac6c   Data        2272  constcoor.o(.rodata.MedicineOut_32)
+    MedicineOut_33                           0x0800b54c   Data        2816  constcoor.o(.rodata.MedicineOut_33)
+    MedicineOut_34                           0x0800c04c   Data        1088  constcoor.o(.rodata.MedicineOut_34)
+    MedicineOut_35                           0x0800c48c   Data        1696  constcoor.o(.rodata.MedicineOut_35)
+    MedicineOut_36                           0x0800cb2c   Data        2272  constcoor.o(.rodata.MedicineOut_36)
+    MedicineOut_37                           0x0800d40c   Data        2816  constcoor.o(.rodata.MedicineOut_37)
+    MedicineOut_4                            0x0800df0c   Data         448  constcoor.o(.rodata.MedicineOut_4)
+    MedicineOut_9                            0x0800e0cc   Data        1120  constcoor.o(.rodata.MedicineOut_9)
+    basic_data_point                         0x0800e52c   Data          96  constcoor.o(.rodata.basic_data_point)
+    drop_data_point                          0x0800e794   Data         192  constcoor.o(.rodata.drop_data_point)
+    empty_point                              0x0800e854   Data          16  constcoor.o(.rodata.empty_point)
+    testPoint_leftEye                        0x0800e870   Data          24  motor_ctrl.o(.rodata.testPoint_leftEye)
+    testPoint_mouth                          0x0800e888   Data          24  motor_ctrl.o(.rodata.testPoint_mouth)
+    testPoint_rigthEye                       0x0800e8a0   Data          24  motor_ctrl.o(.rodata.testPoint_rigthEye)
+    test_point                               0x0800e8b8   Data          96  constcoor.o(.rodata.test_point)
+    Region$$Table$$Base                      0x0800e918   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x0800e938   Number         0  anon$$obj.o(Region$$Table)
     __stdout                                 0x20000000   Data           4  stdout.o(.data)
     __microlib_freelist                      0x20000004   Data           4  mvars.o(.data)
     __microlib_freelist_initialised          0x20000008   Data           4  mvars.o(.data)
@@ -3029,9 +3049,9 @@ Memory Map of the image
 
   Image Entry point : 0x08003ccd
 
-  Load Region LR_IROM1 (Base: 0x08003c00, Size: 0x0000ab98, Max: 0x0000bc00, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08003c00, Size: 0x0000ad50, Max: 0x0000bc00, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08003c00, Load base: 0x08003c00, Size: 0x0000ab80, Max: 0x0000bc00, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08003c00, Load base: 0x08003c00, Size: 0x0000ad38, Max: 0x0000bc00, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -3076,165 +3096,172 @@ Memory Map of the image
     0x080040f4   0x080040f4   0x00000004   Code   RO         1459    .text.TIMER0_BRK_UP_TRG_COM_IRQHandler  gd32e23x_it.o
     0x080040f8   0x080040f8   0x00000004   Code   RO         1457    .text.USART0_IRQHandler  gd32e23x_it.o
     0x080040fc   0x080040fc   0x0000001c   Code   RO         1328    .text.WaterPump_Ctrl  motor_drive.o
-    0x08004118   0x08004118   0x0000035c   Code   RO         1185    .text.comm_execute  command.o
-    0x08004474   0x08004474   0x000000d4   Code   RO         1189    .text.comm_handle   command.o
-    0x08004548   0x08004548   0x0000005c   Code   RO         1298    .text.con_io_init   motor_drive.o
-    0x080045a4   0x080045a4   0x0000001c   Code   RO         1485    .text.delay_decrement  systick.o
-    0x080045c0   0x080045c0   0x00000010   Code   RO         1483    .text.delay_ms      systick.o
-    0x080045d0   0x080045d0   0x00000024   Code   RO         1294    .text.device_params_init  motor_drive.o
-    0x080045f4   0x080045f4   0x00000010   Code   RO          177    .text.dma_channel_disable  gd32e23x_dma.o
-    0x08004604   0x08004604   0x00000010   Code   RO          187    .text.dma_channel_enable  gd32e23x_dma.o
-    0x08004614   0x08004614   0x00000010   Code   RO          181    .text.dma_circulation_disable  gd32e23x_dma.o
-    0x08004624   0x08004624   0x00000030   Code   RO          171    .text.dma_deinit    gd32e23x_dma.o
-    0x08004654   0x08004654   0x00000070   Code   RO          175    .text.dma_init      gd32e23x_dma.o
-    0x080046c4   0x080046c4   0x00000010   Code   RO          191    .text.dma_memory_address_config  gd32e23x_dma.o
-    0x080046d4   0x080046d4   0x00000018   Code   RO          185    .text.dma_memory_to_memory_disable  gd32e23x_dma.o
-    0x080046ec   0x080046ec   0x0000000c   Code   RO          193    .text.dma_transfer_number_config  gd32e23x_dma.o
-    0x080046f8   0x080046f8   0x00000010   Code   RO          195    .text.dma_transfer_number_get  gd32e23x_dma.o
-    0x08004708   0x08004708   0x00000058   Code   RO         1362    .text.erase_flash_page  gd32e23x_flash.o
-    0x08004760   0x08004760   0x00000018   Code   RO         1394    .text.fifo_dynamic_get_occupy_size  fifo.o
-    0x08004778   0x08004778   0x00000068   Code   RO         1390    .text.fifo_dynamic_read  fifo.o
-    0x080047e0   0x080047e0   0x00000050   Code   RO         1376    .text.fifo_dynamic_register  fifo.o
-    0x08004830   0x08004830   0x00000070   Code   RO         1386    .text.fifo_dynamic_write  fifo.o
-    0x080048a0   0x080048a0   0x00000008   Code   RO          317    .text.fmc_flag_clear  gd32e23x_fmc.o
-    0x080048a8   0x080048a8   0x00000010   Code   RO          267    .text.fmc_lock      gd32e23x_fmc.o
-    0x080048b8   0x080048b8   0x00000064   Code   RO          275    .text.fmc_page_erase  gd32e23x_fmc.o
-    0x0800491c   0x0800491c   0x00000020   Code   RO          265    .text.fmc_unlock    gd32e23x_fmc.o
-    0x0800493c   0x0800493c   0x00000064   Code   RO          283    .text.fmc_word_program  gd32e23x_fmc.o
-    0x080049a0   0x080049a0   0x00000028   Code   RO         1427    .text.fputc         usart.o
-    0x080049c8   0x080049c8   0x00000008   Code   RO         1342    .text.get_device_state  motor_drive.o
-    0x080049d0   0x080049d0   0x00000004   Code   RO         1236    .text.get_execution_schedule  motor_ctrl.o
-    0x080049d4   0x080049d4   0x00000004   Code   RO         1207    .text.get_offset    other.o
-    0x080049d8   0x080049d8   0x000000fc   Code   RO          381    .text.gpio_af_set   gd32e23x_gpio.o
-    0x08004ad4   0x08004ad4   0x00000004   Code   RO          367    .text.gpio_bit_reset  gd32e23x_gpio.o
-    0x08004ad8   0x08004ad8   0x00000004   Code   RO          365    .text.gpio_bit_set  gd32e23x_gpio.o
-    0x08004adc   0x08004adc   0x0000000a   Code   RO          373    .text.gpio_input_bit_get  gd32e23x_gpio.o
-    0x08004ae6   0x08004ae6   0x00000042   Code   RO          361    .text.gpio_mode_set  gd32e23x_gpio.o
-    0x08004b28   0x08004b28   0x00000046   Code   RO          363    .text.gpio_output_options_set  gd32e23x_gpio.o
-    0x08004b6e   0x08004b6e   0x00000004   Code   RO          371    .text.gpio_port_write  gd32e23x_gpio.o
-    0x08004b72   0x08004b72   0x00000002   PAD
-    0x08004b74   0x08004b74   0x00000054   Code   RO         1201    .text.load_offset   other.o
-    0x08004bc8   0x08004bc8   0x000000a0   Code   RO         1468    .text.main          main.o
-    0x08004c68   0x08004c68   0x0000005c   Code   RO         1300    .text.motor_Tim_Init  motor_drive.o
-    0x08004cc4   0x08004cc4   0x0000011c   Code   RO         1238    .text.motor_handle  motor_ctrl.o
-    0x08004de0   0x08004de0   0x0000001c   Code   RO         1230    .text.motor_set_direction  motor_ctrl.o
-    0x08004dfc   0x08004dfc   0x00000088   Code   RO         1228    .text.move_to_testPoint  motor_ctrl.o
-    0x08004e84   0x08004e84   0x00000068   Code   RO          475    .text.nvic_irq_enable  gd32e23x_misc.o
-    0x08004eec   0x08004eec   0x00000014   Code   RO          481    .text.nvic_vector_table_set  gd32e23x_misc.o
-    0x08004f00   0x08004f00   0x00000070   Code   RO         1215    .text.other_handle  other.o
-    0x08004f70   0x08004f70   0x00000018   Code   RO         1340    .text.out_beepset   motor_drive.o
-    0x08004f88   0x08004f88   0x00000042   Code   RO         1364    .text.program_flash  gd32e23x_flash.o
-    0x08004fca   0x08004fca   0x00000002   PAD
-    0x08004fcc   0x08004fcc   0x0000013c   Code   RO          610    .text.rcu_clock_freq_get  gd32e23x_rcu.o
-    0x08005108   0x08005108   0x00000014   Code   RO          536    .text.rcu_periph_clock_enable  gd32e23x_rcu.o
-    0x0800511c   0x0800511c   0x00000014   Code   RO          546    .text.rcu_periph_reset_disable  gd32e23x_rcu.o
-    0x08005130   0x08005130   0x00000018   Code   RO          544    .text.rcu_periph_reset_enable  gd32e23x_rcu.o
-    0x08005148   0x08005148   0x00000070   Code   RO         1205    .text.set_offset    other.o
-    0x080051b8   0x080051b8   0x00000008   Code   RO         1296    .text.set_run_state  motor_drive.o
-    0x080051c0   0x080051c0   0x00000034   Code   RO         1209    .text.stop_device   other.o
-    0x080051f4   0x080051f4   0x0000004c   Code   RO         1479    .text.systick_config  systick.o
-    0x08005240   0x08005240   0x000002d4   Code   RO         1302    .text.timer0_update_handle  motor_drive.o
-    0x08005514   0x08005514   0x0000000a   Code   RO          825    .text.timer_auto_reload_shadow_enable  gd32e23x_timer.o
-    0x0800551e   0x0800551e   0x00000002   PAD
-    0x08005520   0x08005520   0x00000078   Code   RO          815    .text.timer_deinit  gd32e23x_timer.o
-    0x08005598   0x08005598   0x0000000a   Code   RO          821    .text.timer_enable  gd32e23x_timer.o
-    0x080055a2   0x080055a2   0x00000002   PAD
-    0x080055a4   0x080055a4   0x000000b0   Code   RO          819    .text.timer_init    gd32e23x_timer.o
-    0x08005654   0x08005654   0x00000008   Code   RO          857    .text.timer_interrupt_enable  gd32e23x_timer.o
-    0x0800565c   0x0800565c   0x00000008   Code   RO          863    .text.timer_interrupt_flag_clear  gd32e23x_timer.o
-    0x08005664   0x08005664   0x00000014   Code   RO          861    .text.timer_interrupt_flag_get  gd32e23x_timer.o
-    0x08005678   0x08005678   0x00000016   Code   RO          891    .text.timer_primary_output_config  gd32e23x_timer.o
-    0x0800568e   0x0800568e   0x00000002   PAD
-    0x08005690   0x08005690   0x0000002c   Code   RO         1166    .text.update_setFlag  update.o
-    0x080056bc   0x080056bc   0x00000060   Code   RO         1425    .text.usart0_idle_handle  usart.o
-    0x0800571c   0x0800571c   0x00000134   Code   RO         1419    .text.usart0_init   usart.o
-    0x08005850   0x08005850   0x00000034   Code   RO         1421    .text.usart0_send_data  usart.o
-    0x08005884   0x08005884   0x00000050   Code   RO          971    .text.usart_baudrate_set  gd32e23x_usart.o
-    0x080058d4   0x080058d4   0x00000008   Code   RO         1007    .text.usart_data_receive  gd32e23x_usart.o
-    0x080058dc   0x080058dc   0x0000000c   Code   RO         1005    .text.usart_data_transmit  gd32e23x_usart.o
-    0x080058e8   0x080058e8   0x00000038   Code   RO          969    .text.usart_deinit  gd32e23x_usart.o
-    0x08005920   0x08005920   0x00000010   Code   RO         1083    .text.usart_dma_receive_config  gd32e23x_usart.o
-    0x08005930   0x08005930   0x0000000a   Code   RO          979    .text.usart_enable  gd32e23x_usart.o
-    0x0800593a   0x0800593a   0x00000010   Code   RO         1103    .text.usart_flag_get  gd32e23x_usart.o
-    0x0800594a   0x0800594a   0x00000012   Code   RO         1107    .text.usart_interrupt_enable  gd32e23x_usart.o
-    0x0800595c   0x0800595c   0x00000028   Code   RO         1115    .text.usart_interrupt_flag_clear  gd32e23x_usart.o
-    0x08005984   0x08005984   0x0000001e   Code   RO         1113    .text.usart_interrupt_flag_get  gd32e23x_usart.o
-    0x080059a2   0x080059a2   0x00000010   Code   RO          985    .text.usart_receive_config  gd32e23x_usart.o
-    0x080059b2   0x080059b2   0x00000010   Code   RO          983    .text.usart_transmit_config  gd32e23x_usart.o
-    0x080059c2   0x080059c2   0x00000002   PAD
-    0x080059c4   0x080059c4   0x00000028   Code   RO         1503    .text.ym_crc16      crc16.o
-    0x080059ec   0x080059ec   0x0000001c   Code   RO         1318    .text.zero_init     motor_drive.o
-    0x08005a08   0x08005a08   0x00000020   Code   RO         1616    i.__0printf$3       mc_p.l(printf3.o)
-    0x08005a28   0x08005a28   0x0000000e   Code   RO         1876    i.__scatterload_copy  mc_p.l(handlers.o)
-    0x08005a36   0x08005a36   0x00000002   Code   RO         1877    i.__scatterload_null  mc_p.l(handlers.o)
-    0x08005a38   0x08005a38   0x0000000e   Code   RO         1878    i.__scatterload_zeroinit  mc_p.l(handlers.o)
-    0x08005a46   0x08005a46   0x00000002   PAD
-    0x08005a48   0x08005a48   0x000001cc   Code   RO         1623    i._printf_core      mc_p.l(printf3.o)
-    0x08005c14   0x08005c14   0x00000054   Code   RO         1788    i.free              mc_p.l(malloc.o)
-    0x08005c68   0x08005c68   0x0000006c   Code   RO         1789    i.malloc            mc_p.l(malloc.o)
-    0x08005cd4   0x08005cd4   0x00000020   Code   RO         1515    i.puts              mc_p.l(puts.o)
-    0x08005cf4   0x08005cf4   0x00000170   Data   RO         1252    .rodata.MedicineOut_1  constcoor.o
-    0x08005e64   0x08005e64   0x000006a0   Data   RO         1257    .rodata.MedicineOut_10  constcoor.o
-    0x08006504   0x08006504   0x000008e0   Data   RO         1258    .rodata.MedicineOut_11  constcoor.o
-    0x08006de4   0x08006de4   0x00000b00   Data   RO         1259    .rodata.MedicineOut_12  constcoor.o
-    0x080078e4   0x080078e4   0x00000460   Data   RO         1260    .rodata.MedicineOut_13  constcoor.o
-    0x08007d44   0x08007d44   0x000006a0   Data   RO         1261    .rodata.MedicineOut_14  constcoor.o
-    0x080083e4   0x080083e4   0x000008e0   Data   RO         1262    .rodata.MedicineOut_15  constcoor.o
-    0x08008cc4   0x08008cc4   0x00000b20   Data   RO         1263    .rodata.MedicineOut_16  constcoor.o
-    0x080097e4   0x080097e4   0x00000170   Data   RO         1253    .rodata.MedicineOut_2  constcoor.o
-    0x08009954   0x08009954   0x00000160   Data   RO         1273    .rodata.MedicineOut_26  constcoor.o
-    0x08009ab4   0x08009ab4   0x00000160   Data   RO         1274    .rodata.MedicineOut_27  constcoor.o
-    0x08009c14   0x08009c14   0x00000100   Data   RO         1275    .rodata.MedicineOut_28  constcoor.o
-    0x08009d14   0x08009d14   0x00000100   Data   RO         1276    .rodata.MedicineOut_29  constcoor.o
-    0x08009e14   0x08009e14   0x000001c0   Data   RO         1254    .rodata.MedicineOut_3  constcoor.o
-    0x08009fd4   0x08009fd4   0x00000440   Data   RO         1277    .rodata.MedicineOut_30  constcoor.o
-    0x0800a414   0x0800a414   0x000006a0   Data   RO         1278    .rodata.MedicineOut_31  constcoor.o
-    0x0800aab4   0x0800aab4   0x000008e0   Data   RO         1279    .rodata.MedicineOut_32  constcoor.o
-    0x0800b394   0x0800b394   0x00000b00   Data   RO         1280    .rodata.MedicineOut_33  constcoor.o
-    0x0800be94   0x0800be94   0x00000440   Data   RO         1281    .rodata.MedicineOut_34  constcoor.o
-    0x0800c2d4   0x0800c2d4   0x000006a0   Data   RO         1282    .rodata.MedicineOut_35  constcoor.o
-    0x0800c974   0x0800c974   0x000008e0   Data   RO         1283    .rodata.MedicineOut_36  constcoor.o
-    0x0800d254   0x0800d254   0x00000b00   Data   RO         1284    .rodata.MedicineOut_37  constcoor.o
-    0x0800dd54   0x0800dd54   0x000001c0   Data   RO         1255    .rodata.MedicineOut_4  constcoor.o
-    0x0800df14   0x0800df14   0x00000460   Data   RO         1256    .rodata.MedicineOut_9  constcoor.o
-    0x0800e374   0x0800e374   0x00000060   Data   RO         1287    .rodata.basic_data_point  constcoor.o
-    0x0800e3d4   0x0800e3d4   0x00000200   Data   RO         1505    .rodata.crc_table   crc16.o
-    0x0800e5d4   0x0800e5d4   0x00000008   Data   RO          612    .rodata.cst8        gd32e23x_rcu.o
-    0x0800e5dc   0x0800e5dc   0x000000c0   Data   RO         1288    .rodata.drop_data_point  constcoor.o
-    0x0800e69c   0x0800e69c   0x00000010   Data   RO         1286    .rodata.empty_point  constcoor.o
-    0x0800e6ac   0x0800e6ac   0x00000009   Data   RO         1168    .rodata.str1.1      update.o
-    0x0800e6b5   0x0800e6b5   0x00000003   Data   RO         1191    .rodata.str1.1      command.o
-    0x0800e6b8   0x0800e6b8   0x00000018   Data   RO         1240    .rodata.testPoint_leftEye  motor_ctrl.o
-    0x0800e6d0   0x0800e6d0   0x00000018   Data   RO         1242    .rodata.testPoint_mouth  motor_ctrl.o
-    0x0800e6e8   0x0800e6e8   0x00000018   Data   RO         1241    .rodata.testPoint_rigthEye  motor_ctrl.o
-    0x0800e700   0x0800e700   0x00000060   Data   RO         1285    .rodata.test_point  constcoor.o
-    0x0800e760   0x0800e760   0x00000020   Data   RO         1875    Region$$Table       anon$$obj.o
+    0x08004118   0x08004118   0x00000388   Code   RO         1185    .text.comm_execute  command.o
+    0x080044a0   0x080044a0   0x000000d4   Code   RO         1189    .text.comm_handle   command.o
+    0x08004574   0x08004574   0x0000005c   Code   RO         1298    .text.con_io_init   motor_drive.o
+    0x080045d0   0x080045d0   0x0000001c   Code   RO         1485    .text.delay_decrement  systick.o
+    0x080045ec   0x080045ec   0x00000010   Code   RO         1483    .text.delay_ms      systick.o
+    0x080045fc   0x080045fc   0x00000024   Code   RO         1294    .text.device_params_init  motor_drive.o
+    0x08004620   0x08004620   0x00000010   Code   RO          177    .text.dma_channel_disable  gd32e23x_dma.o
+    0x08004630   0x08004630   0x00000010   Code   RO          187    .text.dma_channel_enable  gd32e23x_dma.o
+    0x08004640   0x08004640   0x00000010   Code   RO          181    .text.dma_circulation_disable  gd32e23x_dma.o
+    0x08004650   0x08004650   0x00000030   Code   RO          171    .text.dma_deinit    gd32e23x_dma.o
+    0x08004680   0x08004680   0x00000070   Code   RO          175    .text.dma_init      gd32e23x_dma.o
+    0x080046f0   0x080046f0   0x00000010   Code   RO          191    .text.dma_memory_address_config  gd32e23x_dma.o
+    0x08004700   0x08004700   0x00000018   Code   RO          185    .text.dma_memory_to_memory_disable  gd32e23x_dma.o
+    0x08004718   0x08004718   0x0000000c   Code   RO          193    .text.dma_transfer_number_config  gd32e23x_dma.o
+    0x08004724   0x08004724   0x00000010   Code   RO          195    .text.dma_transfer_number_get  gd32e23x_dma.o
+    0x08004734   0x08004734   0x00000058   Code   RO         1362    .text.erase_flash_page  gd32e23x_flash.o
+    0x0800478c   0x0800478c   0x00000018   Code   RO         1394    .text.fifo_dynamic_get_occupy_size  fifo.o
+    0x080047a4   0x080047a4   0x00000068   Code   RO         1390    .text.fifo_dynamic_read  fifo.o
+    0x0800480c   0x0800480c   0x00000050   Code   RO         1376    .text.fifo_dynamic_register  fifo.o
+    0x0800485c   0x0800485c   0x00000070   Code   RO         1386    .text.fifo_dynamic_write  fifo.o
+    0x080048cc   0x080048cc   0x00000008   Code   RO          317    .text.fmc_flag_clear  gd32e23x_fmc.o
+    0x080048d4   0x080048d4   0x00000010   Code   RO          267    .text.fmc_lock      gd32e23x_fmc.o
+    0x080048e4   0x080048e4   0x00000064   Code   RO          275    .text.fmc_page_erase  gd32e23x_fmc.o
+    0x08004948   0x08004948   0x00000020   Code   RO          265    .text.fmc_unlock    gd32e23x_fmc.o
+    0x08004968   0x08004968   0x00000064   Code   RO          283    .text.fmc_word_program  gd32e23x_fmc.o
+    0x080049cc   0x080049cc   0x00000028   Code   RO         1427    .text.fputc         usart.o
+    0x080049f4   0x080049f4   0x0000004c   Code   RO          347    .text.fwdgt_config  gd32e23x_fwdgt.o
+    0x08004a40   0x08004a40   0x0000000c   Code   RO          345    .text.fwdgt_counter_reload  gd32e23x_fwdgt.o
+    0x08004a4c   0x08004a4c   0x00000010   Code   RO          337    .text.fwdgt_enable  gd32e23x_fwdgt.o
+    0x08004a5c   0x08004a5c   0x00000008   Code   RO         1342    .text.get_device_state  motor_drive.o
+    0x08004a64   0x08004a64   0x00000004   Code   RO         1236    .text.get_execution_schedule  motor_ctrl.o
+    0x08004a68   0x08004a68   0x00000004   Code   RO         1207    .text.get_offset    other.o
+    0x08004a6c   0x08004a6c   0x000000fc   Code   RO          381    .text.gpio_af_set   gd32e23x_gpio.o
+    0x08004b68   0x08004b68   0x00000004   Code   RO          367    .text.gpio_bit_reset  gd32e23x_gpio.o
+    0x08004b6c   0x08004b6c   0x00000004   Code   RO          365    .text.gpio_bit_set  gd32e23x_gpio.o
+    0x08004b70   0x08004b70   0x0000000a   Code   RO          373    .text.gpio_input_bit_get  gd32e23x_gpio.o
+    0x08004b7a   0x08004b7a   0x00000042   Code   RO          361    .text.gpio_mode_set  gd32e23x_gpio.o
+    0x08004bbc   0x08004bbc   0x00000046   Code   RO          363    .text.gpio_output_options_set  gd32e23x_gpio.o
+    0x08004c02   0x08004c02   0x00000004   Code   RO          371    .text.gpio_port_write  gd32e23x_gpio.o
+    0x08004c06   0x08004c06   0x00000004   Code   RO         1491    .text.iwdg_feed     systick.o
+    0x08004c0a   0x08004c0a   0x00000002   PAD
+    0x08004c0c   0x08004c0c   0x0000003c   Code   RO         1489    .text.iwdg_init     systick.o
+    0x08004c48   0x08004c48   0x00000054   Code   RO         1201    .text.load_offset   other.o
+    0x08004c9c   0x08004c9c   0x0000009c   Code   RO         1468    .text.main          main.o
+    0x08004d38   0x08004d38   0x0000005c   Code   RO         1300    .text.motor_Tim_Init  motor_drive.o
+    0x08004d94   0x08004d94   0x00000110   Code   RO         1238    .text.motor_handle  motor_ctrl.o
+    0x08004ea4   0x08004ea4   0x0000001c   Code   RO         1230    .text.motor_set_direction  motor_ctrl.o
+    0x08004ec0   0x08004ec0   0x00000088   Code   RO         1228    .text.move_to_testPoint  motor_ctrl.o
+    0x08004f48   0x08004f48   0x00000068   Code   RO          475    .text.nvic_irq_enable  gd32e23x_misc.o
+    0x08004fb0   0x08004fb0   0x00000014   Code   RO          481    .text.nvic_vector_table_set  gd32e23x_misc.o
+    0x08004fc4   0x08004fc4   0x00000070   Code   RO         1215    .text.other_handle  other.o
+    0x08005034   0x08005034   0x00000018   Code   RO         1340    .text.out_beepset   motor_drive.o
+    0x0800504c   0x0800504c   0x00000042   Code   RO         1364    .text.program_flash  gd32e23x_flash.o
+    0x0800508e   0x0800508e   0x00000002   PAD
+    0x08005090   0x08005090   0x0000013c   Code   RO          610    .text.rcu_clock_freq_get  gd32e23x_rcu.o
+    0x080051cc   0x080051cc   0x00000014   Code   RO          590    .text.rcu_osci_on   gd32e23x_rcu.o
+    0x080051e0   0x080051e0   0x000000e0   Code   RO          588    .text.rcu_osci_stab_wait  gd32e23x_rcu.o
+    0x080052c0   0x080052c0   0x00000014   Code   RO          536    .text.rcu_periph_clock_enable  gd32e23x_rcu.o
+    0x080052d4   0x080052d4   0x00000014   Code   RO          546    .text.rcu_periph_reset_disable  gd32e23x_rcu.o
+    0x080052e8   0x080052e8   0x00000018   Code   RO          544    .text.rcu_periph_reset_enable  gd32e23x_rcu.o
+    0x08005300   0x08005300   0x00000070   Code   RO         1205    .text.set_offset    other.o
+    0x08005370   0x08005370   0x00000008   Code   RO         1296    .text.set_run_state  motor_drive.o
+    0x08005378   0x08005378   0x00000034   Code   RO         1209    .text.stop_device   other.o
+    0x080053ac   0x080053ac   0x0000004c   Code   RO         1479    .text.systick_config  systick.o
+    0x080053f8   0x080053f8   0x000002d4   Code   RO         1302    .text.timer0_update_handle  motor_drive.o
+    0x080056cc   0x080056cc   0x0000000a   Code   RO          825    .text.timer_auto_reload_shadow_enable  gd32e23x_timer.o
+    0x080056d6   0x080056d6   0x00000002   PAD
+    0x080056d8   0x080056d8   0x00000078   Code   RO          815    .text.timer_deinit  gd32e23x_timer.o
+    0x08005750   0x08005750   0x0000000a   Code   RO          821    .text.timer_enable  gd32e23x_timer.o
+    0x0800575a   0x0800575a   0x00000002   PAD
+    0x0800575c   0x0800575c   0x000000b0   Code   RO          819    .text.timer_init    gd32e23x_timer.o
+    0x0800580c   0x0800580c   0x00000008   Code   RO          857    .text.timer_interrupt_enable  gd32e23x_timer.o
+    0x08005814   0x08005814   0x00000008   Code   RO          863    .text.timer_interrupt_flag_clear  gd32e23x_timer.o
+    0x0800581c   0x0800581c   0x00000014   Code   RO          861    .text.timer_interrupt_flag_get  gd32e23x_timer.o
+    0x08005830   0x08005830   0x00000016   Code   RO          891    .text.timer_primary_output_config  gd32e23x_timer.o
+    0x08005846   0x08005846   0x00000002   PAD
+    0x08005848   0x08005848   0x0000002c   Code   RO         1166    .text.update_setFlag  update.o
+    0x08005874   0x08005874   0x00000060   Code   RO         1425    .text.usart0_idle_handle  usart.o
+    0x080058d4   0x080058d4   0x00000134   Code   RO         1419    .text.usart0_init   usart.o
+    0x08005a08   0x08005a08   0x00000034   Code   RO         1421    .text.usart0_send_data  usart.o
+    0x08005a3c   0x08005a3c   0x00000050   Code   RO          971    .text.usart_baudrate_set  gd32e23x_usart.o
+    0x08005a8c   0x08005a8c   0x00000008   Code   RO         1007    .text.usart_data_receive  gd32e23x_usart.o
+    0x08005a94   0x08005a94   0x0000000c   Code   RO         1005    .text.usart_data_transmit  gd32e23x_usart.o
+    0x08005aa0   0x08005aa0   0x00000038   Code   RO          969    .text.usart_deinit  gd32e23x_usart.o
+    0x08005ad8   0x08005ad8   0x00000010   Code   RO         1083    .text.usart_dma_receive_config  gd32e23x_usart.o
+    0x08005ae8   0x08005ae8   0x0000000a   Code   RO          979    .text.usart_enable  gd32e23x_usart.o
+    0x08005af2   0x08005af2   0x00000010   Code   RO         1103    .text.usart_flag_get  gd32e23x_usart.o
+    0x08005b02   0x08005b02   0x00000012   Code   RO         1107    .text.usart_interrupt_enable  gd32e23x_usart.o
+    0x08005b14   0x08005b14   0x00000028   Code   RO         1115    .text.usart_interrupt_flag_clear  gd32e23x_usart.o
+    0x08005b3c   0x08005b3c   0x0000001e   Code   RO         1113    .text.usart_interrupt_flag_get  gd32e23x_usart.o
+    0x08005b5a   0x08005b5a   0x00000010   Code   RO          985    .text.usart_receive_config  gd32e23x_usart.o
+    0x08005b6a   0x08005b6a   0x00000010   Code   RO          983    .text.usart_transmit_config  gd32e23x_usart.o
+    0x08005b7a   0x08005b7a   0x00000002   PAD
+    0x08005b7c   0x08005b7c   0x00000028   Code   RO         1503    .text.ym_crc16      crc16.o
+    0x08005ba4   0x08005ba4   0x0000001c   Code   RO         1318    .text.zero_init     motor_drive.o
+    0x08005bc0   0x08005bc0   0x00000020   Code   RO         1616    i.__0printf$3       mc_p.l(printf3.o)
+    0x08005be0   0x08005be0   0x0000000e   Code   RO         1876    i.__scatterload_copy  mc_p.l(handlers.o)
+    0x08005bee   0x08005bee   0x00000002   Code   RO         1877    i.__scatterload_null  mc_p.l(handlers.o)
+    0x08005bf0   0x08005bf0   0x0000000e   Code   RO         1878    i.__scatterload_zeroinit  mc_p.l(handlers.o)
+    0x08005bfe   0x08005bfe   0x00000002   PAD
+    0x08005c00   0x08005c00   0x000001cc   Code   RO         1623    i._printf_core      mc_p.l(printf3.o)
+    0x08005dcc   0x08005dcc   0x00000054   Code   RO         1788    i.free              mc_p.l(malloc.o)
+    0x08005e20   0x08005e20   0x0000006c   Code   RO         1789    i.malloc            mc_p.l(malloc.o)
+    0x08005e8c   0x08005e8c   0x00000020   Code   RO         1515    i.puts              mc_p.l(puts.o)
+    0x08005eac   0x08005eac   0x00000170   Data   RO         1252    .rodata.MedicineOut_1  constcoor.o
+    0x0800601c   0x0800601c   0x000006a0   Data   RO         1257    .rodata.MedicineOut_10  constcoor.o
+    0x080066bc   0x080066bc   0x000008e0   Data   RO         1258    .rodata.MedicineOut_11  constcoor.o
+    0x08006f9c   0x08006f9c   0x00000b00   Data   RO         1259    .rodata.MedicineOut_12  constcoor.o
+    0x08007a9c   0x08007a9c   0x00000460   Data   RO         1260    .rodata.MedicineOut_13  constcoor.o
+    0x08007efc   0x08007efc   0x000006a0   Data   RO         1261    .rodata.MedicineOut_14  constcoor.o
+    0x0800859c   0x0800859c   0x000008e0   Data   RO         1262    .rodata.MedicineOut_15  constcoor.o
+    0x08008e7c   0x08008e7c   0x00000b20   Data   RO         1263    .rodata.MedicineOut_16  constcoor.o
+    0x0800999c   0x0800999c   0x00000170   Data   RO         1253    .rodata.MedicineOut_2  constcoor.o
+    0x08009b0c   0x08009b0c   0x00000160   Data   RO         1273    .rodata.MedicineOut_26  constcoor.o
+    0x08009c6c   0x08009c6c   0x00000160   Data   RO         1274    .rodata.MedicineOut_27  constcoor.o
+    0x08009dcc   0x08009dcc   0x00000100   Data   RO         1275    .rodata.MedicineOut_28  constcoor.o
+    0x08009ecc   0x08009ecc   0x00000100   Data   RO         1276    .rodata.MedicineOut_29  constcoor.o
+    0x08009fcc   0x08009fcc   0x000001c0   Data   RO         1254    .rodata.MedicineOut_3  constcoor.o
+    0x0800a18c   0x0800a18c   0x00000440   Data   RO         1277    .rodata.MedicineOut_30  constcoor.o
+    0x0800a5cc   0x0800a5cc   0x000006a0   Data   RO         1278    .rodata.MedicineOut_31  constcoor.o
+    0x0800ac6c   0x0800ac6c   0x000008e0   Data   RO         1279    .rodata.MedicineOut_32  constcoor.o
+    0x0800b54c   0x0800b54c   0x00000b00   Data   RO         1280    .rodata.MedicineOut_33  constcoor.o
+    0x0800c04c   0x0800c04c   0x00000440   Data   RO         1281    .rodata.MedicineOut_34  constcoor.o
+    0x0800c48c   0x0800c48c   0x000006a0   Data   RO         1282    .rodata.MedicineOut_35  constcoor.o
+    0x0800cb2c   0x0800cb2c   0x000008e0   Data   RO         1283    .rodata.MedicineOut_36  constcoor.o
+    0x0800d40c   0x0800d40c   0x00000b00   Data   RO         1284    .rodata.MedicineOut_37  constcoor.o
+    0x0800df0c   0x0800df0c   0x000001c0   Data   RO         1255    .rodata.MedicineOut_4  constcoor.o
+    0x0800e0cc   0x0800e0cc   0x00000460   Data   RO         1256    .rodata.MedicineOut_9  constcoor.o
+    0x0800e52c   0x0800e52c   0x00000060   Data   RO         1287    .rodata.basic_data_point  constcoor.o
+    0x0800e58c   0x0800e58c   0x00000200   Data   RO         1505    .rodata.crc_table   crc16.o
+    0x0800e78c   0x0800e78c   0x00000008   Data   RO          612    .rodata.cst8        gd32e23x_rcu.o
+    0x0800e794   0x0800e794   0x000000c0   Data   RO         1288    .rodata.drop_data_point  constcoor.o
+    0x0800e854   0x0800e854   0x00000010   Data   RO         1286    .rodata.empty_point  constcoor.o
+    0x0800e864   0x0800e864   0x00000009   Data   RO         1168    .rodata.str1.1      update.o
+    0x0800e86d   0x0800e86d   0x00000003   Data   RO         1191    .rodata.str1.1      command.o
+    0x0800e870   0x0800e870   0x00000018   Data   RO         1240    .rodata.testPoint_leftEye  motor_ctrl.o
+    0x0800e888   0x0800e888   0x00000018   Data   RO         1242    .rodata.testPoint_mouth  motor_ctrl.o
+    0x0800e8a0   0x0800e8a0   0x00000018   Data   RO         1241    .rodata.testPoint_rigthEye  motor_ctrl.o
+    0x0800e8b8   0x0800e8b8   0x00000060   Data   RO         1285    .rodata.test_point  constcoor.o
+    0x0800e918   0x0800e918   0x00000020   Data   RO         1875    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x0800e780, Size: 0x000012a0, Max: 0x00002000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x0800e938, Size: 0x000012a0, Max: 0x00002000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x0800e780   0x00000004   Data   RW         1830    .data               mc_p.l(stdout.o)
-    0x20000004   0x0800e784   0x00000004   Data   RW         1839    .data               mc_p.l(mvars.o)
-    0x20000008   0x0800e788   0x00000004   Data   RW         1840    .data               mc_p.l(mvars.o)
-    0x2000000c   0x0800e78c   0x00000004   Data   RW            6    .data.SystemCoreClock  system_gd32e23x.o
-    0x20000010   0x0800e790   0x00000004   Data   RW         1243    .data.move_to_testPoint.pBuf  motor_ctrl.o
-    0x20000014   0x0800e794   0x00000004   Data   RW         1169    .data.version       update.o
+    0x20000000   0x0800e938   0x00000004   Data   RW         1830    .data               mc_p.l(stdout.o)
+    0x20000004   0x0800e93c   0x00000004   Data   RW         1839    .data               mc_p.l(mvars.o)
+    0x20000008   0x0800e940   0x00000004   Data   RW         1840    .data               mc_p.l(mvars.o)
+    0x2000000c   0x0800e944   0x00000004   Data   RW            6    .data.SystemCoreClock  system_gd32e23x.o
+    0x20000010   0x0800e948   0x00000004   Data   RW         1243    .data.move_to_testPoint.pBuf  motor_ctrl.o
+    0x20000014   0x0800e94c   0x00000004   Data   RW         1169    .data.version       update.o
     0x20000018        -       0x0000007c   Zero   RW         1352    .bss.MotorData      motor_drive.o
     0x20000094        -       0x0000000b   Zero   RW         1353    .bss.ReturnData     motor_drive.o
-    0x2000009f   0x0800e798   0x00000001   PAD
+    0x2000009f   0x0800e950   0x00000001   PAD
     0x200000a0        -       0x00000004   Zero   RW         1493    .bss.SysTimMs       systick.o
     0x200000a4        -       0x00000004   Zero   RW         1494    .bss.delay          systick.o
     0x200000a8        -       0x00000008   Zero   RW         1404    .bss.fifo_num       fifo.o
     0x200000b0        -       0x00000001   Zero   RW         1218    .bss.low_water_alarm.beepToggle  other.o
-    0x200000b1   0x0800e798   0x00000003   PAD
+    0x200000b1   0x0800e950   0x00000003   PAD
     0x200000b4        -       0x00000004   Zero   RW         1219    .bss.low_water_alarm.time  other.o
     0x200000b8        -       0x00000014   Zero   RW         1217    .bss.offset_config  other.o
     0x200000cc        -       0x00000090   Zero   RW         1192    .bss.params         command.o
     0x2000015c        -       0x00000100   Zero   RW         1430    .bss.usart0_rxbuf   usart.o
     0x2000025c        -       0x00000040   Zero   RW         1429    .bss.usart0_txbuf   usart.o
-    0x2000029c   0x0800e798   0x00000004   PAD
+    0x2000029c   0x0800e950   0x00000004   PAD
     0x200002a0        -       0x00000800   Zero   RW         1147    HEAP                startup_gd32e23x.o
     0x20000aa0        -       0x00000800   Zero   RW         1146    STACK               startup_gd32e23x.o
 
@@ -3246,31 +3273,32 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-      1072         64          3          0        144       8666   command.o
+      1116         64          3          0        144       9052   command.o
          0          0      34832          0          0       1962   constcoor.o
         40          4        512          0          0        993   crc16.o
        320          4          0          0          8       6504   fifo.o
        276         16          0          0          0       6947   gd32e23x_dma.o
        154          8          0          0          0       2207   gd32e23x_flash.o
        256         24          0          0          0      13075   gd32e23x_fmc.o
+       104         24          0          0          0       2927   gd32e23x_fwdgt.o
        410         24          0          0          0       5463   gd32e23x_gpio.o
         20          0          0          0          0       1196   gd32e23x_it.o
        124         20          0          0          0       3981   gd32e23x_misc.o
-       380         48          8          0          0      13823   gd32e23x_rcu.o
+       624         64          8          0          0      13823   gd32e23x_rcu.o
        374         52          0          0          0      21419   gd32e23x_timer.o
        318         28          0          0          0      14603   gd32e23x_usart.o
-       160         44          0          0          0        550   main.o
-       560         20         72          4          0       3923   motor_ctrl.o
+       156         44          0          0          0        541   main.o
+       548         20         72          4          0       3919   motor_ctrl.o
       1520         80          0          0        135      10508   motor_drive.o
-       364         36          0          0         25       3516   other.o
+       364         36          0          0         25       3538   other.o
         28          8        204          0       4096        748   startup_gd32e23x.o
        236         24          0          4          0       2075   system_gd32e23x.o
-       132         28          0          0          8       4102   systick.o
+       196         32          0          0          8       4102   systick.o
         44          8          9          4          0       3082   update.o
        496         56          0          0        320       5750   usart.o
 
     ----------------------------------------------------------------------
-      7300        596      35672         12       4744     135093   Object Totals
+      7740        640      35672         12       4744     138415   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         16          0          0          0          8          0   (incl. Padding)
 
@@ -3317,15 +3345,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      8232        648      35672         24       4744     135369   Grand Totals
-      8232        648      35672         24       4744     135369   ELF Image Totals
-      8232        648      35672         24          0          0   ROM Totals
+      8672        692      35672         24       4744     138675   Grand Totals
+      8672        692      35672         24       4744     138675   ELF Image Totals
+      8672        692      35672         24          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                43904 (  42.88kB)
+    Total RO  Size (Code + RO Data)                44344 (  43.30kB)
     Total RW  Size (RW Data + ZI Data)              4768 (   4.66kB)
-    Total ROM Size (Code + RO Data + RW Data)      43928 (  42.90kB)
+    Total ROM Size (Code + RO Data + RW Data)      44368 (  43.33kB)
 
 ==============================================================================
 

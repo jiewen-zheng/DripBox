@@ -81,7 +81,7 @@ namespace HAL
         DeviceState_t *getDeviceState();
         uint8_t getDeviceRunState();
 
-        void reqDeviceData(uint16_t time = 1000);
+        void reqDeviceData(uint16_t time = 800);
         bool baseLiquid(bool onOff, uint8_t mask, uint8_t mil, uint8_t depth);
         bool dropLiquid(bool onOff, uint8_t mask, uint8_t mil, uint8_t depth);
         bool empty(bool onOff);

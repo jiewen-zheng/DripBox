@@ -70,13 +70,14 @@ void back_offset()
 void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
 {
     MotorDataType *pMotor = (MotorDataType *)msg;
+    DeviceStatus_t *pState = get_device_state();
 
     switch (cmd)
     {
         /* basic liquid */
     case 0x81:
-				if(data[0] > MAX_MASK_TYPE*2+1) // check maks type
-					break;
+        if (data[0] > MAX_MASK_TYPE * 2 + 1) // check maks type
+            break;
         pMotor->SetDoutNaber = 2;
         pMotor->SetDoutBuff = (int16_t *)basic_data_point[data[0] * 2 - 2];
         pMotor->SetDoutConutAll = basic_data_point[data[0] * 2 - 1];
@@ -88,8 +89,8 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
 
         /* dropping liquid */
     case 0x82:
-				if(data[0] > MAX_MASK_TYPE*4+1)	// check maks type
-					break;
+        if (data[0] > MAX_MASK_TYPE * 4 + 1) // check maks type
+            break;
         pMotor->SetDoutNaber = 3;
         pMotor->SetDoutBuff = (int16_t *)drop_data_point[data[0] * 2 - 2];
         pMotor->SetDoutConutAll = drop_data_point[data[0] * 2 - 1];
@@ -113,9 +114,9 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
 
         /* goto zero point */
     case 0x85:
-				usart0_send_data((uint8_t *)"OK", 2);
+        usart0_send_data((uint8_t *)"OK", 2);
         /* stop water pump */
-        if (pMotor->SetDoutNaber == 1 || pMotor->SetDoutNaber == 2)
+        if (pState->run_state == STATE_EMPTY)
         {
             WaterPump_Ctrl(160);
             delay_ms(2000);
@@ -185,9 +186,9 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
 
     /* write offset data */
     case 0x91:
-				set_offset(X_OFFSET, (int8_t)data[0] * 100);
-				set_offset(Y_OFFSET, (int8_t)data[1] * 100);
-				set_offset(Z_OFFSET, (int8_t)data[2] * 100);
+        set_offset(X_OFFSET, (int8_t)data[0] * 100);
+        set_offset(Y_OFFSET, (int8_t)data[1] * 100);
+        set_offset(Z_OFFSET, (int8_t)data[2] * 100);
         break;
 
     /* move to test point, eye or month */
@@ -233,10 +234,11 @@ void comm_execute(uint8_t cmd, uint8_t *data, uint16_t len, void *msg)
     default:
         break;
     }
-		
-		if (cmd != 0x85 && cmd != 0x89 && cmd != 0x90){
-			usart0_send_data((uint8_t *)"OK", 2);
-		}
+
+    if (cmd != 0x85 && cmd != 0x89 && cmd != 0x90)
+    {
+        usart0_send_data((uint8_t *)"OK", 2);
+    }
 }
 
 /**
@@ -263,7 +265,7 @@ CommType_t *comm_check(uint8_t *pbuf, uint16_t len)
     if (crc != params.crc)
     {
         return NULL;
-				printf("crc error");
+        printf("crc error");
     }
 #endif
 

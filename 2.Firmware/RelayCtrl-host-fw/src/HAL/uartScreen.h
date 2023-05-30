@@ -43,6 +43,7 @@ namespace HAL
 
         btn_wifi_page = 0x100A, // wifi页面按钮
         btn_calibrat = 0x100B,  // 校准页面按钮
+        btn_OpenDoor = 0x100C,  // 打开仓门
 
         btn_connectWiFi = 0x1020,          // 连接wifi
         btn_popup_connectFaile = 0x1027,   // 弹窗连接失败
@@ -128,6 +129,7 @@ namespace HAL
     {
     private:
         HAL::BoxLock Block;
+        unsigned long sync_time = millis();
 
     private:
         uint8_t txbuff[256]; // 一包按240字节数据发送，最大使用248字节空间

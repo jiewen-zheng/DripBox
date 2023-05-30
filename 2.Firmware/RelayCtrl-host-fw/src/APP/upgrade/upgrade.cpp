@@ -384,17 +384,28 @@ void Upgrade::updateSotfware()
             writeConfigFile(&fileMsg);
             break;
         }
-
-        ESP.restart();
     }
+    p_screen->pageSwitch(1);
+    ESP.restart();
 }
 
 void Upgrade::displayVersion()
 {
     HAL::VersionMsg_t msg;
-    msg.dev = "rotex-z003";
-    msg.firm = "firmware-v" + String(fileMsg.firm_ver) + ".0";
-    msg.soft = "software-v" + String(fileMsg.soft_ver) + ".0 ";
+
+    int major, minor, patch;
+
+    msg.dev = "Rotex-Z003";
+
+    major = fileMsg.firm_ver / 100;
+    minor = (fileMsg.firm_ver % 100) / 10;
+    patch = fileMsg.firm_ver % 10;
+    msg.firm = "Firmware-V" + String(major) + "." + String(minor) + "." + String(patch);
+
+    major = fileMsg.soft_ver / 100;
+    minor = (fileMsg.soft_ver % 100) / 10;
+    patch = fileMsg.soft_ver % 10;
+    msg.soft = "Software-V" + String(major) + "." + String(minor) + "." + String(patch);
 
     p_screen->setVerMsg(&msg);
     p_screen->updateVerMsg();

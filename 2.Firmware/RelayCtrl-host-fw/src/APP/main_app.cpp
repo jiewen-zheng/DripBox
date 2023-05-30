@@ -49,8 +49,8 @@ void app_loop()
     // delay(500);
     if (!upgrade.firmUpdateState())
     {
-        screen.handle();
         board.handle();
+        screen.handle();
     }
 
     upgrade.updateSotfware();
